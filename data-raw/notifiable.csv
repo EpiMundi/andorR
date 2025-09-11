@@ -1,0 +1,51 @@
+﻿id,name,question,rule,parent
+0,Root,,OR,
+1,A1,The disease is notifiable nationally (listed by CFIA) or internationally (listed by WOAH).,,0
+2,Level 1,,AND,0
+3,Potential,,OR,2
+4,Detection,,AND,2
+5,Mitigation,,AND,2
+6,Consequences,,OR,2
+7,Emerging,,OR,3
+8,Other,,AND,3
+9,Pathogen,,AND,8
+10,Adaptation to host,,AND,8
+11,E,"Evidence indicates that the pathogen is able to survive or persist in the environment (in water, sediments, or biofilms).",,8
+12,Infectiousness,,OR,9
+13,Transmissibility,,AND,9
+14,Virulence,,AND,9
+15,B1,"There is evidence that the organism is an unknown, or previously unknown, pathogen.",,7
+16,B2,"There is evidence that the organism is a new strain, associated with pathology, of a known pathogen.",,7
+17,B3,There is evidence that the organism is a known pathogen or strain that has not been previously detected in the province.,,7
+18,B4,There is evidence that: (i) the organism is a known pathogen or strain; and (ii) it causes clinical disease in aquatic animals; and (iii) it is spreading to a new species or population.,,7
+19,C1.1,Scientific evidence indicates that the pathogen is highly infectious.,,12
+20,C1.2,There is scientific evidence of risk of mutation from non-pathogenic to pathogenic form.,,12
+21,C2.1,Scientific evidence indicates that the disease is transmissible.,,13
+22,Spread and impact,,OR,13
+23,C2.2,Introduction of the pathogen into an area without historical detections is likely.,,22
+24,C2.3,"Transboundary spread – either domestic (i.e., inter-provincial, to or from the province) or international – of the pathogenic agent is likely; spread may occur via aquatic animals, aquatic animal products, vectors or fomites.",,22
+25,C3.1,The pathogen (or specific strain) has been shown to cause clinical disease in aquatic animal species.,,14
+26,Clinical disease,,OR,14
+27,C3.2,The pathogen (or specific strain) has been shown to cause high morbidity in previously exposed/unexposed (naïve) aquatic animal populations.,,26
+28,C3.3,The pathogen (or specific strain) has been shown to cause high mortality in previously exposed/unexposed (naïve) populations.,,26
+29,Host range,,OR,10
+30,Reservoirs and vectors,,OR,10
+31,D1.1,Natural transmission to humans has been proven and human infection is associated with severe consequences.,,29
+32,D1.2,Susceptible hosts (wild or farmed populations) are known to be currently present in the province.,,29
+33,D2.1,"The pathogen’s lifecycle or transmission is not dependent on reservoirs, intermediate, or vector hosts.",,30
+34,Intermediate hosts,,AND,30
+35,D2.2,"The pathogen’s lifecycle or transmission is dependent on reservoirs, intermediate, or vector hosts.",,34
+36,D2.3,Natural reservoirs or intermediate hosts or vector species involved in transmission are known to be currently present in the province.,,34
+37,F,A precise case definition for the disease is available.,,4
+38,G,Reliable means of detection and diagnosis exist and are available to the province.,,4
+39,H,Effective surveillance measures are available to the province.,,4
+40,I,"At a global scale, at least one country demonstrates country or zone freedom from the disease in susceptible aquatic animals.",,5
+41,Management and interventions,,OR,5
+42,J1,Effective prevention measures exist for the pathogen and are available to the province.,,41
+43,J2,Effective mitigation measures exist for the pathogen and are available to the province.,,41
+44,J3,"Treatment options are absent, or the pathogen has developed resistance to treatments.",,41
+45,K1,The disease has caused historical losses of high magnitude (in the province or elsewhere).,,6
+46,K2,The disease has a significant impact on animal welfare.,,6
+47,L1,"The disease has been shown to, or scientific evidence indicates that it would likely affect the health of wildlife or biodiversity in the province, resulting in significant consequences (e.g., population-level morbidity or mortality, or ecological impacts).",,6
+48,L2,"The disease has been shown to, or scientific evidence indicates that it would likely cause significant health or welfare consequences to other farmed species in the province.",,6
+49,M,"The disease causes or could cause significant negative impacts on trade. Specifically, reporting of the disease in the province is expected to trigger movement or trade bans or restrictions, or certification requirements: within the Atlantic provinces, OR with non-Atlantic provinces, OR at the international level.",,6

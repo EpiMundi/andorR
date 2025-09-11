@@ -1,0 +1,81 @@
+name: Invest in Company X
+rule: AND
+nodes:
+  - name: Financial Viability
+    rule: AND
+    nodes:
+      - name: Profitability and Growth Signals
+        rule: OR
+        question: "Is the company showing strong signs of profitability?"
+        nodes:
+          - name: FIN1
+            question: "Company demonstrates consistent, high revenue growth."
+          - name: FIN2
+            question: "Company maintains a high net profit margin for its industry."
+          - name: FIN3
+            question: "Company holds a dominant or rapidly growing market share."
+      - name: Solvency and Stability
+        rule: AND
+        question: "Is the company financially stable?"
+        nodes:
+          - name: FIN4
+            question: "Debt-to-Equity ratio is below the industry average."
+          - name: FIN5
+            question: "Company generates strong and positive free cash flow."
+  - name: Acceptable Environmental Stewardship
+    rule: OR
+    nodes:
+      - name: Has a Clean Current Record
+        rule: AND
+        nodes:
+          - name: ENV1
+            question: "Carbon emissions (Scopes 1&2) are verifiably below the industry average."
+          - name: ENV2
+            question: "Waste and water usage are minimal and well-managed."
+          - name: ENV3
+            question: "Supply chain has strong, audited environmental standards."
+      - name: Has a Credible Transition Pathway
+        rule: OR
+        nodes:
+          - name: ENV4
+            question: "Company commits a high percentage of R&D to validated green technology."
+          - name: ENV5
+            question: "Has ambitious, science-based emission reduction targets (e.g., SBTi certified)."
+          - name: ENV6
+            question: "Executive compensation is directly and significantly linked to achieving environmental targets."
+  - name: Demonstrable Social Responsibility
+    rule: OR
+    nodes:
+      - name: Shows Excellent Internal Culture
+        rule: OR
+        nodes:
+          - name: SOC1
+            question: "Pays a verified living wage to all global employees."
+          - name: SOC2
+            question: "Employee turnover rate is exceptionally low for the industry."
+          - name: SOC3
+            question: "Has strong, independently verified diversity & inclusion metrics."
+          - name: SOC4
+            question: "Supply chain is robustly and transparently audited for labor rights (no forced/child labor)."
+      - name: Has a Positive External Impact
+        rule: AND
+        nodes:
+          - name: SOC5
+            question: "Products and services provide a clear, net positive social good."
+          - name: SOC6
+            question: "Company has a clean record on product safety and consumer protection."
+          - name: SOC7
+            question: "No major, unresolved human rights controversies in its operations or supply chain."
+  - name: Strong Corporate Governance
+    rule: AND
+    nodes:
+      - name: GOV1
+        question: "The board of directors is majority independent and diverse."
+      - name: GOV2
+        question: "Executive pay ratio is reasonable and linked to long-term, sustainable value."
+      - name: GOV3
+        question: "Political lobbying and donations are transparent and align with stated company values."
+      - name: GOV4
+        question: "Has strong shareholder protection rights (e.g., no dual-class shares)."
+      - name: GOV5
+        question: "Tax practices are transparent and fair (no excessive use of tax havens)."

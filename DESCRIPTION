@@ -1,0 +1,30 @@
+Package: andorR
+Type: Package
+Title: Optimisation of the Analysis of AND-OR Decision Trees
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Angus", "Cameron",
+      email = "angus.cameron@epimundi.com",
+      role = c("aut", "cre")
+    )
+  )
+Description: More about what it does (maybe more than one line).
+    Continuation lines should be indented.
+License: CC BY 4.0
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 3.5)
+Imports: 
+    data.tree,
+    dplyr,
+    yaml,
+    cli,
+    glue,
+    rlang
+RoxygenNote: 7.3.3
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
