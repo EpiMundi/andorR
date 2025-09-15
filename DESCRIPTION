@@ -21,6 +21,7 @@ Imports:
     dplyr,
     yaml,
     cli,
+    crayon,
     glue,
     rlang
 RoxygenNote: 7.3.3

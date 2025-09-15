@@ -195,6 +195,143 @@ print_status <- function(tree) {
   invisible(tree)
 }
 
+#' @title Print a Styled, Formatted Summary of the Decision Tree
+#' @description
+#' Displays a clean, perfectly aligned, color-coded summary of the tree's
+#' current state, with color propagation up the branches.
+#'
+#' @details
+#' This function manually traverses the tree to construct the output line by
+#' line. It uses a two-stage process: first, it analyzes the tree to
+#' determine the "deciding color" for each branch based on the AND/OR rules.
+#' Second, it uses this information to print a perfectly aligned and colored
+#' text representation of the tree.
+#'
+#' @param tree The `data.tree` object (the root `Node`) to be printed.
+#'
+#' @return The original `tree` object (returned invisibly).
+#' @importFrom cli col_green col_red col_cyan col_blue style_bold
+#' @importFrom crayon strip_style
+#' @export
+pretty_print <- function(tree) {
+
+  # --- Stage 1: Pre-calculation of Branch Colors ---
+  determine_branch_color <- function(node) {
+    color <- "plain"
+    if (isTRUE(node$answer)) {
+      color <- "green"
+    } else if (isFALSE(node$answer)) {
+      color <- "red"
+    } else {
+      if (!node$isLeaf) {
+        child_colors <- sapply(node$children, function(child) child$branch_color)
+        rule <- node$rule
+        if (!is.na(rule)) {
+          if (rule == "AND") {
+            if ("red" %in% child_colors) color <- "red"
+            else if ("green" %in% child_colors) color <- "green"
+          } else if (rule == "OR") {
+            if ("green" %in% child_colors) color <- "green"
+            else if ("red" %in% child_colors) color <- "red"
+          }
+        }
+      }
+    }
+    node$branch_color <- color
+  }
+  tree$Do(determine_branch_color, traversal = "post-order")
+
+  # --- Stage 2: Printing ---
+
+  col_starts <- c(Tree = 0, Rule = 50, Answer = 60, Confidence = 72)
+  tree_col_width <- col_starts["Rule"] - 2
+
+  # A single, robust helper to print one formatted line
+  print_formatted_line <- function(node, prefix = "") {
+    style_func <- switch(node$branch_color, green = cli::col_green, red = cli::col_red, function(x) x)
+    styled_name <- if (!is.na(node$answer)) cli::style_bold(style_func(node$name)) else node$name
+
+    tree_part <- paste0(prefix, styled_name)
+    if (nchar(crayon::strip_style(tree_part)) > tree_col_width) {
+      overflow <- nchar(crayon::strip_style(tree_part)) - tree_col_width + 3
+      new_name_len <- nchar(node$name) - overflow
+      if (new_name_len < 1) new_name_len <- 1
+      trunc_name <- paste0(strtrim(node$name, new_name_len), "...")
+      styled_name <- if (!is.na(node$answer)) cli::style_bold(style_func(trunc_name)) else trunc_name
+      tree_part <- paste0(prefix, styled_name)
+    }
+
+    rule_str <- if (!is.na(node$rule)) cli::col_cyan(node$rule) else ""
+    answer_str <- if (!is.na(node$answer)) style_func(toupper(as.character(node$answer))) else ""
+    conf_str <- ""
+    if (!is.na(node$confidence)) {
+      if (node$isLeaf) conf_str <- cli::col_cyan(as.character(round((node$confidence - 0.5) * 10, 1)))
+      else conf_str <- cli::col_blue(paste0(round(node$confidence * 100, 1), "%"))
+    }
+
+    # Calculate padding and build the full line string
+    line <- tree_part
+    padding1 <- paste(rep(" ", max(1, col_starts["Rule"] - nchar(crayon::strip_style(line)))), collapse = "")
+    line <- paste0(line, padding1, rule_str)
+    padding2 <- paste(rep(" ", max(1, col_starts["Answer"] - nchar(crayon::strip_style(line)))), collapse = "")
+    line <- paste0(line, padding2, answer_str)
+    padding3 <- paste(rep(" ", max(1, col_starts["Confidence"] - nchar(crayon::strip_style(line)))), collapse = "")
+    line <- paste0(line, padding3, conf_str)
+
+    cat(line, "\n")
+  }
+
+  # The recursive helper function - now only builds prefixes and calls the printer
+  print_children_recursive <- function(parent_node, ancestors_is_last) {
+    children <- parent_node$children
+    n_children <- length(children)
+    if (n_children == 0) return()
+
+    for (i in 1:n_children) {
+      child <- children[[i]]
+      is_last <- (i == n_children)
+
+      # Build the prefix with correctly colored vertical bars
+      prefix <- ""
+      if(length(ancestors_is_last) > 0) {
+        for(j in 1:length(ancestors_is_last)) {
+          ancestor <- child$ancestors[[j]]
+          color_name <- ancestor$branch_color
+          if (is.null(color_name)) color_name <- "plain"
+          style_func <- switch(color_name, green = cli::col_green, red = cli::col_red, function(x) x)
+          indent_segment <- if (ancestors_is_last[[j]]) "    " else "|   "
+          prefix <- paste0(prefix, style_func(indent_segment))
+        }
+      }
+
+      connector <- if (is_last) "`-- " else "|-- "
+      child_style <- switch(child$branch_color, green = cli::col_green, red = cli::col_red, function(x) x)
+      styled_connector <- child_style(connector)
+
+      # Call the single line-printing function with the full prefix
+      print_formatted_line(child, paste0(prefix, styled_connector))
+
+      # Recurse
+      print_children_recursive(child, c(ancestors_is_last, is_last))
+    }
+  }
+
+  # --- Main Function Body ---
+
+  header <- sprintf("%-*s%-*s%-*s%-*s",
+                    col_starts["Rule"]-1, "Tree",
+                    col_starts["Answer"]-col_starts["Rule"], "Rule",
+                    col_starts["Confidence"]-col_starts["Answer"], "Answer",
+                    12, "Confidence")
+  cat(cli::style_bold(header), "\n")
+
+  # Print root and start recursion
+  print_formatted_line(tree, "")
+  print_children_recursive(tree, c())
+
+  invisible(tree)
+}
+
 
 ###########################################################################
 # Tree analysis and processing functions
@@ -767,11 +904,20 @@ andorR_interactive <- function(tree) {
   # Initialise the tree state
   tree <- update_tree(tree)
 
+  previous_tree_solved <- FALSE
+
   repeat {
     # Update status variables
     root_node <- tree
     #tree_solved <- !is.na(root_node$answer)
     tree_solved <- !is.null(root_node$answer) && !is.na(root_node$answer)
+
+    if (tree_solved && !previous_tree_solved) {
+      cli_alert_success("Conclusion Reached!")
+      cli_alert_info(paste0("The current result is: ", root_node$answer, "at a confidence of ", root_node$confidence))
+      cli_alert_info("You can now answer more questions or revise existing answers to boost confidence.")
+    }
+
     # The internal confidence is 0.5-1.0; 100% means it's 1.0.
     #tree_finished <- tree_solved && root_node$confidence == 1.0
     tree_finished <- tree_solved && isTRUE(root_node$confidence == 1.0)
@@ -831,7 +977,8 @@ andorR_interactive <- function(tree) {
       switch(user_input,
              "q" = { cli_alert_info("Quitting interactive session."); break },
              "h" = display_interactive_help(),
-             "p" = { cli_h2("Current Tree State"); print_status(tree) },
+             # "p" = { cli_h2("Current Tree State"); print_status(tree) },
+             "p" = { cli_h2("Current Tree State"); pretty_print(tree) },
              "s" = {
                filename <- readline(prompt = style_bold("Enter filename (e.g., 'tree.rds'): "))
                if (filename != "") {
@@ -849,6 +996,7 @@ andorR_interactive <- function(tree) {
 
     # After any action that changes an answer, update the entire tree state
     tree <- update_tree(tree)
+    previous_tree_solved <- tree_solved
   }
 
   cli_h1("Exiting Interactive Mode")
