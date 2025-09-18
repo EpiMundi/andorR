@@ -912,9 +912,22 @@ andorR_interactive <- function(tree) {
     tree_solved <- !is.null(root_node$answer) && !is.na(root_node$answer)
 
     if (tree_solved && !previous_tree_solved) {
-      cli_alert_success("Conclusion Reached!")
-      cli_alert_info(paste0("The current result is: ", root_node$answer, "at a confidence of ", root_node$confidence))
-      cli_alert_info("You can now answer more questions or revise existing answers to boost confidence.")
+      cli_rule()
+      cli_h2("Conclusion Reached!")
+      answer_style <- if (isTRUE(root_node$answer)) cli::col_green else cli::col_red
+      styled_answer <- answer_style(toupper(as.character(root_node$answer)))
+      cli_text("The current result is: ", styled_answer, " at a confidence of ", root_node$confidence)
+      cli_text("You can now answer more questions or revise existing answers to boost confidence.")
+      # cat(paste(cli::col_green(cli::symbol$tick), cli::style_bold("Conclusion Reached!")), "\n")
+      # answer_style <- if (isTRUE(root_node$answer)) cli::col_green else cli::col_red
+      # styled_answer <- answer_style(toupper(as.character(root_node$answer)))
+      # cat(paste(cli::col_blue(cli::symbol$info),
+      #           "The current result is:",
+      #           styled_answer,
+      #           "at a confidence of",
+      #           paste0(round(root_node$confidence * 100, 1), "%")), "\n")
+      # cat(paste(cli::col_blue(cli::symbol$info),
+      #           "You can now answer more questions or revise existing answers to boost confidence."), "\n")
     }
 
     # The internal confidence is 0.5-1.0; 100% means it's 1.0.
@@ -933,8 +946,8 @@ andorR_interactive <- function(tree) {
       cli_h2("Highest Impact Questions")
       questions_to_ask <- get_highest_influence(tree)
     } else {
-      cli_h2("Questions to Boost Confidence")
       questions_to_ask <- get_confidence_boosters(tree)
+      cli_h2("Questions to Boost Confidence")
     }
 
     if (!is.null(questions_to_ask) && nrow(questions_to_ask) > 0) {

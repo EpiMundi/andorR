@@ -5,9 +5,10 @@ Version: 0.1.0
 Date: 2025-10-01
 Authors@R: c(
     person(
-      "Angus", "Cameron",
+      c("Angus","R"), "Cameron",
       email = "angus.cameron@epimundi.com",
-      role = c("aut", "cre")
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0001-8801-0366")
     )
   )
 Description: Tools for the analysis, visualisation and optimisation of AND-OR 
