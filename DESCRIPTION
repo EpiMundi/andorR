@@ -2,6 +2,7 @@ Package: andorR
 Type: Package
 Title: Optimisation of the Analysis of AND-OR Decision Trees
 Version: 0.1.0
+Date: 2025-10-01
 Authors@R: c(
     person(
       "Angus", "Cameron",
@@ -9,9 +10,22 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
-License: CC BY 4.0
+Description: Tools for the analysis, visualisation and optimisation of AND-OR 
+  decision trees, a logical structure consisting of YES/NO questions (the
+  leaves) connected to a hierarchy of nodes, each with AND or OR logic. When
+  enough questions have been answered, the responses propegate up the tree
+  to result in a final YES or NO conclusion. This implementation includes 
+  semi-quantitative measures of confidence (on a scale of 0 to 5) for each
+  response. The package includes a tool to provide answers to specific questions, 
+  an algorithm to select the optimal next question to minimise the number of
+  questions required to solve the tree, and for a completed tree, an algorithm
+  to determine which responses would have the most impact on the confidence of
+  the final result, if the individual question confidence could be improved. 
+  There are also functions to visualise the tree structure, save a tree to file, 
+  functions to load a defined tree from multiple different formats. It also 
+  includes an interactive tool to automate the process of responding to 
+  questions, recalculating the tree and selecting the optimal next step. 
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends: 

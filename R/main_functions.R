@@ -200,17 +200,10 @@ print_status <- function(tree) {
 #' Displays a clean, perfectly aligned, color-coded summary of the tree's
 #' current state, with color propagation up the branches.
 #'
-#' @details
-#' This function manually traverses the tree to construct the output line by
-#' line. It uses a two-stage process: first, it analyzes the tree to
-#' determine the "deciding color" for each branch based on the AND/OR rules.
-#' Second, it uses this information to print a perfectly aligned and colored
-#' text representation of the tree.
-#'
 #' @param tree The `data.tree` object (the root `Node`) to be printed.
 #'
 #' @return The original `tree` object (returned invisibly).
-#' @importFrom cli col_green col_red col_cyan col_blue style_bold
+#' @importFrom cli col_green col_red col_cyan col_blue style_bold ansi_strip
 #' @importFrom crayon strip_style
 #' @export
 pretty_print <- function(tree) {
@@ -246,10 +239,12 @@ pretty_print <- function(tree) {
   col_starts <- c(Tree = 0, Rule = 50, Answer = 60, Confidence = 72)
   tree_col_width <- col_starts["Rule"] - 2
 
-  # A single, robust helper to print one formatted line
+  # A single helper to print one formatted line
   print_formatted_line <- function(node, prefix = "") {
     style_func <- switch(node$branch_color, green = cli::col_green, red = cli::col_red, function(x) x)
-    styled_name <- if (!is.na(node$answer)) cli::style_bold(style_func(node$name)) else node$name
+
+    # MODIFIED: Removed style_bold()
+    styled_name <- style_func(node$name)
 
     tree_part <- paste0(prefix, styled_name)
     if (nchar(crayon::strip_style(tree_part)) > tree_col_width) {
@@ -257,7 +252,8 @@ pretty_print <- function(tree) {
       new_name_len <- nchar(node$name) - overflow
       if (new_name_len < 1) new_name_len <- 1
       trunc_name <- paste0(strtrim(node$name, new_name_len), "...")
-      styled_name <- if (!is.na(node$answer)) cli::style_bold(style_func(trunc_name)) else trunc_name
+      # MODIFIED: Removed style_bold() from truncation logic as well
+      styled_name <- style_func(trunc_name)
       tree_part <- paste0(prefix, styled_name)
     }
 
@@ -269,7 +265,6 @@ pretty_print <- function(tree) {
       else conf_str <- cli::col_blue(paste0(round(node$confidence * 100, 1), "%"))
     }
 
-    # Calculate padding and build the full line string
     line <- tree_part
     padding1 <- paste(rep(" ", max(1, col_starts["Rule"] - nchar(crayon::strip_style(line)))), collapse = "")
     line <- paste0(line, padding1, rule_str)
@@ -281,7 +276,7 @@ pretty_print <- function(tree) {
     cat(line, "\n")
   }
 
-  # The recursive helper function - now only builds prefixes and calls the printer
+  # The recursive helper function
   print_children_recursive <- function(parent_node, ancestors_is_last) {
     children <- parent_node$children
     n_children <- length(children)
@@ -291,7 +286,6 @@ pretty_print <- function(tree) {
       child <- children[[i]]
       is_last <- (i == n_children)
 
-      # Build the prefix with correctly colored vertical bars
       prefix <- ""
       if(length(ancestors_is_last) > 0) {
         for(j in 1:length(ancestors_is_last)) {
@@ -304,20 +298,21 @@ pretty_print <- function(tree) {
         }
       }
 
-      connector <- if (is_last) "`-- " else "|-- "
       child_style <- switch(child$branch_color, green = cli::col_green, red = cli::col_red, function(x) x)
+      connector <- if (is_last) "`-- " else "|-- "
       styled_connector <- child_style(connector)
 
-      # Call the single line-printing function with the full prefix
+      # This is the line-printing logic that also needed to be changed
+      # It now calls the single, corrected print_formatted_line helper
       print_formatted_line(child, paste0(prefix, styled_connector))
 
-      # Recurse
       print_children_recursive(child, c(ancestors_is_last, is_last))
     }
   }
 
   # --- Main Function Body ---
 
+  # Restructuring the main body to remove duplicated code
   header <- sprintf("%-*s%-*s%-*s%-*s",
                     col_starts["Rule"]-1, "Tree",
                     col_starts["Answer"]-col_starts["Rule"], "Rule",
@@ -568,6 +563,7 @@ get_highest_influence <- function(tree) {
 #' @importFrom data.tree Traverse Clone FindNode
 #' @importFrom dplyr %>% filter arrange desc
 #' @importFrom utils head
+#' @importFrom cli cli_process_start cli_process_done symbol
 #' @export
 get_confidence_boosters <- function(tree, top_n = 5) {
 
@@ -583,8 +579,9 @@ get_confidence_boosters <- function(tree, top_n = 5) {
   unanswered_leaves <- Traverse(tree, filterFun = function(node) node$isLeaf && is.na(node$answer))
 
   if (length(unanswered_leaves) > 0) {
-    cat("Analyzing", length(unanswered_leaves), "unanswered questions...\n")
-
+    # start the spinner
+    id <- cli_process_start("Analysing {length(unanswered_leaves)} unanswered questions...")
+    # start the loop
     for (leaf in unanswered_leaves) {
       # Simulate answering TRUE with max confidence (5)
       tree_clone_t <- data.tree::Clone(tree)
@@ -624,13 +621,14 @@ get_confidence_boosters <- function(tree, top_n = 5) {
                                          potential_gain = gain_f)
       }
     }
+    cli_process_done(id, "Analysed {length(unanswered_leaves)} unanswered questions {symbol$tick}")
   }
 
   # --- Analysis 2: Find the impact of increasing confidence on OLD answers ---
   answered_leaves <- Traverse(tree, filterFun = function(node) node$isLeaf && !is.na(node$answer) && node$confidence < 1.0)
 
   if (length(answered_leaves) > 0) {
-    cat("Analyzing", length(answered_leaves), "existing answers...\n")
+    id2 <- cli_process_start("Analysing {length(answered_leaves)} existing answers...")
 
     for (leaf in answered_leaves) {
       # Simulate re-answering with max confidence
@@ -653,6 +651,7 @@ get_confidence_boosters <- function(tree, top_n = 5) {
                                          potential_gain = gain)
       }
     }
+    cli_process_done(id2, "Analysed {length(answered_leaves)} existing answers {symbol$tick}")
   }
 
   if (length(suggestions) == 0) {

@@ -16,15 +16,3 @@ The original `tree` object (returned invisibly).
 Displays a clean, perfectly aligned, color-coded summary of the tree's
 current state, with color propagation up the branches.
 }
-\details{
-This function manually traverses the tree to construct the output line by
-line, calculating the required padding for each line to ensure perfect
-column alignment regardless of tree depth. It uses text markers and colors
-to convey the state of each node.
-}
-\examples{
-\dontrun{
-# Assuming 'my_tree' is a loaded andorR tree object
-pretty_print(my_tree)
-}
-}
