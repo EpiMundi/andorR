@@ -4,11 +4,14 @@
 \alias{get_highest_influence}
 \title{Identify the Most Influential Question(s)}
 \usage{
-get_highest_influence(tree)
+get_highest_influence(tree, top_n = 5)
 }
 \arguments{
 \item{tree}{The main \code{data.tree} object for the analysis. It is expected that
-the \code{calculate_influence} function has already been run on the tree.}
+the \code{calculate_influence} function has already been run on the tree, usually
+by calling \code{update_tree()}}
+
+\item{top_n}{The number of highest ranking leaves to return.}
 }
 \value{
 A \code{data.frame} (technically a tibble) containing the \code{name}, \code{influence_index}, and
@@ -30,4 +33,17 @@ already-resolved logical branch (where \code{influence_index} is \code{NA}).
 \item Finding the maximum \code{influence_index} among the remaining eligible leaves.
 \item Returning a data frame of all leaves that share this maximum score.
 }
+}
+\examples{
+# Load a tree
+ethical_tree <- load_tree_df(ethical)
+
+# Calculate the influence indices
+ethical_tree <- update_tree(ethical_tree)
+
+# Show the most prioritised questions
+priority_questions <- get_highest_influence(ethical_tree)
+
+print(priority_questions)
+
 }

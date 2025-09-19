@@ -20,6 +20,9 @@ and propagates the logical outcomes (\code{answer}) and aggregate confidence sco
 up to the parent nodes based on their \code{AND}/\code{OR} rules.
 }
 \details{
+This function is one of three called by \code{update_tree()}, which does a full
+recalculation of the decision tree result and optimisation indices.
+
 The function first resets the \code{answer} and \code{confidence} of all non-leaf nodes
 to \code{NA} to ensure a clean calculation.
 
@@ -36,4 +39,21 @@ Become \code{TRUE} only if all children are answered and none are \code{FALSE}.}
 
 The confidence calculation is based on the confidences of the children that
 determined the outcome (e.g., only the \code{TRUE} children for a resolved \code{OR} node).
+}
+\examples{
+# Load the data
+ethical_tree <- load_tree_df(ethical)
+
+# Answer some questions
+set_answer(ethical_tree, "FIN2", TRUE, 4)
+set_answer(ethical_tree, "ENV2", TRUE, 3)
+set_answer(ethical_tree, "SOC2", TRUE, 4)
+set_answer(ethical_tree, "GOV2", FALSE, 1)
+
+# Calculate the tree
+ethical_tree <- calculate_tree(ethical_tree)
+
+# View the result
+print_tree(ethical_tree)
+
 }

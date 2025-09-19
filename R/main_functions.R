@@ -189,6 +189,8 @@ load_tree_yaml <- function(file_path) {
 #' # Alternative approach to inspect internal attributes using `data.tree::print()
 #' # First, recalculate the internal indices
 #' update_tree(ethical_tree)
+#'
+#' # Then print the tree, renaming column headings if required
 #' print(ethical_tree, "rule", "true_index", "false_index", influence = "influence_index")
 
 print_tree <- function(tree) {
@@ -326,6 +328,9 @@ print_tree <- function(tree) {
 #' up to the parent nodes based on their `AND`/`OR` rules.
 #'
 #' @details
+#' This function is one of three called by `update_tree()`, which does a full
+#' recalculation of the decision tree result and optimisation indices.
+#'
 #' The function first resets the `answer` and `confidence` of all non-leaf nodes
 #' to `NA` to ensure a clean calculation.
 #'
@@ -349,6 +354,21 @@ print_tree <- function(tree) {
 #' @return The modified `tree` object (returned invisibly).
 #' @import glue
 #' @export
+#' @examples
+#' # Load the data
+#' ethical_tree <- load_tree_df(ethical)
+#'
+#' # Answer some questions
+#' set_answer(ethical_tree, "FIN2", TRUE, 4)
+#' set_answer(ethical_tree, "ENV2", TRUE, 3)
+#' set_answer(ethical_tree, "SOC2", TRUE, 4)
+#' set_answer(ethical_tree, "GOV2", FALSE, 1)
+#'
+#' # Calculate the tree
+#' ethical_tree <- calculate_tree(ethical_tree)
+#'
+#' # View the result
+#' print_tree(ethical_tree)
 #'
 calculate_tree <- function(tree) {
   tree$Do(function(node) {
@@ -514,15 +534,28 @@ calculate_influence <- function(node) {
 #' 4. Returning a data frame of all leaves that share this maximum score.
 #'
 #' @param tree The main `data.tree` object for the analysis. It is expected that
-#'   the `calculate_influence` function has already been run on the tree.
-#'
+#'   the `calculate_influence` function has already been run on the tree, usually
+#'   by calling `update_tree()`
+#' @param top_n The number of highest ranking leaves to return.
 #' @return A `data.frame` (technically a tibble) containing the `name`, `influence_index`, and
 #'   `question` for the highest-influence leaf/leaves. Returns `NULL` invisibly if
 #'   no eligible (unanswered) questions remain.
-#' @importFrom dplyr %>% filter select
+#' @importFrom dplyr %>% filter select arrange desc
+#' @importFrom utils head
 #' @export
+#' @examples
+#' # Load a tree
+#' ethical_tree <- load_tree_df(ethical)
 #'
-get_highest_influence <- function(tree) {
+#' # Calculate the influence indices
+#' ethical_tree <- update_tree(ethical_tree)
+#'
+#' # Show the most prioritised questions
+#' priority_questions <- get_highest_influence(ethical_tree)
+#'
+#' print(priority_questions)
+#'
+get_highest_influence <- function(tree, top_n = 5) {
   leaf_data <- data.frame(
     is_leaf = tree$Get("isLeaf"),
     name = tree$Get("name"),
@@ -532,9 +565,12 @@ get_highest_influence <- function(tree) {
   eligible_leaves <- leaf_data %>%
     filter(is_leaf == TRUE, !is.na(influence_index))
   if (nrow(eligible_leaves) == 0) return(invisible(NULL))
-  max_influence <- max(eligible_leaves$influence_index, na.rm = TRUE)
+  # max_influence <- max(eligible_leaves$influence_index, na.rm = TRUE)
   highest_influence_leaves <- eligible_leaves %>%
-    filter(influence_index == max_influence) %>%
+    arrange(desc(influence_index)) %>%
+    head(top_n) %>%
+    # Alternative code to get only the equal-highest ranking questions
+    # filter(influence_index == max_influence) %>%
     select(name, influence_index, question)
   return(highest_influence_leaves)
 }

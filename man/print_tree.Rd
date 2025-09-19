@@ -47,5 +47,7 @@ print_tree(ethical_tree)
 # Alternative approach to inspect internal attributes using `data.tree::print()
 # First, recalculate the internal indices
 update_tree(ethical_tree)
+
+# Then print the tree, renaming column headings if required
 print(ethical_tree, "rule", "true_index", "false_index", influence = "influence_index")
 }
