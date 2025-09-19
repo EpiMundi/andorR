@@ -18,7 +18,11 @@ and then uses \code{load_tree_node_list} to construct the tree object.
 }
 \examples{
 \dontrun{
-# Assuming "my_decision_tree.yml" is in the working directory
-my_tree <- load_tree_yaml("my_decision_tree.yml")
+#' # Load data from the `ethical.yml` file included with this package
+path <- system.file("extdata", "ethical.yml", package = "andorR")
+ethical_tree <- load.tree.yaml(path)
+
+# View the tree
+print_tree(ethical_tree)
 }
 }

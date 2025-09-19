@@ -46,6 +46,6 @@ if (length(files) > 0 && !inherits(files, "try-error")) {
 To load the example YAML file from within the package, you would use the following code:
     
 ```{r, eval=FALSE}
-path <- system.file("extdata", "ethical_investment.yml", package = "andorR")
+path <- system.file("extdata", "ethical.yml", package = "andorR")
 my_tree <- load.tree.yaml(path)
 ```

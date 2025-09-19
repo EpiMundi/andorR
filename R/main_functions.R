@@ -104,10 +104,13 @@ load_tree_node_list <- function(data_list) {
 #' @importFrom utils read.csv
 #' @export
 #' @examples
-#' \dontrun{
-#' # Assuming "my_decision_tree.csv" is in the working directory
-#' my_tree <- load_tree_csv("my_decision_tree.csv")
-#' }
+#' # Load data from the `ethical.csv` file included with this package
+#' path <- system.file("extdata", "ethical.csv", package = "andorR")
+#' ethical_tree <- load.tree.csv(path)
+#'
+#' # View the tree
+#' print_tree(ethical_tree)
+#'
 load_tree_csv <- function(file_path) {
   if (!file.exists(file_path)) {
     stop(paste("File not found at path:", file_path), call. = FALSE)
@@ -131,8 +134,12 @@ load_tree_csv <- function(file_path) {
 #' @export
 #' @examples
 #' \dontrun{
-#' # Assuming "my_decision_tree.yml" is in the working directory
-#' my_tree <- load_tree_yaml("my_decision_tree.yml")
+#' #' # Load data from the `ethical.yml` file included with this package
+#' path <- system.file("extdata", "ethical.yml", package = "andorR")
+#' ethical_tree <- load.tree.yaml(path)
+#'
+#' # View the tree
+#' print_tree(ethical_tree)
 #' }
 load_tree_yaml <- function(file_path) {
   if (!file.exists(file_path)) {
@@ -581,13 +588,40 @@ get_highest_influence <- function(tree, top_n = 5) {
 #' the greatest positive impact on the root node's final confidence score.
 #' @param tree The current data.tree object, typically after a conclusion is reached.
 #' @param top_n The number of suggestions to return.
+#' @param verbose Logical value (default TRUE) determining the level of output.
 #' @return A data.frame of the top_n suggested actions, ranked by potential gain.
 #' @importFrom data.tree Traverse Clone FindNode
 #' @importFrom dplyr %>% filter arrange desc
 #' @importFrom utils head
 #' @importFrom cli cli_process_start cli_process_done symbol
 #' @export
-get_confidence_boosters <- function(tree, top_n = 5) {
+#' @examples
+#' # Load a tree
+#' ethical_tree <- load_tree_df(ethical)
+#'
+#' # Answer some questions
+#' set_answer(ethical_tree, "FIN2", TRUE, 4)
+#' set_answer(ethical_tree, "FIN4", TRUE, 3)
+#' set_answer(ethical_tree, "FIN5", TRUE, 2)
+#' set_answer(ethical_tree, "ENV5", TRUE, 3)
+#' set_answer(ethical_tree, "SOC2", TRUE, 4)
+#' set_answer(ethical_tree, "GOV1", TRUE, 1)
+#' set_answer(ethical_tree, "GOV2", TRUE, 2)
+#' set_answer(ethical_tree, "GOV3", TRUE, 1)
+#' set_answer(ethical_tree, "GOV4", TRUE, 1)
+#' set_answer(ethical_tree, "GOV5", TRUE, 1)
+#'
+#' # Updated tree
+#' ethical_tree <- update_tree(ethical_tree)
+#'
+#' # View the tree
+#' print_tree(ethical_tree)
+#'
+#' # Get guidance on how to improve the confidence ---
+#' guidance <- get_confidence_boosters(ethical_tree, verbose = FALSE)
+#' print(guidance)
+#'
+get_confidence_boosters <- function(tree, top_n = 5, verbose = TRUE) {
 
   current_root_conf <- tree$confidence
   if (is.na(current_root_conf)) {
@@ -602,7 +636,7 @@ get_confidence_boosters <- function(tree, top_n = 5) {
 
   if (length(unanswered_leaves) > 0) {
     # start the spinner
-    id <- cli_process_start("Analysing {length(unanswered_leaves)} unanswered questions...")
+    if(verbose) id <- cli_process_start("Analysing {length(unanswered_leaves)} unanswered questions...")
     # start the loop
     for (leaf in unanswered_leaves) {
       # Simulate answering TRUE with max confidence (5)
@@ -643,7 +677,7 @@ get_confidence_boosters <- function(tree, top_n = 5) {
                                          potential_gain = gain_f)
       }
     }
-    cli_process_done(id, "Analysed {length(unanswered_leaves)} unanswered questions {symbol$tick}")
+    if(verbose) cli_process_done(id, "Analysed {length(unanswered_leaves)} unanswered questions {symbol$tick}")
   }
 
   # --- Analysis 2: Find the impact of increasing confidence on OLD answers ---
@@ -1008,7 +1042,7 @@ andorR_interactive <- function(tree) {
         )
       } else {
         q_list <- setNames(
-          glue::glue("[{col_yellow(questions_to_ask$name)}] {questions_to_ask$details} {col_red(questions_to_ask$potential_gain)}"),
+          glue::glue("[{col_yellow(questions_to_ask$name)}] {questions_to_ask$action} {questions_to_ask$details} {col_red(questions_to_ask$potential_gain)}"),
           1:nrow(questions_to_ask)
         )
       }

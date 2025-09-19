@@ -3,7 +3,7 @@
 \docType{data}
 \name{ethical}
 \alias{ethical}
-\title{Ethical investment decision tree for a fictional company}
+\title{Ethical investment decision tree for a fictional company - data frame format}
 \format{
 A data frame with 5 variables and 34 rows, in 'parent' format, in
 which hierarchical relationships are indicated by a value indicating
@@ -31,6 +31,6 @@ illustrate the use of the analytical approach.
 ethical
 }
 \description{
-Ethical investment decision tree for a fictional company
+Ethical investment decision tree for a fictional company - data frame format
 }
 \keyword{datasets}

@@ -18,8 +18,11 @@ A wrapper function that reads a CSV file into a data frame
 and then uses \code{load_tree_df} to construct the tree object.
 }
 \examples{
-\dontrun{
-# Assuming "my_decision_tree.csv" is in the working directory
-my_tree <- load_tree_csv("my_decision_tree.csv")
-}
+# Load data from the `ethical.csv` file included with this package
+path <- system.file("extdata", "ethical.csv", package = "andorR")
+ethical_tree <- load.tree.csv(path)
+
+# View the tree
+print_tree(ethical_tree)
+
 }

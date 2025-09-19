@@ -21,7 +21,7 @@
 #'    listing or de-listing of notifiable aquatic animal diseases.
 "notifiable"
 
-#' Ethical investment decision tree for a fictional company
+#' Ethical investment decision tree for a fictional company - data frame format
 #' @format A data frame with 5 variables and 34 rows, in 'parent' format, in
 #'   which hierarchical relationships are indicated by a value indicating
 #'   the parent of each node.
@@ -43,3 +43,22 @@
 #'    illustrate the use of the analytical approach.
 "ethical"
 
+#' Ethical investment decision tree for a fictional company - node list format
+#' @format A nested node list of the ethical investment dataset, in
+#'   which hierarchical relationships are indicated by a list of nodes representing
+#'   a path down the tree to each leaf.
+#' \describe{
+#'    Each list element represents a node or leaf in the tree and has the
+#'    following members:
+#'    \item{name}{A short, unique alphanumeric code or name for nodes. For
+#'      leaf nodes (questions), a short code is used. For higher nodes, a
+#'      descriptive phrase is used.}
+#'    \item{rule}{The logical rule for nodes, either **AND** or **OR**, and
+#'      NA for leaves.}
+#'    \item{question}{(Optional) For leaf nodes, the associated question.}
+#'    \item{nodes}{A list of nested nodes}
+#'
+#' }
+#' @source This is a simple hypothetical decision tree created solely to
+#'    illustrate the use of the analytical approach.
+"ethical_nl"

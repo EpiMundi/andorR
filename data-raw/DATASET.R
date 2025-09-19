@@ -4,9 +4,8 @@ library(data.tree)
 library(yaml)
 
 # Ethical investing in YAML format
-ethical <- yaml::read_yaml("data-raw/ethical.yml")
-usethis::use_data(ethical)
-# tree <- as.Node(ethical)
+ethical_nl <- yaml::read_yaml("data-raw/ethical.yml")
+usethis::use_data(ethical_nl)
 
 #notifiable <- openxlsx::read.xlsx("data-raw/notifiable.xlsx", "Sheet1")
 notifiable <- yaml::read_yaml("data-raw/notifiable.yml")

@@ -4,12 +4,14 @@
 \alias{get_confidence_boosters}
 \title{Find Actions to Most Effectively Boost Confidence}
 \usage{
-get_confidence_boosters(tree, top_n = 5)
+get_confidence_boosters(tree, top_n = 5, verbose = TRUE)
 }
 \arguments{
 \item{tree}{The current data.tree object, typically after a conclusion is reached.}
 
 \item{top_n}{The number of suggestions to return.}
+
+\item{verbose}{Logical value (default TRUE) determining the level of output.}
 }
 \value{
 A data.frame of the top_n suggested actions, ranked by potential gain.
@@ -18,4 +20,31 @@ A data.frame of the top_n suggested actions, ranked by potential gain.
 Performs a sensitivity analysis on the tree to find which actions
 (answering a new question or increasing confidence in an old one) will have
 the greatest positive impact on the root node's final confidence score.
+}
+\examples{
+# Load a tree
+ethical_tree <- load_tree_df(ethical)
+
+# Answer some questions
+set_answer(ethical_tree, "FIN2", TRUE, 4)
+set_answer(ethical_tree, "FIN4", TRUE, 3)
+set_answer(ethical_tree, "FIN5", TRUE, 2)
+set_answer(ethical_tree, "ENV5", TRUE, 3)
+set_answer(ethical_tree, "SOC2", TRUE, 4)
+set_answer(ethical_tree, "GOV1", TRUE, 1)
+set_answer(ethical_tree, "GOV2", TRUE, 2)
+set_answer(ethical_tree, "GOV3", TRUE, 1)
+set_answer(ethical_tree, "GOV4", TRUE, 1)
+set_answer(ethical_tree, "GOV5", TRUE, 1)
+
+# Updated tree
+ethical_tree <- update_tree(ethical_tree)
+
+# View the tree
+print_tree(ethical_tree)
+
+# Get guidance on how to improve the confidence ---
+guidance <- get_confidence_boosters(ethical_tree, verbose = FALSE)
+print(guidance)
+
 }
