@@ -4,43 +4,55 @@
 \alias{set_answer}
 \title{Set an Answer and Confidence for a Leaf Node}
 \usage{
-set_answer(tree, node_name, response, confidence_level)
+set_answer(tree, node_name, response, confidence_level, verbose = TRUE)
 }
 \arguments{
-\item{tree}{The `data.tree` object to be modified.}
+\item{tree}{The \code{data.tree} object to be modified.}
 
-\item{node_name}{A character string specifying the `name` of the leaf node to update.}
+\item{node_name}{A character string specifying the \code{name} of the leaf node to update.}
 
-\item{response}{A logical value, `TRUE` or `FALSE`, representing the answer.}
+\item{response}{A logical value, \code{TRUE} or \code{FALSE}, representing the answer.}
 
 \item{confidence_level}{A numeric value from 0 to 5 representing the user's
-confidence in the answer.}
+confidence in the answer. Confidence levels are semi-quantitative and map
+to the following probabilities:
+\itemize{
+\item 0 : 50\%
+\item 1 : 60\%
+\item 2 : 70\%
+\item 3 : 80\%
+\item 4 : 90\%
+\item 5 : 100\%
+}}
+
+\item{verbose}{An optional logical value controlling output. Default is TRUE.}
 }
 \value{
-Returns the modified `tree` object invisibly, which allows for function chaining.
+Returns the modified \code{tree} object invisibly, which allows for function chaining.
 }
 \description{
 This is the primary function for providing evidence to the tree. It finds a
-specific leaf node by its name and updates its `answer` and `confidence`
+specific leaf node by its name and updates its \code{answer} and \code{confidence}
 attributes based on user input.
 }
 \details{
 The function takes a 0-5 confidence level from the user and converts it to an
 internal score between 0.5 (uncertain) and 1.0 (certain) using the formula:
-`score = 0.5 + (confidence_level / 10)`.
+\code{score = 0.5 + (confidence_level / 10)}.
 
 It includes validation to ensure the target node exists, is a leaf, and that
 the provided response is a valid logical value. A confirmation message is
 printed to the console upon successful update.
 }
 \examples{
-# Create a simple tree
-tree <- data.tree::Node$new("Root")
-tree$AddChild("A1", answer = NA, confidence = NA)
-tree$AddChild("A2", answer = NA, confidence = NA)
+# Load a tree
+ethical_tree <- load_tree_df(ethical)
+
+# View the tree
+print_tree(ethical_tree)
 
 # Set an answer for leaf 'A1'
-tree <- set_answer(tree, "A1", TRUE, 5)
-print(tree, "answer", "confidence")
+ethical_tree <- set_answer(ethical_tree, "FIN2", TRUE, 3)
+print_tree(ethical_tree)
 
 }

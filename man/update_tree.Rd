@@ -7,12 +7,40 @@
 update_tree(tree)
 }
 \arguments{
-\item{tree}{The `data.tree` object to be modified.}
+\item{tree}{The \code{data.tree} object to be modified.}
 }
 \value{
-Returns the modified `tree` object invisibly, which allows for function chaining.
+Returns the modified \code{tree} object invisibly, which allows for function chaining.
 }
 \description{
 Propagate the results up to the tree nodes based on the answers provided,
 and update the influence index to identify most important questions.
+}
+\examples{
+# Load a tree
+ethical_tree <- load_tree_df(ethical)
+
+# Internal indices before update
+print(ethical_tree, "rule", "true_index", "false_index", influence = "influence_index")
+
+ethical_tree <- update_tree(ethical_tree)
+
+# Updated indices
+print(ethical_tree, "rule", "true_index", "false_index", influence = "influence_index")
+
+# Answer some questions
+set_answer(ethical_tree, "FIN2", TRUE, 4)
+set_answer(ethical_tree, "ENV2", TRUE, 3)
+set_answer(ethical_tree, "SOC2", TRUE, 4)
+set_answer(ethical_tree, "GOV2", FALSE, 1)
+
+# Updated again
+ethical_tree <- update_tree(ethical_tree)
+
+# Updated indices
+print(ethical_tree, "rule", "true_index", "false_index", influence = "influence_index")
+
+# Updated results
+print_tree(ethical_tree)
+
 }

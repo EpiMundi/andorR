@@ -7,25 +7,27 @@
 get_highest_influence(tree)
 }
 \arguments{
-\item{tree}{The main `data.tree` object for the analysis. It is expected that
-the `calculate_influence` function has already been run on the tree.}
+\item{tree}{The main \code{data.tree} object for the analysis. It is expected that
+the \code{calculate_influence} function has already been run on the tree.}
 }
 \value{
-A `data.frame` (technically a tibble) containing the `name`, `influence_index`, and
-  `question` for the highest-influence leaf/leaves. Returns `NULL` invisibly if
-  no eligible (unanswered) questions remain.
+A \code{data.frame} (technically a tibble) containing the \code{name}, \code{influence_index}, and
+\code{question} for the highest-influence leaf/leaves. Returns \code{NULL} invisibly if
+no eligible (unanswered) questions remain.
 }
 \description{
 Scans all leaf nodes in the tree to find the one or more questions that
-currently have the highest `influence_index`. This is the core function for
+currently have the highest \code{influence_index}. This is the core function for
 guiding the user to the next most impactful question to answer during the
 interactive analysis loop.
 }
 \details{
 The function works by:
-1. Gathering all leaf nodes from the tree.
-2. Filtering out any leaves that have already been answered or are part of an
-   already-resolved logical branch (where `influence_index` is `NA`).
-3. Finding the maximum `influence_index` among the remaining eligible leaves.
-4. Returning a data frame of all leaves that share this maximum score.
+\enumerate{
+\item Gathering all leaf nodes from the tree.
+\item Filtering out any leaves that have already been answered or are part of an
+already-resolved logical branch (where \code{influence_index} is \code{NA}).
+\item Finding the maximum \code{influence_index} among the remaining eligible leaves.
+\item Returning a data frame of all leaves that share this maximum score.
+}
 }

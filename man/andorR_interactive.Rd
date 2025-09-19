@@ -7,10 +7,10 @@
 andorR_interactive(tree)
 }
 \arguments{
-\item{tree}{The `data.tree` object to be analysed.}
+\item{tree}{The \code{data.tree} object to be analysed.}
 }
 \value{
-The final, updated `data.tree` object.
+The final, updated \code{data.tree} object.
 }
 \description{
 Iteratively prompts the user to answer questions to solve a decision tree.
@@ -20,9 +20,32 @@ confidence of the conclusion.
 }
 \details{
 This function provides a command-line interface (CLI) for working with the
-tree. It uses the `cli` package for formatted output and handles user input
+tree. It uses the \code{cli} package for formatted output and handles user input
 for quitting, saving, printing the tree state, or providing answers to
 specific questions (either by number or by name). All tree modifications are
-performed by calling the package's existing API functions like `set_answer()`
-and `update_tree()`.
+performed by calling the package's existing API functions:
+\itemize{
+\item \code{set_answer()}
+\item \code{update_tree()}
+\item \code{get_highest_influence()}
+\item \code{get_confidence_boosters()}
+}
+
+The following key commands may be used during interactive mode:
+\itemize{
+\item \strong{h} : Show the help screen
+\item \strong{p} : Print the current state of the tree
+\item \strong{s} : Save the current state of the tree to an .rds file
+\item \strong{q} : Quit (exit interactive mode)
+\item \strong{n} : Specify a node to edit by name (case sensitive)
+\item \strong{1, 2, ...} : Specify a node to edit from the numbered list
+}
+}
+\examples{
+# Load a tree
+ethical_tree <- load_tree_df(ethical)
+
+# Start interactive mode
+andorR_interarcive(ethical_tree)
+
 }

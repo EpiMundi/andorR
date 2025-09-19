@@ -7,29 +7,31 @@
 assign_indices(node)
 }
 \arguments{
-\item{node}{A `data.tree` `Node` object to be processed. The function will
-only act on this node if it is not a leaf (`!node$isLeaf`).}
+\item{node}{A \code{data.tree} \code{Node} object to be processed. The function will
+only act on this node if it is not a leaf (\code{!node$isLeaf}).}
 }
 \value{
-The function does not return a value; it modifies the input `node`
-  by side-effect.
+The function does not return a value; it modifies the input \code{node}
+by side-effect.
 }
 \description{
-This function calculates a `true_index` and a `false_index` for a given parent
+This function calculates a \code{true_index} and a \code{false_index} for a given parent
 (non-leaf) node. The calculation is dynamic, depending on the node's logical
-rule (`AND` or `OR`) and the number of its direct children that have not yet
-been answered (i.e., their `answer` attribute is `NA`).
+rule (\code{AND} or \code{OR}) and the number of its direct children that have not yet
+been answered (i.e., their \code{answer} attribute is \code{NA}).
 }
 \details{
 The function applies the following logic:
-- For an **AND** node, `true_index` is `1/n` and `false_index` is `1.0`.
-- For an **OR** node, `true_index` is `1.0` and `false_index` is `1/n`.
+\itemize{
+\item For an \strong{AND} node, \code{true_index} is \code{1/n} and \code{false_index} is \code{1.0}.
+\item For an \strong{OR} node, \code{true_index} is \code{1.0} and \code{false_index} is \code{1/n}.
+}
 
-Where `n` is the number of unanswered children. If all children have been
-answered (`n = 0`), `n` is treated as 1 to avoid division by zero.
+Where \code{n} is the number of unanswered children. If all children have been
+answered (\code{n = 0}), \code{n} is treated as 1 to avoid division by zero.
 
 The function modifies the node object directly by adding or updating the
-`true_index` and `false_index` attributes. It is intended to be used with
-`tree$Do()`.
+\code{true_index} and \code{false_index} attributes. It is intended to be used with
+\code{tree$Do()}.
 }
 \keyword{internal}

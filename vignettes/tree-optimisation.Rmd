@@ -1,0 +1,28 @@
+---
+title: "AND-OR Decision tree optimisation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{AND-OR Decision tree optimisation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(andorR)
+# load a tree
+dtree <- load_tree_df(ethical)
+
+# calculate the optimisation indices
+dtree <- update_tree(dtree)
+
+# examine the optimisation indices
+options(width = 120)
+print(dtree, "rule", "true_index", "false_index", influence = "influence_index")
+```

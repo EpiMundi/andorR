@@ -1,8 +1,8 @@
 ---
-title: "andorR"
+title: "Introduction to andorR"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{andorR}
+  %\VignetteIndexEntry{Introduction to andorR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 library(andorR)
 
 # Load the tree
-tree<-load.tree.df(ethical)
+tree<-load_tree_df(ethical)
 
 # Ansewr some questions
 set_answer(tree, "GOV5", TRUE, 3)
@@ -27,7 +27,7 @@ set_answer(tree, "SOC1", TRUE, 3)
 
 # Update the tree and view 
 update_tree(tree)
-print_status(tree)
+print_tree(tree)
 
 # Get the most important next questions
 next_questions_df <- get_highest_influence(tree)
@@ -39,7 +39,7 @@ set_answer(tree, "FIN5", TRUE, 3)
 
 # Update and view again
 update_tree(tree)
-print_status(tree)
+print_tree(tree)
 
 # Get the most important next questions
 next_questions_df <- get_highest_influence(tree)
@@ -54,5 +54,5 @@ set_answer(tree, "FIN1", TRUE, 3)
 
 # Update and get the final result
 update_tree(tree)
-print_status(tree)
+print_tree(tree)
 ```

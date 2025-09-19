@@ -7,29 +7,31 @@
 calculate_influence(node)
 }
 \arguments{
-\item{node}{A `data.tree` `Node` object, which must be a leaf.}
+\item{node}{A \code{data.tree} \code{Node} object, which must be a leaf.}
 }
 \value{
-The function has no return value; it modifies the `influence_index`
-  attribute of the input `node` by side-effect.
+The function has no return value; it modifies the \code{influence_index}
+attribute of the input \code{node} by side-effect.
 }
 \description{
 Determines the strategic importance (the "influence") of asking an unanswered
 leaf question. The influence is calculated by aggregating the logical indices
-(`true_index` and `false_index`) of all its ancestor nodes.
+(\code{true_index} and \code{false_index}) of all its ancestor nodes.
 }
 \details{
 The influence index is a measure of how much a single leaf's answer can
 contribute to the final conclusion. It is calculated as the sum of two
 products:
-Influence = `prod(ancestor_true_indices) + prod(ancestor_false_indices)`
+Influence = \code{prod(ancestor_true_indices) + prod(ancestor_false_indices)}
 
-The function will set `influence_index` to `NA` under two conditions,
+The function will set \code{influence_index} to \code{NA} under two conditions,
 as the question is considered moot:
-1.  The leaf node itself has already been answered.
-2.  Any of the leaf's ancestors has a determined `answer` (`TRUE` or `FALSE`),
-    meaning the branch has already been logically resolved.
+\enumerate{
+\item The leaf node itself has already been answered.
+\item Any of the leaf's ancestors has a determined \code{answer} (\code{TRUE} or \code{FALSE}),
+meaning the branch has already been logically resolved.
+}
 
-This function is intended to be used with `tree$Do(..., filterFun = isLeaf)`.
+This function is intended to be used with \code{tree$Do(..., filterFun = isLeaf)}.
 }
 \keyword{internal}

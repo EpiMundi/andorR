@@ -9,7 +9,14 @@
 #' @return A data.tree object.
 #' @importFrom data.tree Node
 #' @export
-load.tree.df <- function(df) {
+#' @examples
+#' # Load a tree from the 'ethical' dataframe included in this package
+#' ethical_tree <- load_tree_df(ethical)
+#'
+#' # View the tree structure
+#' print_tree(ethical_tree)
+#'
+load_tree_df <- function(df) {
 
   node_list <- list()
 
@@ -61,7 +68,7 @@ load.tree.df <- function(df) {
 #'
 #' @details
 #' This function serves as a low-level constructor called by wrapper functions
-#' like `load.tree.yaml()`. It uses `data.tree::as.Node()` to parse the list
+#' like `load_tree_yaml()`. It uses `data.tree::as.Node()` to parse the list
 #' structure and then traverses the new tree to set default `NA` values.
 #'
 #' @param data_list A nested R list representing the tree structure. Each list
@@ -74,7 +81,7 @@ load.tree.df <- function(df) {
 #' @importFrom data.tree as.Node
 #' @export
 #'
-load.tree.node.list <- function(data_list) {
+load_tree_node_list <- function(data_list) {
 
   # 1. Convert the list into a data.tree Node object
   tree <- as.Node(data_list)
@@ -90,7 +97,7 @@ load.tree.node.list <- function(data_list) {
 
 #' @title Load a decision tree from a CSV file
 #' @description A wrapper function that reads a CSV file into a data frame
-#'   and then uses `load.tree.df` to construct the tree object.
+#'   and then uses `load_tree_df` to construct the tree object.
 #' @param file_path The path to the .csv file. The file is expected to have
 #'   columns: id, name, question, rule, parent.
 #' @return A `data.tree` object.
@@ -99,9 +106,9 @@ load.tree.node.list <- function(data_list) {
 #' @examples
 #' \dontrun{
 #' # Assuming "my_decision_tree.csv" is in the working directory
-#' my_tree <- load.tree.csv("my_decision_tree.csv")
+#' my_tree <- load_tree_csv("my_decision_tree.csv")
 #' }
-load.tree.csv <- function(file_path) {
+load_tree_csv <- function(file_path) {
   if (!file.exists(file_path)) {
     stop(paste("File not found at path:", file_path), call. = FALSE)
   }
@@ -110,14 +117,14 @@ load.tree.csv <- function(file_path) {
   df <- utils::read.csv(file_path, stringsAsFactors = FALSE)
 
   # Call your existing function to build the tree from the data frame
-  tree <- load.tree.df(df)
+  tree <- load_tree_df(df)
 
   return(tree)
 }
 
 #' @title Load a decision tree from a YAML file
 #' @description A wrapper function that reads a YAML file into a nested list
-#'   and then uses `load.tree.node.list` to construct the tree object.
+#'   and then uses `load_tree_node_list` to construct the tree object.
 #' @param file_path The path to the .yml or .yaml file.
 #' @return A `data.tree` object.
 #' @importFrom yaml read_yaml
@@ -125,9 +132,9 @@ load.tree.csv <- function(file_path) {
 #' @examples
 #' \dontrun{
 #' # Assuming "my_decision_tree.yml" is in the working directory
-#' my_tree <- load.tree.yaml("my_decision_tree.yml")
+#' my_tree <- load_tree_yaml("my_decision_tree.yml")
 #' }
-load.tree.yaml <- function(file_path) {
+load_tree_yaml <- function(file_path) {
   if (!file.exists(file_path)) {
     stop(paste("File not found at path:", file_path), call. = FALSE)
   }
@@ -136,64 +143,11 @@ load.tree.yaml <- function(file_path) {
   data_list <- yaml::read_yaml(file_path)
 
   # Call your existing function to build the tree from the list
-  tree <- load.tree.node.list(data_list)
+  tree <- load_tree_node_list(data_list)
 
   return(tree)
 }
 
-#' @title Print a Formatted Summary of the Decision Tree
-#' @description
-#' Displays the `data.tree` object in the console with a custom set of columns
-#' (`Rule`, `Answer`, `Confidence`) formatted for readability. This function is
-#' the standard way to view the tree's state during an analysis.
-#'
-#' @details
-#' This function provides a consistent, clean view of the tree's current state.
-#' It formats the `Confidence` attribute to show the 0-5 scale for leaves
-#' and a percentage for parent nodes. It also hides `NA` values for all
-#' attributes to reduce clutter.
-#'
-#' @param tree The `data.tree` object (the root `Node`) to be printed.
-#'
-#' @return The original `tree` object (returned invisibly).
-#' @export
-#' @examples
-#' \dontrun{
-#' # Assuming 'my_tree' is a loaded andorR tree object
-#' print_tree_status(my_tree)
-#' }
-print_status <- function(tree) {
-
-  # Helper "getter" functions to format the columns for printing
-  get_rule_str <- function(node) {
-    if (is.null(node$rule) || is.na(node$rule)) "" else as.character(node$rule)
-  }
-
-  get_answer_str <- function(node) {
-    if (is.na(node$answer)) "" else as.character(node$answer)
-  }
-
-  get_confidence_str <- function(node) {
-    if (is.na(node$confidence)) {
-      return("")
-    }
-    if (node$isLeaf) {
-      # Back-convert to 0-5 scale for leaves
-      return(as.character(round((node$confidence - 0.5) * 10, 1)))
-    } else {
-      # Show percentage for parent nodes
-      return(paste0(round(node$confidence * 100, 1), "%"))
-    }
-  }
-
-  # The main print call using the helper functions
-  print(tree,
-        "Rule" = get_rule_str,
-        "Answer" = get_answer_str,
-        "Confidence" = get_confidence_str)
-
-  invisible(tree)
-}
 
 #' @title Print a Styled, Formatted Summary of the Decision Tree
 #' @description
@@ -206,7 +160,38 @@ print_status <- function(tree) {
 #' @importFrom cli col_green col_red col_cyan col_blue style_bold ansi_strip
 #' @importFrom crayon strip_style
 #' @export
-pretty_print <- function(tree) {
+#' @details
+#' An alternative approach to inspect internal attributes is to use the
+#' `data.tree` print() function with named attributes. See the example below.
+#'
+#' Available attributes include:
+#' - rule : AND or OR for a node
+#' - name : The name of the node or leaf
+#' - question : The question for leaves
+#' - answer : The response provided for leaves or the calculated status of nodes
+#' - confidence : The confidence score provided for leaves (0 - 5) or the
+#'     probability that the answer is correct (50% to 100%) for nodes
+#' - true_index : Influence the node has on the overall conclusion, if the response is TRUE
+#' - false_index : Influence the node has on the overall conclusion, if the response is TRUE
+#' - influence_index : The sum of the product of ancestor influence indices for each unanswered leaf
+#'
+#' @examples
+#' # Load a tree
+#' ethical_tree <- load_tree_df(ethical)
+#'
+#' # View the tree
+#' print_tree(ethical_tree)
+#'
+#' # Set an answer for leaf 'A1'
+#' ethical_tree <- set_answer(ethical_tree, "FIN2", TRUE, 3)
+#' print_tree(ethical_tree)
+#'
+#' # Alternative approach to inspect internal attributes using `data.tree::print()
+#' # First, recalculate the internal indices
+#' update_tree(ethical_tree)
+#' print(ethical_tree, "rule", "true_index", "false_index", influence = "influence_index")
+
+print_tree <- function(tree) {
 
   # --- Stage 1: Pre-calculation of Branch Colors ---
   determine_branch_color <- function(node) {
@@ -312,7 +297,6 @@ pretty_print <- function(tree) {
 
   # --- Main Function Body ---
 
-  # Restructuring the main body to remove duplicated code
   header <- sprintf("%-*s%-*s%-*s%-*s",
                     col_starts["Rule"]-1, "Tree",
                     col_starts["Answer"]-col_starts["Rule"], "Rule",
@@ -345,14 +329,16 @@ pretty_print <- function(tree) {
 #' The function first resets the `answer` and `confidence` of all non-leaf nodes
 #' to `NA` to ensure a clean calculation.
 #'
-#' It then uses a **post-order traversal**, which is critical as it guarantees
+#' It then uses a \strong{post-order traversal}, which is critical as it guarantees
 #' that a parent node is only processed after all of its children have been processed.
 #'
 #' The logical rules are applied with short-circuiting:
-#' - **OR Nodes:** Become `TRUE` if any child is `TRUE`. Become `FALSE` only if
-#'   all children are answered and none are `TRUE`.
-#' - **AND Nodes:** Become `FALSE` if any child is `FALSE`. Become `TRUE` only if
-#'   all children are answered and none are `FALSE`.
+#' \describe{
+#'   \item{\strong{OR Nodes:}}{Become `TRUE` if any child is `TRUE`. Become
+#'     `FALSE` only if all children are answered and none are `TRUE`.}
+#'   \item{\strong{AND Nodes:}}{Become `FALSE` if any child is `FALSE`.
+#'     Become `TRUE` only if all children are answered and none are `FALSE`.}
+#' }
 #'
 #' The confidence calculation is based on the confidences of the children that
 #' determined the outcome (e.g., only the `TRUE` children for a resolved `OR` node).
@@ -697,23 +683,32 @@ get_confidence_boosters <- function(tree, top_n = 5) {
 #' @param node_name A character string specifying the `name` of the leaf node to update.
 #' @param response A logical value, `TRUE` or `FALSE`, representing the answer.
 #' @param confidence_level A numeric value from 0 to 5 representing the user's
-#'   confidence in the answer.
+#'   confidence in the answer. Confidence levels are semi-quantitative and map
+#'   to the following probabilities:
+#'   - 0 : 50%
+#'   - 1 : 60%
+#'   - 2 : 70%
+#'   - 3 : 80%
+#'   - 4 : 90%
+#'   - 5 : 100%
+#' @param verbose An optional logical value controlling output. Default is TRUE.
 #'
 #' @return Returns the modified `tree` object invisibly, which allows for function chaining.
 #'
 #' @importFrom data.tree FindNode
 #' @export
 #' @examples
-#' # Create a simple tree
-#' tree <- data.tree::Node$new("Root")
-#' tree$AddChild("A1", answer = NA, confidence = NA)
-#' tree$AddChild("A2", answer = NA, confidence = NA)
+#' # Load a tree
+#' ethical_tree <- load_tree_df(ethical)
+#'
+#' # View the tree
+#' print_tree(ethical_tree)
 #'
 #' # Set an answer for leaf 'A1'
-#' tree <- set_answer(tree, "A1", TRUE, 5)
-#' print(tree, "answer", "confidence")
+#' ethical_tree <- set_answer(ethical_tree, "FIN2", TRUE, 3)
+#' print_tree(ethical_tree)
 #'
-set_answer <- function(tree, node_name, response, confidence_level) {
+set_answer <- function(tree, node_name, response, confidence_level, verbose = TRUE) {
   node_to_update <- FindNode(tree, node_name)
   if (is.null(node_to_update)) {
     warning(paste0("Node '", node_name, "' not found in the tree."), call. = FALSE)
@@ -729,8 +724,10 @@ set_answer <- function(tree, node_name, response, confidence_level) {
   }
   node_to_update$answer <- response
   node_to_update$confidence <- 0.5 + (confidence_level / 10)
-  cat(paste("Answer for leaf '", node_name, "' set to: ", response,
-            " with confidence ", confidence_level, "/5\n", sep = ""))
+  if(verbose) {
+    cat(paste("Answer for leaf '", node_name, "' set to: ", response,
+              " with confidence ", confidence_level, "/5\n", sep = ""))
+  }
   return(invisible(tree))
 }
 
@@ -747,6 +744,33 @@ set_answer <- function(tree, node_name, response, confidence_level) {
 #' @importFrom data.tree isLeaf
 #'
 #' @export
+#' @examples
+#' # Load a tree
+#' ethical_tree <- load_tree_df(ethical)
+#'
+#' # Internal indices before update
+#' print(ethical_tree, "rule", "true_index", "false_index", influence = "influence_index")
+#'
+#' ethical_tree <- update_tree(ethical_tree)
+#'
+#' # Updated indices
+#' print(ethical_tree, "rule", "true_index", "false_index", influence = "influence_index")
+#'
+#' # Answer some questions
+#' set_answer(ethical_tree, "FIN2", TRUE, 4)
+#' set_answer(ethical_tree, "ENV2", TRUE, 3)
+#' set_answer(ethical_tree, "SOC2", TRUE, 4)
+#' set_answer(ethical_tree, "GOV2", FALSE, 1)
+#'
+#' # Updated again
+#' ethical_tree <- update_tree(ethical_tree)
+#'
+#' # Updated indices
+#' print(ethical_tree, "rule", "true_index", "false_index", influence = "influence_index")
+#'
+#' # Updated results
+#' print_tree(ethical_tree)
+#'
 update_tree <- function(tree) {
   tree <- calculate_tree(tree)
   tree$Do(assign_indices)
@@ -759,52 +783,6 @@ update_tree <- function(tree) {
 ###########################################################################
 # Interactive analysis loop
 ###########################################################################
-
-#' @title Print the introductory welcome message
-#' @description Displays a formatted welcome screen for the tool, including
-#'   metadata, author, and license information, using the `cli` package for
-#'   styling.
-#' @return This function is called for its side effect of printing to the
-#'   console and does not return a value.
-#' @importFrom cli boxx cli_text cli_rule cli_ul cli_alert_info
-#' @importFrom utils packageVersion
-#' @export
-print_intro <- function() {
-
-  # Try to get the package version dynamically
-  version_string <- tryCatch({
-    as.character(utils::packageVersion("andorR"))
-  }, error = function(e) {
-    "in-development"
-  })
-
-  cli::cli_h1("andorR")
-  cli::cli_text("{.emph An analysis and optimisation tool for AND-OR decision trees.}")
-  cli::cli_text("") # Spacer line
-
-  cli::cli_text("Created by: EpiMundi ({.url https://epimundi.com})")
-  cli::cli_text("Authors:    {.strong Angus Cameron} and {.strong Joao Romero}")
-  cli::cli_text("Email:      angus@epimundi.com")
-  cli::cli_text("Version:    {version_string}")
-  cli::cli_text("")
-
-  # Use a rule for the license section
-  cli::cli_rule(left = "{.strong License: CC BY-ND 4.0}")
-
-  cli::cli_text("This tool is free to use and share under these conditions:")
-
-  # Use an unordered list for the conditions
-  items <- c(
-    "You must give appropriate credit ({.strong Attribution}).",
-    "You may not distribute modified versions ({.strong No Derivatives})."
-  )
-  cli::cli_ul(items)
-
-  cli::cli_text("Full license details: {.url https://creativecommons.org/licenses/by-nd/4.0/}")
-  cli::cli_text("")
-}
-
-
 
 #' @title Enter Interactive Analysis Mode
 #'
@@ -819,8 +797,19 @@ print_intro <- function() {
 #' tree. It uses the `cli` package for formatted output and handles user input
 #' for quitting, saving, printing the tree state, or providing answers to
 #' specific questions (either by number or by name). All tree modifications are
-#' performed by calling the package's existing API functions like `set_answer()`
-#' and `update_tree()`.
+#' performed by calling the package's existing API functions:
+#' - `set_answer()`
+#' - `update_tree()`
+#' - `get_highest_influence()`
+#' - `get_confidence_boosters()`
+#'
+#' The following key commands may be used during interactive mode:
+#' - **h** : Show the help screen
+#' - **p** : Print the current state of the tree
+#' - **s** : Save the current state of the tree to an .rds file
+#' - **q** : Quit (exit interactive mode)
+#' - **n** : Specify a node to edit by name (case sensitive)
+#' - **1, 2, ...** : Specify a node to edit from the numbered list
 #'
 #' @param tree The `data.tree` object to be analysed.
 #'
@@ -831,7 +820,52 @@ print_intro <- function() {
 #' @importFrom rlang .data
 #' @importFrom stats setNames
 #' @export
+#' @examples
+#' # Load a tree
+#' ethical_tree <- load_tree_df(ethical)
+#'
+#' # Start interactive mode
+#' andorR_interarcive(ethical_tree)
+#'
 andorR_interactive <- function(tree) {
+
+  # --- Local Helper Function to display the introduction to interactive mode ---
+  # ------------------------------------------------------
+  print_intro <- function() {
+
+    # Try to get the package version dynamically
+    version_string <- tryCatch({
+      as.character(utils::packageVersion("andorR"))
+    }, error = function(e) {
+      "in-development"
+    })
+
+    cli::cli_h1("andorR")
+    cli::cli_text("{.emph An analysis and optimisation tool for AND-OR decision trees.}")
+    cli::cli_text("") # Spacer line
+
+    cli::cli_text("Created by: EpiMundi ({.url https://epimundi.com})")
+    cli::cli_text("Author:     {.strong Angus Cameron}")
+    cli::cli_text("Email:      angus@epimundi.com")
+    cli::cli_text("Version:    {version_string}")
+    cli::cli_text("")
+
+    # Use a rule for the license section
+    cli::cli_rule(left = "{.strong License: CC BY-ND 4.0}")
+
+    cli::cli_text("This tool is free to use and share under these conditions:")
+
+    # Use an unordered list for the conditions
+    items <- c(
+      "You must give appropriate credit ({.strong Attribution}).",
+      "You may not distribute modified versions ({.strong No Derivatives})."
+    )
+    cli::cli_ul(items)
+
+    cli::cli_text("Full license details: {.url https://creativecommons.org/licenses/by-nd/4.0/}")
+    cli::cli_text("")
+  }
+
 
   # --- Local Helper Function to display the help menu ---
   # ------------------------------------------------------
@@ -885,14 +919,6 @@ andorR_interactive <- function(tree) {
     return(tree_obj)
   }
 
-  # ------------------------------------------------------
-  # -- Styling (not working)
-  # ------------------------------------------------------
-
-  # Define your theme
-  white_theme <- list("div.alert" = list("background-color" = "white", "border-color" = "transparent"))
-  options(cli.theme = white_theme)
-  on.exit(options(cli.theme = NULL))
 
   # ------------------------------------------------------
   # --- Main Function Logic ---
@@ -908,7 +934,6 @@ andorR_interactive <- function(tree) {
   repeat {
     # Update status variables
     root_node <- tree
-    #tree_solved <- !is.na(root_node$answer)
     tree_solved <- !is.null(root_node$answer) && !is.na(root_node$answer)
 
     if (tree_solved && !previous_tree_solved) {
@@ -918,20 +943,9 @@ andorR_interactive <- function(tree) {
       styled_answer <- answer_style(toupper(as.character(root_node$answer)))
       cli_text("The current result is: ", styled_answer, " at a confidence of ", root_node$confidence)
       cli_text("You can now answer more questions or revise existing answers to boost confidence.")
-      # cat(paste(cli::col_green(cli::symbol$tick), cli::style_bold("Conclusion Reached!")), "\n")
-      # answer_style <- if (isTRUE(root_node$answer)) cli::col_green else cli::col_red
-      # styled_answer <- answer_style(toupper(as.character(root_node$answer)))
-      # cat(paste(cli::col_blue(cli::symbol$info),
-      #           "The current result is:",
-      #           styled_answer,
-      #           "at a confidence of",
-      #           paste0(round(root_node$confidence * 100, 1), "%")), "\n")
-      # cat(paste(cli::col_blue(cli::symbol$info),
-      #           "You can now answer more questions or revise existing answers to boost confidence."), "\n")
     }
 
     # The internal confidence is 0.5-1.0; 100% means it's 1.0.
-    #tree_finished <- tree_solved && root_node$confidence == 1.0
     tree_finished <- tree_solved && isTRUE(root_node$confidence == 1.0)
     if (tree_finished) {
       cli_alert_success("Tree solved with 100% confidence! Quitting.")
@@ -957,7 +971,6 @@ andorR_interactive <- function(tree) {
           1:nrow(questions_to_ask)
         )
       } else {
-        #print(questions_to_ask)
         q_list <- setNames(
           glue::glue("[{col_yellow(questions_to_ask$name)}] {questions_to_ask$details} {col_red(questions_to_ask$potential_gain)}"),
           1:nrow(questions_to_ask)
@@ -989,8 +1002,7 @@ andorR_interactive <- function(tree) {
       switch(user_input,
              "q" = { cli_alert_info("Quitting interactive session."); break },
              "h" = display_interactive_help(),
-             # "p" = { cli_h2("Current Tree State"); print_status(tree) },
-             "p" = { cli_h2("Current Tree State"); pretty_print(tree) },
+             "p" = { cli_h2("Current Tree State"); print_tree(tree) },
              "s" = {
                filename <- readline(prompt = style_bold("Enter filename (e.g., 'tree.rds'): "))
                if (filename != "") {

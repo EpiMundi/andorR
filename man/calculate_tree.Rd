@@ -7,31 +7,33 @@
 calculate_tree(tree)
 }
 \arguments{
-\item{tree}{The `data.tree` object to be calculated. The function modifies
+\item{tree}{The \code{data.tree} object to be calculated. The function modifies
 this object directly.}
 }
 \value{
-The modified `tree` object (returned invisibly).
+The modified \code{tree} object (returned invisibly).
 }
 \description{
 This function performs a full, bottom-up recalculation of the decision tree's
 state. It takes the user-provided answers and confidences at the leaf level
-and propagates the logical outcomes (`answer`) and aggregate confidence scores
-up to the parent nodes based on their `AND`/`OR` rules.
+and propagates the logical outcomes (\code{answer}) and aggregate confidence scores
+up to the parent nodes based on their \code{AND}/\code{OR} rules.
 }
 \details{
-The function first resets the `answer` and `confidence` of all non-leaf nodes
-to `NA` to ensure a clean calculation.
+The function first resets the \code{answer} and \code{confidence} of all non-leaf nodes
+to \code{NA} to ensure a clean calculation.
 
-It then uses a **post-order traversal**, which is critical as it guarantees
+It then uses a \strong{post-order traversal}, which is critical as it guarantees
 that a parent node is only processed after all of its children have been processed.
 
 The logical rules are applied with short-circuiting:
-- **OR Nodes:** Become `TRUE` if any child is `TRUE`. Become `FALSE` only if
-  all children are answered and none are `TRUE`.
-- **AND Nodes:** Become `FALSE` if any child is `FALSE`. Become `TRUE` only if
-  all children are answered and none are `FALSE`.
+\describe{
+\item{\strong{OR Nodes:}}{Become \code{TRUE} if any child is \code{TRUE}. Become
+\code{FALSE} only if all children are answered and none are \code{TRUE}.}
+\item{\strong{AND Nodes:}}{Become \code{FALSE} if any child is \code{FALSE}.
+Become \code{TRUE} only if all children are answered and none are \code{FALSE}.}
+}
 
 The confidence calculation is based on the confidences of the children that
-determined the outcome (e.g., only the `TRUE` children for a resolved `OR` node).
+determined the outcome (e.g., only the \code{TRUE} children for a resolved \code{OR} node).
 }

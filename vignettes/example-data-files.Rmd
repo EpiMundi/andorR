@@ -1,0 +1,51 @@
+---
+title: "Example Data Files"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example Data Files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The `andorR` package includes several raw data files in different formats to demonstrate the data loading functions. These files can be found and loaded using the `system.file()` command.
+
+### Included Files
+
+```{r, echo=FALSE, results='asis'}
+# This code chunk finds and lists the files for you
+# NOTE: We use try() in case the package isn't fully loaded during a check
+files <- try(list.files(system.file("extdata", package = "andorR")), silent = TRUE)
+
+if (length(files) > 0 && !inherits(files, "try-error")) {
+  cat("The following example data files are included in the `inst/extdata` directory:\n\n")
+  cat(paste("*", files), sep = "\n")
+} else {
+  cat("No example data files were found in the package's `inst/extdata` folder.\n")
+}
+```
+
+### File documentation
+
+#### Ethical investiment decision tree (_ethical_)
+
+#### Notifiable aquatic animal disease decision tree (_notifiable_)
+
+#### Bovine Spongiform Encephalopathy surveillance decision tree (_bse_)
+
+#### Multiple sclerosis diagnostic decision tree (_ms_)
+
+#### Systemic lupus erythematous diagnostic decision tree (_lupus_)
+
+
+### Example: Loading a File
+
+To load the example YAML file from within the package, you would use the following code:
+    
+```{r, eval=FALSE}
+path <- system.file("extdata", "ethical_investment.yml", package = "andorR")
+my_tree <- load.tree.yaml(path)
+```
