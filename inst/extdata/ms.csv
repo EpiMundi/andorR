@@ -1,0 +1,28 @@
+﻿id,name,question,parent,rule
+0,Diagnosis of Multiple Sclerosis (MS) is Confirmed,,,AND
+1,Dissemination in Space (DIS) is Confirmed,,0,OR
+2,Dissemination in Time (DIT) is Confirmed,,0,OR
+3,No Better Explanation for Symptoms,,0,AND
+4,Clinical Evidence for DIS,,1,OR
+5,MRI-DIS,"MRI shows T2-hyperintense lesions in >=2 characteristic MS locations (e.g., periventricular, juxtacortical, spinal cord).",1,
+6,HIS-DIT,Patient history documents >=2 distinct clinical attacks separated by at least 30 days.,2,
+7,MRI-DIT,A follow-up MRI shows a new T2 or gadolinium-enhancing lesion when compared to a previous baseline scan.,2,
+8,MRI-SIM,A single MRI simultaneously shows both gadolinium-enhancing (active) and non-enhancing (old) lesions.,2,
+9,CSF-OCB,Cerebrospinal fluid (CSF) analysis from a spinal tap shows CSF-specific oligoclonal bands (OCBs).,2,
+10,Autoimmune Mimics Ruled Out,,3,AND
+11,Infectious Mimics Ruled Out,,3,AND
+12,Metabolic & Structural Mimics Ruled Out,,3,AND
+13,CLI-ON,Patient's history or exam is consistent with an attack of optic neuritis.,4,
+14,CLI-TM,Patient's history or exam is consistent with an attack of transverse myelitis.,4,
+15,CLI-BS,"Patient's history or exam is consistent with a brainstem or cerebellar syndrome (e.g., diplopia, ataxia).",4,
+16,AIM1,Anti-MOG and Anti-AQP4 antibody tests are negative (rules out NMOSD).,10,
+17,AIM2,ANA and ENA panel are negative or not indicative of Lupus or Sjogren's syndrome.,10,
+18,AIM3,ANCA and ESR/CRP blood tests are not indicative of systemic vasculitis.,10,
+19,INF1,Serology for Lyme disease is negative.,11,
+20,INF2,Serology for Syphilis (VDRL/RPR) is negative.,11,
+21,INF3,Serology for HIV is negative.,11,
+22,INF4,HTLV-1 serology is negative (if patient is from an endemic region).,11,
+23,MET1,Vitamin B12 level is normal.,12,
+24,MET2,Thyroid function tests (TSH) are normal.,12,
+25,STR1,"Spinal MRI shows no evidence of a structural lesion (e.g., tumor, compression) that would better explain symptoms.",12,
+26,GEN1,"Genetic testing for rare hereditary conditions (e.g., leukodystrophies) is negative, if indicated by history.",12,

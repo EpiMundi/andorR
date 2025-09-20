@@ -1,0 +1,26 @@
+﻿id,name,question,parent,rule
+0,Diagnosis of SLE is Confirmed,,,AND
+1,ANA1,Entry Criterion: Antinuclear Antibody (ANA) test is positive (titer >= 1:80).,0,
+2,Sufficient Additive Criteria Met,,0,OR
+3,Definitive Evidence Found,,2,OR
+4,Pattern of Systemic Involvement Established,,2,AND
+5,IMM1,Highly specific Anti-Sm antibody is present.,3,
+6,REN1,Kidney biopsy confirms Class III or IV lupus nephritis.,3,
+7,Constitutional Symptoms Present,,4,OR
+8,Mucocutaneous Domain Active,,4,AND
+9,Musculoskeletal or Serosal Domain Active,,4,AND
+10,Immunologic Domain Active (Non-specific),,4,OR
+11,CON1,Patient has an unexplained fever (>38.3 C / 101 F).,7,
+12,HEM1,Lab results show evidence of autoimmune hemolytic anemia.,7,
+13,HEM2,Lab results show persistent leukopenia (low white cells) or thrombocytopenia (low platelets).,7,
+14,NEU1,Patient has experienced an unexplained seizure or psychosis.,7,
+15,MUC1,Patient has a characteristic malar (butterfly) rash over the cheeks.,8,
+16,MUC2,Patient exhibits photosensitivity (unusual skin reaction to sunlight).,8,
+17,MUC3,Painless oral or nasal ulcers are observed upon physical examination.,8,
+18,MUC4,Patient has active non-scarring alopecia (hair loss).,8,
+19,MSK1,Inflammatory arthritis (synovitis) is present in two or more joints.,9,
+20,SER1,There is clinical or imaging evidence of serositis (pleurisy or pericarditis).,9,
+21,REN2,Urinalysis shows significant proteinuria (protein in urine).,9,
+22,IMM2,Anti-dsDNA antibody is present (and above laboratory's reference range).,10,
+23,IMM3,Complement proteins C3 or C4 are below normal levels.,10,
+24,IMM4,Antiphospholipid antibodies are present.,10,

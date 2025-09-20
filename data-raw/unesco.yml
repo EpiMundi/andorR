@@ -1,0 +1,87 @@
+name: "Site Qualifies for World Heritage Listing"
+rule: AND
+nodes:
+  - name: "Demonstrates Outstanding Universal Value (OUV)"
+    rule: AND
+    question: "Is the site's value so exceptional as to transcend national boundaries and be of importance for all humanity?"
+    nodes:
+      - name: OUV1
+        question: "Does a comparative analysis against similar international sites robustly support the 'outstanding' claim?"
+      - name: OUV2
+        question: "Is the site's significance clearly and scientifically documented through extensive research and evidence?"
+  - name: "Meets at Least One Selection Criterion"
+    rule: OR
+    question: "Does the site meet at least one of the ten official UNESCO selection criteria?"
+    nodes:
+      - name: "CRI1"
+        question: "Does the site represent a masterpiece of human creative genius?"
+      - name: "CRI2"
+        question: |
+          Does the site exhibit an important interchange of human values, over a span of time
+          or within a cultural area of the world, on developments in architecture or
+          technology, monumental arts, town-planning or landscape design?
+      - name: "CRI3"
+        question: |
+          Does the site bear a unique or at least exceptional testimony to a cultural
+          tradition or to a civilization which is living or which has disappeared?
+      - name: "CRI4"
+        question: |
+          Is the site an outstanding example of a type of building, architectural or
+          technological ensemble or landscape which illustrates (a) significant stage(s)
+          in human history?
+      - name: "CRI5"
+        question: |
+          Is the site an outstanding example of a traditional human settlement, land-use,
+          or sea-use which is representative of a culture (or cultures), or human
+          interaction with the environment especially when it has become vulnerable
+          under the impact of irreversible change?
+      - name: "CRI6"
+        question: |
+          Is the site directly or tangibly associated with events or living traditions,
+          with ideas, or with beliefs, with artistic and literary works of
+          outstanding universal significance?
+      - name: "CRI7"
+        question: |
+          Does the site contain superlative natural phenomena or areas of exceptional
+          natural beauty and aesthetic importance?
+      - name: "CRI8"
+        question: |
+          Is the site an outstanding example representing major stages of Earth's history,
+          including the record of life, significant on-going geological processes in
+          the development of landforms, or significant geomorphic or physiographic
+          features?
+      - name: "CRI9"
+        question: |
+          Is the site an outstanding example representing significant on-going ecological
+          and biological processes in the evolution and development of terrestrial,
+          fresh water, coastal and marine ecosystems and communities of plants and animals?
+      - name: "CRI10"
+        question: |
+          Does the site contain the most important and significant natural habitats for
+          in-situ conservation of biological diversity, including those containing
+          threatened species of Outstanding Universal Value from the point of view of
+          science or conservation?
+  - name: "Ensures Integrity and Authenticity"
+    rule: AND
+    question: "Are the conditions of integrity (wholeness) and/or authenticity (truthfulness) met?"
+    nodes:
+      - name: INT1
+        question: "Does the property include all elements necessary to express its OUV?"
+      - name: INT2
+        question: "Is the property of adequate size to ensure the complete representation of the features and processes which convey its significance?"
+      - name: INT3
+        question: "Does the property suffer from adverse effects of development, neglect, or other threats?"
+      - name: AUTH1
+        question: "(For cultural sites) Are the attributes of the site (e.g., form, materials, function) credibly and truthfully expressed?"
+  - name: "Has Adequate Protection and Management"
+    rule: AND
+    question: "Is there a robust framework in place to protect and manage the site for the long term?"
+    nodes:
+      - name: PROT1
+        question: "Is the site protected by adequate and effective national and/or local legislation?"
+      - name: PROT2
+        question: "Does a comprehensive Management Plan for the site exist and is it actively implemented?"
+      - name: PROT3
+        question: "Sufficient financial and human resources are allocated for the site's long-term preservation."
+      - name: PROT4
+        question: "Has the support and involvement of local communities and stakeholders been clearly demonstrated?"

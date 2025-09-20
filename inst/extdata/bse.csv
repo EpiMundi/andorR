@@ -1,0 +1,20 @@
+﻿id,name,question,rule,parent
+0,Animal is a BSE Surveillance Target,,OR,
+1,At-Risk Population Category,,OR,0
+2,Clinical Suspect Category,,OR,0
+3,Fallen Stock,,AND,1
+4,Emergency or Condemned Animal,,AND,1
+5,RISK1,"The animal was found dead on farm, in transit, or was dead-on-arrival at the abattoir ('fallen stock').",,3
+6,AGE1,The animal's documented or estimated age is over 48 months.,,3
+7,RISK2,The animal was subject to emergency slaughter for reasons other than accident.,,4
+8,RISK3,The animal was condemned during ante-mortem inspection for showing signs of systemic disease.,,4
+9,AGE2,The animal's documented or estimated age is over 24 months.,,4
+10,Progressive Neurological Signs,,AND,2
+11,Atypical Signs with No Other Diagnosis,,OR,2
+12,NEURO1,"The animal exhibited at least one progressive neurological sign (e.g., ataxia, tremors, aggression).",,10
+13,NEURO2,The clinical course of the disease was progressive over several weeks or months.,,10
+14,AGE3,The animal's documented or estimated age is over 24 months.,,10
+15,ATYP1,The animal showed a progressive loss of body condition despite a normal appetite.,,11
+16,ATYP2,"Common causes for wasting disease (e.g., Johne's disease, parasitism) have been reasonably ruled out.",,11
+17,ATYP3,"The animal shows behavioral changes (e.g., nervousness, kicking) without obvious neurological signs.",,11
+18,VET1,"An official veterinarian has declared the animal a BSE suspect based on professional judgment, even if other criteria are not met.",,2
