@@ -200,14 +200,14 @@ load_tree_csv <- function(file_path) {
 #' @importFrom yaml read_yaml
 #' @export
 #' @examples
-#' \dontrun{
+#'
 #' #' # Load data from the `ethical.yml` file included with this package
 #' path <- system.file("extdata", "ethical.yml", package = "andorR")
 #' ethical_tree <- load_tree_yaml(path)
 #'
 #' # View the tree
 #' print_tree(ethical_tree)
-#' }
+#'
 load_tree_yaml <- function(file_path) {
   if (!file.exists(file_path)) {
     stop(paste("File not found at path:", file_path), call. = FALSE)
@@ -243,7 +243,7 @@ load_tree_yaml <- function(file_path) {
 #' @importFrom data.tree as.Node
 #' @export
 #' @examples
-#' \dontrun{
+#'
 #' # Create a sample data frame in path format
 #' path_df <- data.frame(
 #'   path = c("Root", "Root/Branch1", "Root/Branch1/LeafA", "Root/Branch2"),
@@ -254,7 +254,7 @@ load_tree_yaml <- function(file_path) {
 #' # Build the tree
 #' my_tree <- load_tree_df_path(path_df)
 #' print(my_tree)
-#' }
+#'
 load_tree_df_path <- function(df, delim = "/") {
 
   tree <- as.Node(df, pathName = "path", pathDelimiter = delim)
@@ -283,14 +283,14 @@ load_tree_df_path <- function(df, delim = "/") {
 #' @importFrom utils read.csv
 #' @export
 #' @examples
-#' \dontrun{
+#'
 #' #' # Load data from the `ethical_path.csv` file included with this package
 #' path <- system.file("extdata", "ethical_path.csv", package = "andorR")
 #' ethical_tree <- load_tree_csv_path(path)
 #'
 #' # View the tree
 #' print_tree(ethical_tree)
-#' }
+#'
 load_tree_csv_path <- function(file_path, delim = "/") {
   if (!file.exists(file_path)) {
     stop(paste("File not found at path:", file_path), call. = FALSE)

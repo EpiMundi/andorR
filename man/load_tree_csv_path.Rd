@@ -21,14 +21,14 @@ function expects the CSV to define the tree in a path string format, with
 each node's hierarchy defined in a column named \code{path}.
 }
 \examples{
-\dontrun{
+
 #' # Load data from the `ethical_path.csv` file included with this package
 path <- system.file("extdata", "ethical_path.csv", package = "andorR")
 ethical_tree <- load_tree_csv_path(path)
 
 # View the tree
 print_tree(ethical_tree)
-}
+
 }
 \seealso{
 \code{\link[=load_tree_df_path]{load_tree_df_path()}} for the underlying constructor function.

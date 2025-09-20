@@ -5,9 +5,8 @@
 \alias{ethical}
 \title{Ethical investment decision tree for a fictional company - data frame format}
 \format{
-A data frame with 5 variables and 34 rows, in relational format, in
-which hierarchical relationships are indicated by a value indicating
-the parent of each node.
+A data frame with 5 variables and 34 rows
+
 \describe{
 Each rows represents a node or leaf in the tree and the columns represent
 attributes of those nodes. The columns are:
@@ -31,6 +30,23 @@ illustrate the use of the analytical approach.
 ethical
 }
 \description{
-Ethical investment decision tree for a fictional company - data frame format
+This dataframe represents a decision tree in relational format, in
+which hierarchical relationships are indicated by a value indicating
+the parent of each node.
+
+The decision tree is a hypothetical tool to standardise the process of
+making ethical investments. It was developed to illustrate the functionality
+of this package.
+}
+\details{
+A \code{data.tree} object is created from the dataframe using the \code{read_tree_df()}
+function.
+}
+\examples{
+# Read the data into a data.tree object for analysis
+tree <- load_tree_df(ethical)
+
+# View the tree
+print_tree(tree)
 }
 \keyword{datasets}

@@ -27,7 +27,7 @@ like \code{load_tree_csv_path()}, which handles reading the data from a file.
 The node's name is inferred from the last element of its path.
 }
 \examples{
-\dontrun{
+
 # Create a sample data frame in path format
 path_df <- data.frame(
   path = c("Root", "Root/Branch1", "Root/Branch1/LeafA", "Root/Branch2"),
@@ -38,7 +38,7 @@ path_df <- data.frame(
 # Build the tree
 my_tree <- load_tree_df_path(path_df)
 print(my_tree)
-}
+
 }
 \seealso{
 \code{\link[=load_tree_csv_path]{load_tree_csv_path()}} to read this format from a file.

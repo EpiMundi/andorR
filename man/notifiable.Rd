@@ -5,9 +5,8 @@
 \alias{notifiable}
 \title{Notifiable aquatic animal disease decision tree}
 \format{
-A data frame with 5 variables and 50 rows, in relational format, in
-which hierarchical relationships are indicated by a value indicating
-the parent of each node.
+A data frame with 5 variables and 50 rows
+
 \describe{
 Each rows represents a node or leaf in the tree and the columns represent
 attributes of those nodes. The columns are:
@@ -32,6 +31,25 @@ listing or de-listing of notifiable aquatic animal diseases.
 notifiable
 }
 \description{
-Notifiable aquatic animal disease decision tree
+This dataframe represents a decision tree in relational format, in
+which hierarchical relationships are indicated by a value indicating
+the parent of each node.
+
+The decision tree is based on a tool to standardise the process of
+determining if an aquatic animal disease should be made officially
+notifiable to the veterinary authorities.
+}
+\details{
+A \code{data.tree} object is created from the dataframe using the \code{read_tree_df()}
+function.
+}
+\examples{
+# Load the tree definition from the dataframe into a data.tree object
+#   ready for subsequent analysis
+tree <- load_tree_df(notifiable)
+
+# View the tree
+print_tree(tree)
+
 }
 \keyword{datasets}

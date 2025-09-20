@@ -158,7 +158,7 @@ get_confidence_boosters <- function(tree, top_n = 5, verbose = TRUE) {
   answered_leaves <- Traverse(tree, filterFun = function(node) node$isLeaf && !is.na(node$answer) && node$confidence < 1.0)
 
   if (length(answered_leaves) > 0) {
-    id2 <- cli_process_start("Analysing {length(answered_leaves)} existing answers...")
+    if(verbose) id2 <- cli_process_start("Analysing {length(answered_leaves)} existing answers...")
 
     for (leaf in answered_leaves) {
       # Simulate re-answering with max confidence
@@ -181,7 +181,7 @@ get_confidence_boosters <- function(tree, top_n = 5, verbose = TRUE) {
                                          potential_gain = gain)
       }
     }
-    cli_process_done(id2, "Analysed {length(answered_leaves)} existing answers {symbol$tick}")
+    if(verbose) cli_process_done(id2, "Analysed {length(answered_leaves)} existing answers {symbol$tick}")
   }
 
   if (length(suggestions) == 0) {
@@ -323,7 +323,9 @@ set_answer <- function(tree, node_name, response, confidence_level, verbose = TR
 #' ethical_tree <- load_tree_df(ethical)
 #'
 #' # Start interactive mode
+#' \dontrun{
 #' andorR_interactive(ethical_tree)
+#' }
 #'
 andorR_interactive <- function(tree) {
 

@@ -46,6 +46,8 @@ The following key commands may be used during interactive mode:
 ethical_tree <- load_tree_df(ethical)
 
 # Start interactive mode
+\dontrun{
 andorR_interactive(ethical_tree)
+}
 
 }

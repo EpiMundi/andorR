@@ -19,14 +19,14 @@ function expects the YAML to define the tree in a hierarchical (nested)
 format. It uses \code{load_tree_node_list} to construct the tree object.
 }
 \examples{
-\dontrun{
+
 #' # Load data from the `ethical.yml` file included with this package
 path <- system.file("extdata", "ethical.yml", package = "andorR")
 ethical_tree <- load_tree_yaml(path)
 
 # View the tree
 print_tree(ethical_tree)
-}
+
 }
 \seealso{
 \code{\link[=load_tree_node_list]{load_tree_node_list()}} for the underlying constructor function.
