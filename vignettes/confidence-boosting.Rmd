@@ -1,0 +1,117 @@
+---
+title: "Confidence Boosting and Sensitivity Analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Confidence Boosting and Sensitivity Analysis}
+  %\VignetteEngine{knitr::rmmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r load-and-setup, echo=FALSE, message=FALSE, warning=FALSE}
+# This chunk loads the package and data for the vignette examples
+library(andorR)
+data(ethical)
+```
+
+## Introduction: From Conclusion to Conviction
+
+In any complex analysis, the first pieces of evidence are often the easiest to acquire. They may come from readily available data, quick observations, or even an expert's "gut feeling." The `andorR` **Discovery Phase**, guided by the `influence_index`, is designed to use this initial, often low-confidence, information to reach a preliminary conclusion as quickly as possible.
+
+However, once a conclusion is reached (e.g., the root is `TRUE` or `FALSE`), the job is often not finished. The overall confidence in that conclusion may be too low for a final report or a high-stakes decision.
+
+This is where the **Confidence Boosting Phase** begins. Instead of investing resources to improve the evidence for *every* question, `andorR` allows you to strategically identify which actions—either answering a new question or improving an existing answer—will most efficiently increase your confidence in the final result.
+
+## The Algorithm: A Sensitivity Analysis
+
+The `get_confidence_boosters()` function is the engine for this phase. It performs a **sensitivity analysis** on the current state of the tree to find the most effective next steps. It does this in two ways:
+
+1.  **Analyzing Unanswered Questions:** For every remaining leaf with an `NA` answer, the function simulates answering it with 100% confidence as `TRUE`, and then again as `FALSE`. It calculates the potential increase in the root's confidence for both scenarios and records the more beneficial of the two.
+
+2.  **Analyzing Existing Answers:** For every leaf that has already been answered with less than 100% confidence (i.e., a score of 0-4), the function simulates what would happen if you invested the effort (e.g., through more research) to increase its confidence to the maximum (5/5). It then calculates the potential gain.
+
+Finally, the function combines all these potential gains into a single, ranked list, showing you the actions that give you the most "bang for your buck" in terms of increasing your final confidence.
+
+## A Worked Example: Strengthening a Conclusion
+
+Let's start with a scenario where we have reached a preliminary conclusion for the `ethical` investment tree, but our confidence is not yet high enough.
+
+### Step 1: Reach an Initial Conclusion
+
+First, we load the tree and provide several answers, some with high and some with low confidence, to simulate an initial assessment.
+
+```{r setup-tree-boosting}
+library(andorR)
+data(ethical)
+dtree <- load_tree_df(ethical)
+
+# Provide some initial answers with varying confidence
+set_answer(dtree, "FIN1", TRUE, 5) # Parent "Profitability" becomes TRUE
+set_answer(dtree, "FIN4", TRUE, 2) # Low confidence
+set_answer(dtree, "FIN5", TRUE, 2) # Low confidence
+set_answer(dtree, "ENV1", TRUE, 4)
+set_answer(dtree, "ENV2", TRUE, 3)
+set_answer(dtree, "ENV3", TRUE, 4) # Parent "Clean Record" becomes TRUE
+set_answer(dtree, "SOC2", TRUE, 4)
+set_answer(dtree, "GOV1", TRUE, 5)
+set_answer(dtree, "GOV2", TRUE, 5)
+set_answer(dtree, "GOV3", TRUE, 5)
+set_answer(dtree, "GOV4", TRUE, 5)
+set_answer(dtree, "GOV5", TRUE, 5) # Parent "Strong Corporate Governance" becomes TRUE
+# Tree root becomes TRUE
+
+# Recalculate the tree state
+dtree <- update_tree(dtree)
+```
+
+### Step 2: View the Initial Conclusion
+
+Let's print the tree. We can see that we have reached a `TRUE` conclusion, but the confidence is only **28.6%**, which is likely to be too low.
+
+```{r print-initial-conclusion}
+print_tree(dtree)
+```
+
+### Step 3: Get Guidance on Boosting Confidence
+
+Now we enter the Confidence Boosting phase. We call `get_confidence_boosters()` to get a ranked list of the most effective actions to take next.
+
+```{r get-guidance}
+guidance <- get_confidence_boosters(dtree)
+knitr::kable(guidance, caption = "Top Actions to Boost Confidence")
+```
+
+The guidance table clearly shows that the most effective action we can take is to **Answer new questions** in our tree for the  **ENV** questions (ENV4 to ENV6) or **Increase confidence** in FIN4 or FIN5.
+
+### Step 4: Act on the Guidance
+
+Let's follow the top suggestion. We'll "do more research" on `FIN5` and update its confidence to the maximum level of 5.
+
+```{r act-on-guidance}
+# Edit the existing answer for FIN5 with a new, higher confidence
+set_answer(dtree, "FIN5", TRUE, 5)
+
+# Recalculate the entire tree
+dtree <- update_tree(dtree)
+```
+
+### Step 5: View the Improved Result
+
+Let's print the tree again. As predicted by the guidance, our final confidence in the `TRUE` result has jumped from 28.6% to **40.8%**.
+
+```{r final-print}
+print_tree(dtree)
+```
+
+Iteratively recalcualting the tree, and regenerating the list of the best questions to boost confidence will progressively guide the most efficient way to increase confidence. 
+
+This two-stage iterative workflow is implemented in the `andorR_interactive()` function.
+
+This approach allows you to move quickly to a conclusion with readily available information, and then strategically invest your resources to strengthen that conclusion to the desired level of certainty.
+

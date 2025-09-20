@@ -7,52 +7,143 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-```{r setup}
+```{r load-and-setup, echo=FALSE, message=FALSE, warning=FALSE}
+# This chunk loads the package and data for the vignette examples
+library(andorR)
+# The ethical dataset needs to be added to your package with usethis::use_data(ethical)
+# for this vignette to build correctly.
+data(ethical) 
+```
+
+## Introduction to andorR
+
+`andorR` (pronounced like the country, *Andorra*) is a decision support tool that strategically prioritizes evidence gathering to most efficiently resolve uncertainty in complex logical trees.
+
+It is designed for problems that are more than simple checklists. It excels in situations where there are multiple pathways to a conclusion (**`OR`** nodes) and where initial information is incomplete or uncertain. The core workflow is based on the progressive gathering of new evidence, with the tool guiding the user on where to focus their efforts to have the greatest impact on the final outcome.
+
+### What are AND-OR Trees?
+
+An AND-OR tree is a hierarchical model used to break down a complex problem or question (the "root") into smaller, manageable parts.
+
+* **Root:** The main goal or final decision you want to reach.
+* **Parent Nodes:** Intermediate conditions that are evaluated by logical rules.
+    * An **`AND`** node is `TRUE` only if all of its children are `TRUE`.
+    * An **`OR`** node is `TRUE` if at least one of its children is `TRUE`.
+* **Leaf Nodes:** The basic, answerable questions or pieces of evidence at the bottom of the tree.
+
+## Core Features of `andorR`
+
+The package provides a suite of functions to manage the entire analysis workflow:
+
+* **Flexible Data Loading:** Load trees from multiple formats, including relational data frames (from CSV/Excel), hierarchical YAML files, and path-string formats. For more details, see the vignette on data formats: `vignette("data-formats", package = "andorR")`.
+* **Dynamic Prioritization:** The tool calculates an `influence_index` for every unanswered question. The `get_highest_influence()` function uses this to suggest the most strategic question to answer next.
+* **Logical Calculation with Uncertainty:** The `calculate_tree()` function propagates the `TRUE`/`FALSE` answers up the tree. Crucially, it also aggregates the `confidence` scores you provide for each answer, giving you a final confidence score for the overall conclusion.
+* **Post-Conclusion Guidance:** Once a conclusion is reached, the focus shifts from finding the answer to strengthening it. The `get_confidence_boosters()` function performs a sensitivity analysis to identify which actions will most efficiently increase your confidence in the final result.
+* [**Interactive tool**](#interactive-analysis-with-andorr_interactive): Automate the entire workflow with the main wrapper function, `andorR_interactive()`, that provides a user-friendly, text-based interface linking all the other functions together. 
+
+## A Worked Example
+
+Let's walk through a typical analysis using the built-in `ethical` investment dataset.
+
+### Step 1: Load the Tree
+
+First, we load the `andorR` package and the `ethical` dataset, then use `load_tree_df()` to build the tree object. We then run `update_tree()` to calculate the initial indices.
+
+```{r setup-example}
 library(andorR)
 
-# Load the tree
-tree<-load_tree_df(ethical)
+# Load the tree from the built-in 'ethical' dataset
+dtree <- load_tree_df(ethical)
 
-# Ansewr some questions
-set_answer(tree, "GOV5", TRUE, 3)
-set_answer(tree, "ENV4", TRUE, 3)
-set_answer(tree, "SOC1", TRUE, 3)
+# Calculate the initial optimisation indices
+dtree <- update_tree(dtree)
+```
 
-# Update the tree and view 
-update_tree(tree)
-print_tree(tree)
+### Step 2: Get Initial Guidance
 
+We can now ask the tool for the most important questions to investigate first.
+
+```{r get-first-influence}
 # Get the most important next questions
-next_questions_df <- get_highest_influence(tree)
-print(next_questions_df)
+next_questions_df <- get_highest_influence(dtree, top_n = 3)
+knitr::kable(next_questions_df)
+```
+The tool suggests that `FIN4`, `FIN5`, and `GOV1` are the most influential starting questions. This is because they are under `AND` nodes; a single `FALSE` answer to any of them could quickly resolve a major branch of the tree.
 
+### Step 3: Provide Initial Answers
+
+Let's assume we have some readily available information. We can answer a few questions with varying levels of confidence and see how the tree state changes.
+
+```{r first-answers}
+set_answer(dtree, "GOV5", TRUE, 3)
+set_answer(dtree, "ENV4", TRUE, 3)
+set_answer(dtree, "SOC1", TRUE, 3)
+
+# Update the tree and view the current state
+dtree <- update_tree(dtree)
+print_tree(dtree)
+```
+After these three answers, no conclusion has been reached yet, but the `influence_index` values for all other questions have been dynamically recalculated.
+
+### Step 4: Follow the Guidance and Reach a Conclusion
+
+Now, let's answer a few more questions, including some of the high-influence ones, to push the analysis toward a conclusion.
+
+```{r final-answers}
 # Answer some more questions
-set_answer(tree, "FIN4", TRUE, 3)
-set_answer(tree, "FIN5", TRUE, 3)
-
-# Update and view again
-update_tree(tree)
-print_tree(tree)
-
-# Get the most important next questions
-next_questions_df <- get_highest_influence(tree)
-print(next_questions_df)
-
-# Answer them
-set_answer(tree, "GOV1", TRUE, 3)
-set_answer(tree, "GOV2", TRUE, 3)
-set_answer(tree, "GOV3", TRUE, 3)
-set_answer(tree, "GOV4", TRUE, 3)
-set_answer(tree, "FIN1", TRUE, 3)
+set_answer(dtree, "FIN4", TRUE, 3)
+set_answer(dtree, "FIN5", TRUE, 3)
+set_answer(dtree, "GOV1", TRUE, 3)
+set_answer(dtree, "GOV2", TRUE, 3)
+set_answer(dtree, "GOV3", TRUE, 3)
+set_answer(dtree, "GOV4", TRUE, 3)
+set_answer(dtree, "FIN1", TRUE, 3)
 
 # Update and get the final result
-update_tree(tree)
-print_tree(tree)
+dtree <- update_tree(dtree)
+print_tree(dtree)
+```
+Success! After providing those answers, the root node **"Invest in Company X"** has been resolved to `TRUE`, with a calculated confidence of 73.6%. The analysis now automatically moves into the "Confidence Boosting" phase.
+
+## Interactive Analysis with `andorR_interactive()`
+
+While you can call each function (`set_answer`, `update_tree`, etc.) manually, the package provides a main wrapper function, `andorR_interactive()`, that automates the entire workflow in a user-friendly, text-based interface.
+
+This function links all the stages together:
+* It displays the highest-impact questions to guide your analysis.
+* It prompts you to select a question and provide an answer and confidence level.
+* It automatically calls `calculate_tree`, `assign_indices`, and `calculate_influence` to fully update the tree's state.
+* It prints the updated tree so you can see the immediate impact of your answer.
+* Once a conclusion is reached, it automatically switches to "Confidence Boosting" mode, showing you the best ways to improve your result.
+
+To start the interactive session, you simply load a tree and pass it to the function.
+
+```{r, eval=FALSE}
+# Load the ethical dataset and build the tree
+data(ethical)
+dtree <- load_tree_df(ethical)
+dtree <- update_tree(dtree)
+
+# Start the interactive analysis loop
+andorR_interactive(dtree)
+```
+
+### Next Steps: The Confidence Boosting Phase
+
+Now that a conclusion has been reached, the goal is no longer to find the answer, but to increase our confidence in it. `andorR` provides functions to guide this next stage of the investigation.
+
+For a detailed guide on this process, see the vignette on confidence boosting:
+`vignette("confidence-boosting", package = "andorR")`
+
+### Included Datasets
+
+The package includes several pre-built decision trees to demonstrate its features. For a full list and description of these files, please see the example data files guide:
+`vignette("example-data-files", package = "andorR")`
 ```
