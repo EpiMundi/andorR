@@ -1,0 +1,35 @@
+path,question,rule
+"Invest in Company X",,AND
+"Invest in Company X/Financial Viability",,AND
+"Invest in Company X/Financial Viability/Profitability and Growth Signals","Is the company showing strong signs of profitability?",OR
+"Invest in Company X/Financial Viability/Profitability and Growth Signals/FIN1","Company demonstrates consistent, high revenue growth.",
+"Invest in Company X/Financial Viability/Profitability and Growth Signals/FIN2","Company maintains a high net profit margin for its industry.",
+"Invest in Company X/Financial Viability/Profitability and Growth Signals/FIN3","Company holds a dominant or rapidly growing market share.",
+"Invest in Company X/Financial Viability/Solvency and Stability","Is the company financially stable?",AND
+"Invest in Company X/Financial Viability/Solvency and Stability/FIN4","Debt-to-Equity ratio is below the industry average.",
+"Invest in Company X/Financial Viability/Solvency and Stability/FIN5","Company generates strong and positive free cash flow.",
+"Invest in Company X/Acceptable Environmental Stewardship",,OR
+"Invest in Company X/Acceptable Environmental Stewardship/Has a Clean Current Record",,AND
+"Invest in Company X/Acceptable Environmental Stewardship/Has a Clean Current Record/ENV1","Carbon emissions (Scopes 1&2) are verifiably below the industry average.",
+"Invest in Company X/Acceptable Environmental Stewardship/Has a Clean Current Record/ENV2","Waste and water usage are minimal and well-managed.",
+"Invest in Company X/Acceptable Environmental Stewardship/Has a Clean Current Record/ENV3","Supply chain has strong, audited environmental standards.",
+"Invest in Company X/Acceptable Environmental Stewardship/Has a Credible Transition Pathway",,OR
+"Invest in Company X/Acceptable Environmental Stewardship/Has a Credible Transition Pathway/ENV4","Company commits a high percentage of R&D to validated green technology.",
+"Invest in Company X/Acceptable Environmental Stewardship/Has a Credible Transition Pathway/ENV5","Has ambitious, science-based emission reduction targets (e.g., SBTi certified).",
+"Invest in Company X/Acceptable Environmental Stewardship/Has a Credible Transition Pathway/ENV6","Executive compensation is directly and significantly linked to achieving environmental targets.",
+"Invest in Company X/Demonstrable Social Responsibility",,OR
+"Invest in Company X/Demonstrable Social Responsibility/Shows Excellent Internal Culture",,OR
+"Invest in Company X/Demonstrable Social Responsibility/Shows Excellent Internal Culture/SOC1","Pays a verified living wage to all global employees.",
+"Invest in Company X/Demonstrable Social Responsibility/Shows Excellent Internal Culture/SOC2","Employee turnover rate is exceptionally low for the industry.",
+"Invest in Company X/Demonstrable Social Responsibility/Shows Excellent Internal Culture/SOC3","Has strong, independently verified diversity & inclusion metrics.",
+"Invest in Company X/Demonstrable Social Responsibility/Shows Excellent Internal Culture/SOC4","Supply chain is robustly and transparently audited for labor rights (no forced/child labor).",
+"Invest in Company X/Demonstrable Social Responsibility/Has a Positive External Impact",,AND
+"Invest in Company X/Demonstrable Social Responsibility/Has a Positive External Impact/SOC5","Products and services provide a clear, net positive social good.",
+"Invest in Company X/Demonstrable Social Responsibility/Has a Positive External Impact/SOC6","Company has a clean record on product safety and consumer protection.",
+"Invest in Company X/Demonstrable Social Responsibility/Has a Positive External Impact/SOC7","No major, unresolved human rights controversies in its operations or supply chain.",
+"Invest in Company X/Strong Corporate Governance",,AND
+"Invest in Company X/Strong Corporate Governance/GOV1","The board of directors is majority independent and diverse.",
+"Invest in Company X/Strong Corporate Governance/GOV2","Executive pay ratio is reasonable and linked to long-term, sustainable value.",
+"Invest in Company X/Strong Corporate Governance/GOV3","Political lobbying and donations are transparent and align with stated company values.",
+"Invest in Company X/Strong Corporate Governance/GOV4","Has strong shareholder protection rights (e.g., no dual-class shares).",
+"Invest in Company X/Strong Corporate Governance/GOV5","Tax practices are transparent and fair (no excessive use of tax havens).",

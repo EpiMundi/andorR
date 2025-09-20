@@ -5,7 +5,7 @@
 \alias{ethical}
 \title{Ethical investment decision tree for a fictional company - data frame format}
 \format{
-A data frame with 5 variables and 34 rows, in 'parent' format, in
+A data frame with 5 variables and 34 rows, in relational format, in
 which hierarchical relationships are indicated by a value indicating
 the parent of each node.
 \describe{

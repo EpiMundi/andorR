@@ -5,7 +5,7 @@
 \alias{notifiable}
 \title{Notifiable aquatic animal disease decision tree}
 \format{
-A data frame with 5 variables and 50 rows, in 'parent' format, in
+A data frame with 5 variables and 50 rows, in relational format, in
 which hierarchical relationships are indicated by a value indicating
 the parent of each node.
 \describe{
@@ -24,8 +24,8 @@ NA for leaves.}
 }
 }
 \source{
-This example is basedon a decision tree developed to guide provincial
-governements on the Canada Atlantic coast in their decisions on the
+This example is based on a decision tree developed to guide provincial
+governments on the Canada Atlantic coast in their decisions on the
 listing or de-listing of notifiable aquatic animal diseases.
 }
 \usage{
