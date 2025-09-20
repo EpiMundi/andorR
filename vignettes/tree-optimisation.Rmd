@@ -1,28 +1,147 @@
 ---
-title: "AND-OR Decision tree optimisation"
+title: "Optimisation of AND-OR Decision Trees"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{AND-OR Decision tree optimisation}
+  %\VignetteIndexEntry{Optimisation of AND-OR Decision Trees}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-```{r setup}
+```{r load-and-setup, echo=FALSE, message=FALSE, warning=FALSE}
+# This chunk loads the package and data for the vignette examples
 library(andorR)
-# load a tree
+library(dplyr)
+data(ethical) 
+# The ethical dataset needs to be added to your package with usethis::use_data(ethical)
+# for this vignette to build correctly.
+```
+
+## The Need for Optimisation
+
+Decisions based on complex criteria, like a medical diagnosis or an ethical investment, often require a lot of effort. Answering each question involves gathering evidence, which can be expensive, invasive, or time-consuming. The goal is to reach a correct and confident conclusion by asking the **fewest possible questions**.
+
+The `andorR` package provides a strategy for this by calculating an **influence index** for each unanswered question. This index quantifies how much a question, if answered, is likely to help resolve the entire tree. It provides a logical path to the conclusion, ensuring you're always working on the most impactful piece of the puzzle. This process also embraces **uncertainty**, allowing you to provide answers with varying levels of confidence and to revisit uncertain answers later to strengthen the final result.
+
+## The Influence Index Algorithm
+
+The optimisation process works in two stages. First, it assigns indices to the parent (non-leaf) nodes. Second, it uses those parent indices to calculate the final `influence_index` for each unanswered leaf (question).
+
+### 1. Parent Node Indices: `true_index` and `false_index`
+
+Every `AND` or `OR` node is assigned two values that represent the probability of an answer propagating up through that node. The calculation depends on the node's logical rule and the number of its *unanswered* children ($n$).
+
+* **AND Nodes:** For an `AND` node to become `TRUE`, all its children must be `TRUE`. Answering one child `TRUE` makes little progress. However, answering just one child `FALSE` immediately makes the `AND` node `FALSE` (this is called a short-circuit). Therefore:
+    * $false\_index = 1.0$ (high impact)
+    * $true\_index = 1 / n$ (impact is diluted by the other children)
+
+* **OR Nodes:** The logic is reversed. For an `OR` node to become `TRUE`, only one child needs to be `TRUE`. To make it `FALSE`, all children must be `FALSE`. Therefore:
+    * $true\_index = 1.0$ (high impact)
+    * $false\_index = 1 / n$ (impact is diluted)
+
+### 2. Leaf Node `influence_index`
+
+A leaf's total influence is its potential to affect the final outcome. This is calculated by multiplying the indices of all its ancestors up to the root for both the `TRUE` and `FALSE` pathways, and then summing them.
+
+The formula is:
+$$Influence = (\prod \text{ancestor true_indices}) + (\prod \text{ancestor false_indices})$$
+
+This score represents the combined probability of the leaf's answer propagating up to the root and helping to resolve the final conclusion. The leaf with the highest score is the most strategic question to investigate next.
+
+## A Worked Example
+
+Let's walk through the process using the `ethical` investment tree included with this package.
+
+### Step 1: Load and Prepare the Tree
+
+We start by loading the package and the `ethical` dataset, then use `load_tree_df()` to build the tree object.
+
+```{r setup-tree}
+library(andorR)
+
+# Load the built-in ethical dataset
+data(ethical)
 dtree <- load_tree_df(ethical)
+```
 
-# calculate the optimisation indices
+### Step 2: Calculate the Indices
+
+The `update_tree()` function is a convenient wrapper that runs all the necessary calculations in the correct order: it calculates the logical state of the tree, assigns the `true_index` and `false_index` to all parent nodes, and then calculates the `influence_index` for all unanswered leaves.
+
+```{r calculate-indices}
+# Calculate all indices for the initial state
 dtree <- update_tree(dtree)
+```
 
-# examine the optimisation indices
+### Step 3: Display and Interpret the Results
+
+We can now print the tree to see the calculated indices. Notice that parent nodes have a `true_index` and `false_index`, while only the unanswered leaves have an `influence_index`.
+
+```{r print-indices}
 options(width = 120)
+# We rename the column header for better display
 print(dtree, "rule", "true_index", "false_index", influence = "influence_index")
+```
+
+To find the best question to ask first, we use `get_highest_influence()`.
+
+```{r get-influence}
+get_highest_influence(dtree, top_n = 3)
+```
+In this initial state, **FIN4**, **FIN5**, and **GOV1** (and other leaves under `AND` nodes) have the highest influence. This is because they belong to `AND` groups directly under the root. A single `FALSE` answer to any of them has a high probability of making a major branch of the tree `FALSE`, thus contributing significantly to the final answer. The tool correctly identifies these as the most efficient questions to investigate first.
+
+### Step 4: Observing Dynamic Re-Prioritization
+
+Let's focus on some of the Financial questions: 
+
+```{r get-initial-influence}
+# Get a full list of all question statuses
+all_questions <- print_questions(dtree)
+
+# Let's look at the initial influence of FIN1, FIN2, and FIN4
+all_questions %>% 
+  filter(name %in% c("FIN1", "FIN2", "FIN4")) %>%
+  knitr::kable()
+```
+
+Now, let's provide an answer and see how the priorities change. We will answer `FIN1` (which is under an `OR` node) as `TRUE`. This should resolve its parent node, "Profitability and Growth Signals".
+
+```{r answer-and-recalculate}
+# Answer a question and then run update_tree() again
+set_answer(dtree, "FIN1", TRUE, 5)
+dtree <- update_tree(dtree)
+```
+
+Now that the tree has been recalculated, let's check the influence scores for the same leaves again.
+
+```{r get-new-influence}
+# Get the new list of all question statuses
+all_questions_new <- print_questions(dtree)
+
+# Look at the new influence of FIN2 and FIN4
+all_questions_new %>% 
+  filter(name %in% c("FIN1", "FIN2", "FIN4")) %>%
+  knitr::kable()
+```
+
+#### Analysis of the Change
+
+- **FIN2**: The influence index for `FIN2` is now `NA`. This is because its parent node ("Profitability and Growth Signals") was an `OR` node. Since we answered its sibling `FIN1` as `TRUE`, the parent node is now resolved as `TRUE`. Answering `FIN2` can no longer change the outcome of that branch, so its influence has correctly become irrelevant.
+
+- **FIN4**: Conversely, the influence index for `FIN4` has **increased**. Because the "Profitability" branch is now resolved, the final outcome of the higher-level "Financial Viability" `AND` node now depends entirely on resolving the "Solvency and Stability" branch. This makes the questions under it, like `FIN4`, more critical than they were before.
+
+This dynamic re-prioritization is the core feature of the `andorR` optimisation algorithm.
+
+## Next Steps: Boosting Confidence
+
+Once enough questions have been answered to reach a `TRUE` or `FALSE` conclusion at the root, the focus of the analysis shifts. The goal is no longer to find the answer, but to increase the **confidence** in the answer you have. `andorR` provides a separate function for this phase of the analysis.
+
+For a detailed guide, see the "Confidence Boosting and Sensitivity Analysis" vignette:
+`vignette("confidence-boosting", package = "andorR")`
 ```
