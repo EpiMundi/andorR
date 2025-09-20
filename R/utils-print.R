@@ -159,3 +159,62 @@ print_tree <- function(tree) {
   invisible(tree)
 }
 
+#' @title Get a Data Frame Summary of All Leaf Questions
+#' @description Traverses the tree to find all leaf nodes (questions) and
+#'   compiles their key attributes into a single, tidy data frame. This is
+#'   useful for getting a complete overview of the analysis state or for
+#'   creating custom reports.
+#'
+#' @param tree The `data.tree` object to be summarized.
+#'
+#' @return A `data.frame` with one row for each leaf node and the following
+#'   columns: `name`, `question`, `answer`, `confidence` (on a 0-5 scale),
+#'   and `influence_index`.
+#'
+#' @importFrom data.tree Traverse isLeaf
+#' @export
+#' @examples
+#' # Load the example 'ethical' dataset
+#' data(ethical)
+#'
+#' # Build and initialize the tree object
+#' ethical_tree <- load_tree_df(ethical)
+#' ethical_tree <- update_tree(ethical_tree)
+#'
+#' # Get the summary data frame of all questions
+#' questions_df <- print_questions(ethical_tree)
+#'
+#' # Display the first few rows
+#' head(questions_df)
+#'
+print_questions <- function(tree) {
+
+  # 1. Get a stable list of all leaf nodes.
+  leaves <- Traverse(tree, filterFun = isLeaf)
+
+  # 2. Build the data frame column by column from this list.
+  #    This is robust and guarantees all columns have the same length.
+  questions_df <- data.frame(
+    name = sapply(leaves, function(n) ifelse(is.null(n$name), NA_character_, n$name)),
+    question = sapply(leaves, function(n) ifelse(is.null(n$question), NA_character_, n$question)),
+    answer = sapply(leaves, function(n) ifelse(is.null(n$answer), NA, n$answer)),
+    confidence = sapply(leaves, function(n) {
+      conf_val <- n$confidence
+      if (is.null(conf_val) || is.na(conf_val)) {
+        return(NA_real_)
+      } else {
+        # Back-convert to 0-5 scale
+        return((conf_val - 0.5) * 10)
+      }
+    }),
+    influence_index = sapply(leaves, function(n) ifelse(is.null(n$influence_index), NA, n$influence_index)),
+    stringsAsFactors = FALSE
+  )
+
+  # Ensure the answer column is logical
+  questions_df$answer <- as.logical(questions_df$answer)
+
+  return(questions_df)
+}
+
+
