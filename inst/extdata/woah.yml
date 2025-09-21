@@ -1,0 +1,42 @@
+name: "Disease Qualifies for WOAH Listing"
+rule: AND
+nodes:
+  - name: "International Significance and Feasibility"
+    rule: AND
+    question: "The disease must meet all of the following criteria regarding spread and detection."
+    nodes:
+      - name: "SPREAD"
+        question: |
+          International spread of the pathogenic agent (via live animals or their
+          products, vectors or fomites) has been proven.
+      - name: "FREEDOM"
+        question: |
+          At least one country has demonstrated freedom or impending freedom from
+          the disease, infection or infestation in populations of susceptible
+          animals, based on the provisions of Chapter 1.4.
+      - name: "DIAGNOSIS"
+        question: |
+          Reliable means of detection and diagnosis exist and a precise case
+          definition is available to clearly identify cases and allow them to be
+          distinguished from other diseases, infections or infestations.
+  - name: "Demonstrates Significant Consequences"
+    rule: OR
+    question: "The disease must meet at least one of the following criteria regarding its consequences."
+    nodes:
+      - name: "HUMAN"
+        question: |
+          Natural transmission to humans has been proven, and human infection is
+          associated with severe consequences.
+      - name: "DOMESTIC"
+        question: |
+          The disease has been shown to have a significant impact on the health of
+          domestic animals at the level of a country or a zone taking into account
+          the occurrence and severity of the clinical signs, including direct
+          production losses and mortality.
+      - name: "WILDLIFE"
+        question: |
+          The disease has been shown to, or scientific evidence indicates that it
+          would, have a significant impact on the health of wildlife taking into
+          account the occurrence and severity of the clinical signs, including
+          direct economic losses and mortality, and any threat to the viability
+          of a wildlife population.
