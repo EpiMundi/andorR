@@ -1,58 +1,58 @@
 #' @title Identify the Most Influential Question(s)
-#'
 #' @description
-#' Scans all leaf nodes in the tree to find the one or more questions that
-#' currently have the highest `influence_index`. This is the core function for
-#' guiding the user to the next most impactful question to answer during the
-#' interactive analysis loop.
+#' Scans all leaf nodes in the tree to find the questions that
+#' currently have the highest `influence_index`.
 #'
-#' @details
-#' The function works by:
-#' 1. Gathering all leaf nodes from the tree.
-#' 2. Filtering out any leaves that have already been answered or are part of an
-#'    already-resolved logical branch (where `influence_index` is `NA`).
-#' 3. Finding the maximum `influence_index` among the remaining eligible leaves.
-#' 4. Returning a data frame of all leaves that share this maximum score.
+#' @param tree The main `data.tree` object for the analysis.
+#' @param top_n The number of top-ranked questions to return.
 #'
-#' @param tree The main `data.tree` object for the analysis. It is expected that
-#'   the `calculate_influence` function has already been run on the tree, usually
-#'   by calling `update_tree()`
-#' @param top_n The number of highest ranking leaves to return.
-#' @return A `data.frame` (technically a tibble) containing the `name`, `influence_index`, and
-#'   `question` for the highest-influence leaf/leaves. Returns `NULL` invisibly if
-#'   no eligible (unanswered) questions remain.
+#' @return A `data.frame` (tibble) containing the `name`, `question`, the
+#'   components of the influence index (`influence_if_true`, `influence_if_false`),
+#'   and the total `influence_index` for the highest-influence leaf/leaves,
+#'   sorted by influence.
+#'
+#' @importFrom data.tree Traverse isLeaf
 #' @importFrom dplyr %>% filter select arrange desc
 #' @importFrom utils head
 #' @export
-#' @examples
-#' # Load a tree
-#' ethical_tree <- load_tree_df(ethical)
-#'
-#' # Calculate the influence indices
-#' ethical_tree <- update_tree(ethical_tree)
-#'
-#' # Show the most prioritised questions
-#' priority_questions <- get_highest_influence(ethical_tree)
-#'
-#' print(priority_questions)
 #'
 get_highest_influence <- function(tree, top_n = 5) {
+
+  # Get a stable list of all leaf nodes
+  leaves <- Traverse(tree, filterFun = isLeaf)
+
+  # Return NULL if there are no leaves
+  if (length(leaves) == 0) return(invisible(NULL))
+
+  # Build a data frame with all necessary attributes, including the new ones
   leaf_data <- data.frame(
-    is_leaf = tree$Get("isLeaf"),
-    name = tree$Get("name"),
-    influence_index = tree$Get("influence_index"),
-    question = tree$Get("question")
+    name = sapply(leaves, function(n) n$name),
+    question = sapply(leaves, function(n) n$question),
+    influence_if_true = sapply(leaves, function(n) {
+      if (!is.na(n$answer)) return(NA_real_)
+      vec <- n$Get('true_index', traversal = "ancestor")
+      return(prod(vec[-1], na.rm = TRUE))
+    }),
+    influence_if_false = sapply(leaves, function(n) {
+      if (!is.na(n$answer)) return(NA_real_)
+      vec <- n$Get('false_index', traversal = "ancestor")
+      return(prod(vec[-1], na.rm = TRUE))
+    }),
+    influence_index = sapply(leaves, function(n) n$influence_index)
   )
+
+  # Filter for eligible leaves (those that have a calculated influence)
   eligible_leaves <- leaf_data %>%
-    filter(is_leaf == TRUE, !is.na(influence_index))
+    filter(!is.na(influence_index))
+
   if (nrow(eligible_leaves) == 0) return(invisible(NULL))
-  # max_influence <- max(eligible_leaves$influence_index, na.rm = TRUE)
+
+  # Arrange by influence, take the top n, and select the final columns
   highest_influence_leaves <- eligible_leaves %>%
     arrange(desc(influence_index)) %>%
     head(top_n) %>%
-    # Alternative code to get only the equal-highest ranking questions
-    # filter(influence_index == max_influence) %>%
-    select(name, influence_index, question)
+    select(name, question, influence_if_true, influence_if_false, influence_index)
+
   return(highest_influence_leaves)
 }
 
@@ -313,7 +313,7 @@ set_answer <- function(tree, node_name, response, confidence_level, verbose = TR
 #'
 #' @return The final, updated `data.tree` object.
 #' @importFrom data.tree FindNode isLeaf ToDataFrameTypeCol
-#' @importFrom cli cli_alert_danger cli_alert_info cli_alert_success cli_div cli_dl cli_h1 cli_h2 cli_ol cli_rule cli_text col_red col_cyan col_yellow style_bold
+#' @importFrom cli cli_verbatim cli_alert_danger cli_alert_info cli_alert_success cli_div cli_dl cli_h1 cli_h2 cli_ol cli_rule cli_text col_blue col_red col_cyan col_yellow style_bold
 #' @importFrom dplyr %>% filter select arrange
 #' @importFrom rlang .data
 #' @importFrom stats setNames
@@ -350,20 +350,20 @@ andorR_interactive <- function(tree) {
     cli::cli_text("Version:    {version_string}")
     cli::cli_text("")
 
-    # Use a rule for the license section
-    cli::cli_rule(left = "{.strong License: CC BY-ND 4.0}")
-
-    cli::cli_text("This tool is free to use and share under these conditions:")
-
-    # Use an unordered list for the conditions
-    items <- c(
-      "You must give appropriate credit ({.strong Attribution}).",
-      "You may not distribute modified versions ({.strong No Derivatives})."
-    )
-    cli::cli_ul(items)
-
-    cli::cli_text("Full license details: {.url https://creativecommons.org/licenses/by-nd/4.0/}")
-    cli::cli_text("")
+    # # Use a rule for the license section
+    # cli::cli_rule(left = "{.strong License: CC BY-ND 4.0}")
+    #
+    # cli::cli_text("This tool is free to use and share under these conditions:")
+    #
+    # # Use an unordered list for the conditions
+    # items <- c(
+    #   "You must give appropriate credit ({.strong Attribution}).",
+    #   "You may not distribute modified versions ({.strong No Derivatives})."
+    # )
+    # cli::cli_ul(items)
+    #
+    # cli::cli_text("Full license details: {.url https://creativecommons.org/licenses/by-nd/4.0/}")
+    # cli::cli_text("")
   }
 
 
@@ -458,21 +458,39 @@ andorR_interactive <- function(tree) {
 
     if (!tree_solved) {
       cli_h2("Highest Impact Questions")
-      questions_to_ask <- get_highest_influence(tree)
+      questions_to_ask <- get_highest_influence(tree, top_n=10)
     } else {
-      questions_to_ask <- get_confidence_boosters(tree)
+      questions_to_ask <- get_confidence_boosters(tree, top_n=10)
       cli_h2("Questions to Boost Confidence")
     }
 
     if (!is.null(questions_to_ask) && nrow(questions_to_ask) > 0) {
       if (!tree_solved) {
+        header1 <- glue::glue(
+          "        [ {col_blue('Influence Index')}  ]"
+        )
+        header2 <- glue::glue(
+          "ID {col_yellow('Name')} [{col_green('True')} |{col_red('False')} |{col_blue('Total')}] {'Question'}"
+        )
+        cli_verbatim(header1)
+        cli_verbatim(header2)
         q_list <- setNames(
-          glue::glue("[{col_yellow(questions_to_ask$name)}] {col_red(questions_to_ask$influence_index)} {questions_to_ask$question} "),
+          glue::glue(
+            "{col_yellow(questions_to_ask$name)} ",
+            "[{col_green(sprintf('%.2f', questions_to_ask$influence_if_true))} | ",
+            "{col_red(sprintf('%.2f', questions_to_ask$influence_if_false))} | ",
+            "{col_blue(sprintf('%.2f', questions_to_ask$influence_index))}] ",
+            "{questions_to_ask$question}"
+          ),
           1:nrow(questions_to_ask)
         )
       } else {
         q_list <- setNames(
-          glue::glue("[{col_yellow(questions_to_ask$name)}] {questions_to_ask$action} {questions_to_ask$details} {col_red(questions_to_ask$potential_gain)}"),
+          glue::glue(
+            "[{col_yellow(questions_to_ask$name)}] ",
+            "col_cyan({questions_to_ask$action}) ",
+            "col_green({questions_to_ask$details}) ",
+            "{col_red(questions_to_ask$potential_gain)}"),
           1:nrow(questions_to_ask)
         )
       }
@@ -524,5 +542,5 @@ andorR_interactive <- function(tree) {
   }
 
   cli_h1("Exiting Interactive Mode")
-  return(tree)
+  return(invisible(tree))
 }
