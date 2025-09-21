@@ -207,6 +207,16 @@ print_questions <- function(tree) {
         return((conf_val - 0.5) * 10)
       }
     }),
+    influence_if_true = sapply(leaves, function(n) {
+      if (!is.na(n$answer)) return(NA_real_)
+      vec <- n$Get('true_index', traversal = "ancestor")
+      return(prod(vec[-1], na.rm = TRUE))
+    }),
+    influence_if_false = sapply(leaves, function(n) {
+      if (!is.na(n$answer)) return(NA_real_)
+      vec <- n$Get('false_index', traversal = "ancestor")
+      return(prod(vec[-1], na.rm = TRUE))
+    }),
     influence_index = sapply(leaves, function(n) ifelse(is.null(n$influence_index), NA, n$influence_index)),
     stringsAsFactors = FALSE
   )

@@ -1,3 +1,184 @@
+
+#############################################################################
+# Helper validation functions
+#############################################################################
+
+#' @title Validate the structure of a relational tree data frame
+#' @description Checks if a data frame has the correct columns, data types,
+#'   and structural integrity to be converted into a valid decision tree.
+#' @param df The data frame to validate.
+#' @return Returns `TRUE` if the data frame is valid, otherwise it stops with
+#'   a descriptive error message.
+#' @keywords internal
+validate_tree_df <- function(df) {
+  # 1. Check for required columns
+  required_cols <- c("id", "name", "rule", "question", "parent")
+  if (!all(required_cols %in% names(df))) {
+    stop("Input data frame is missing one or more required columns.")
+  }
+
+  # 2. Check data types
+  if (!is.numeric(df$id) || !is.numeric(df$parent)) {
+    stop("Columns 'id' and 'parent' must be numeric.")
+  }
+
+  # 3. Check ID and Root integrity
+  if (any(duplicated(df$id))) {
+    stop("Column 'id' contains duplicate values.")
+  }
+  if (sum(is.na(df$parent)) != 1) {
+    stop("Data must contain exactly one root node (with a blank 'parent' value).")
+  }
+
+  # The root's ID must be the minimum ID in the entire set.
+  root_id <- df$id[is.na(df$parent)]
+  min_id <- min(df$id, na.rm = TRUE)
+  if (root_id != min_id) {
+    stop("The root node (the row with a blank 'parent' value) must have the smallest 'id' in the dataset.")
+  }
+
+  # 4. Check for orphaned children
+  child_parents <- df$parent[!is.na(df$parent)]
+  if (!all(child_parents %in% df$id)) {
+    stop("One or more 'parent' IDs do not correspond to an existing 'id'.")
+  }
+
+  if (!is.character(df$name) || !is.character(df$question)) {
+    stop("Columns 'name' and 'question' must be character.")
+  }
+  if (!all(df$rule %in% c("AND", "OR", NA))) {
+    stop("Column 'rule' contains invalid values.")
+  }
+  if (any(is.na(df$name) | df$name == "")) {
+    stop("Column 'name' cannot contain missing or empty values.")
+  }
+  parent_rows <- !is.na(df$rule)
+  if (any(!is.na(df$question[parent_rows]))) {
+    stop("Nodes with a 'rule' (parents) cannot also have a 'question'.")
+  }
+  leaf_rows <- is.na(df$rule)
+  if (any(is.na(df$question[leaf_rows]))) {
+    stop("Nodes without a 'rule' (leaves) must have a 'question'.")
+  }
+
+  return(TRUE)
+}
+
+#' @title Validate the structure of a hierarchical tree list
+#' @description Recursively checks if a nested list has the correct structure
+#'   and attributes to be converted into a valid decision tree.
+#' @param data_list The nested list to validate.
+#' @return Returns `TRUE` if the list is valid, otherwise it stops with
+#'   a descriptive error message.
+#' @keywords internal
+validate_tree_list <- function(data_list) {
+
+  # Recursive helper function to check each node
+  validate_node_item <- function(item, path) {
+
+    # Rule: Must be a list
+    if (!is.list(item)) {
+      stop(paste0("Error at '", path, "': Each node in the structure must be a list."), call. = FALSE)
+    }
+
+    # Rule: Every element must have a name
+    if (is.null(item$name) || is.na(item$name) || item$name == "") {
+      stop(paste0("Error at '", path, "': A node is missing its 'name' attribute."), call. = FALSE)
+    }
+
+    # Update path for more specific error messages
+    current_path <- if (path == "") item$name else paste(path, item$name, sep = "/")
+
+    # Rule: If a node has a 'question', it's a leaf
+    if (!is.null(item$question) && !is.na(item$question)) {
+      if (!is.null(item$rule)) {
+        stop(paste0("Validation error at '", current_path, "': A leaf node with a 'question' cannot also have a 'rule'."), call. = FALSE)
+      }
+      if (!is.null(item$nodes)) {
+        stop(paste0("Validation error at '", current_path, "': A leaf node with a 'question' cannot also have children in a 'nodes' list."), call. = FALSE)
+      }
+    }
+
+    # Recurse for children
+    if (!is.null(item$nodes)) {
+      if (!is.list(item$nodes)) {
+        stop(paste0("Error at '", current_path, "': The 'nodes' attribute must contain a list of children."), call. = FALSE)
+      }
+      for (child_item in item$nodes) {
+        validate_node_item(child_item, current_path)
+      }
+    }
+  }
+
+  # Start the validation process
+  validate_node_item(data_list, path = "")
+
+  return(TRUE)
+}
+
+#' @title Validate the structure of a path-string tree data frame
+#' @description Checks if a data frame in path-string format has the correct
+#'   columns, data types, and structural integrity to be converted into a
+#'   valid decision tree.
+#' @param df The data frame to validate.
+#' @param delim The character used to separate nodes in the path string.
+#' @return Returns `TRUE` if the data frame is valid, otherwise it stops with
+#'   a descriptive error message.
+#' @keywords internal
+validate_tree_df_path <- function(df, delim = "/") {
+
+  # 1. Check for required columns
+  required_cols <- c("path", "question", "rule")
+  if (!all(required_cols %in% names(df))) {
+    stop("Input data frame is missing one or more required columns.\nRequired columns are: 'path', 'question', 'rule'.", call. = FALSE)
+  }
+
+  # 2. Check data types
+  if (!is.character(df$path) || !is.character(df$question) || !is.character(df$rule)) {
+    stop("Columns 'path', 'question', and 'rule' must all be of type character.", call. = FALSE)
+  }
+
+  # 3. Check rule values
+  valid_rules <- c("AND", "OR", NA, "") # Allow blank strings as well as NA
+  # Using toupper to make the check case-insensitive for the rule
+  if (!all(toupper(df$rule) %in% valid_rules)) {
+    stop("Column 'rule' contains invalid values. It must only contain 'AND', 'OR', or be blank/NA.", call. = FALSE)
+  }
+
+  # 4. Check path consistency
+  if (any(is.na(df$path) | df$path == "")) {
+    stop("Column 'path' cannot contain missing or empty values.", call. = FALSE)
+  }
+
+  # Find the root (the shortest path string)
+  path_components <- strsplit(df$path, delim, fixed = TRUE)
+  path_lengths <- sapply(path_components, length)
+
+  if (sum(path_lengths == 1) != 1) {
+    stop("Data must contain exactly one root node (a path with only one component).", call. = FALSE)
+  }
+
+  root_name <- path_components[[which.min(path_lengths)]][1]
+
+  # Check that all paths start with the same root name
+  if (!all(sapply(path_components, function(p) p[1] == root_name))) {
+    stop("All paths in the 'path' column must start with the same root node name.", call. = FALSE)
+  }
+
+  # 5. Check rule/question logic
+  parent_rows <- !is.na(df$rule) & df$rule != ""
+  if (any(!is.na(df$question[parent_rows]))) {
+    stop("Nodes with a 'rule' (parents) cannot also have a 'question'.", call. = FALSE)
+  }
+  leaf_rows <- is.na(df$rule) | df$rule == ""
+  if (any(is.na(df$question[leaf_rows]))) {
+    stop("Nodes without a 'rule' (leaves) must have a 'question'.", call. = FALSE)
+  }
+
+  # If all checks pass, return TRUE
+  return(TRUE)
+}
+
 #############################################################################
 # Load trees in different formats
 #############################################################################
@@ -26,6 +207,8 @@
 #' print_tree(ethical_tree)
 #' }
 load_tree_df <- function(df) {
+  # Ensure that the structure and content of the passed dataframe are valid
+  validate_tree_df(df)
 
   node_list <- list()
 
@@ -63,8 +246,9 @@ load_tree_df <- function(df) {
     }
   }
 
-  # The root of the tree is the node with id = 0
-  tree <- node_list[['0']]
+  # Find the root ID dynamically instead of assuming it is '0'
+  root_id <- min(df$id, na.rm = TRUE)
+  tree <- node_list[[as.character(root_id)]]
 
   return(tree)
 }
@@ -109,6 +293,9 @@ load_tree_df <- function(df) {
 #' print_tree(my_tree)
 #'
 load_tree_node_list <- function(data_list) {
+
+  # Validate the input list
+  validate_tree_list(data_list)
 
   # Define a recursive helper function to build the tree
   recursive_builder <- function(current_list_item) {
@@ -180,7 +367,16 @@ load_tree_csv <- function(file_path) {
   }
 
   # Read the data from the CSV file
-  df <- utils::read.csv(file_path, stringsAsFactors = FALSE)
+  df <- tryCatch({
+    # This is the code we are "trying" to execute
+    utils::read.csv(file_path, stringsAsFactors = FALSE)
+
+  }, error = function(e) {
+    # This block runs only if an error occurs in the read.csv call
+    stop(paste0("Failed to read or parse the CSV file. Please ensure it is a valid, uncorrupted CSV file with the correct permissions.\n",
+                "  Original R error: ", e$message),
+         call. = FALSE)
+  })
 
   # Call your existing function to build the tree from the data frame
   tree <- load_tree_df(df)
@@ -214,7 +410,17 @@ load_tree_yaml <- function(file_path) {
   }
 
   # Read the data from the YAML file into a list
-  data_list <- yaml::read_yaml(file_path)
+  # data_list <- yaml::read_yaml(file_path)
+  data_list <- tryCatch({
+    # This is the code we are "trying" to execute
+    yaml::read_yaml(file_path)
+
+  }, error = function(e) {
+    # This block runs only if an error occurs in the read.csv call
+    stop(paste0("Failed to read or parse the YAML file. Please ensure it is a valid, uncorrupted YAML file with the correct permissions.\n",
+                "  Original R error: ", e$message),
+         call. = FALSE)
+  })
 
   # Call your existing function to build the tree from the list
   tree <- load_tree_node_list(data_list)
@@ -257,6 +463,9 @@ load_tree_yaml <- function(file_path) {
 #'
 load_tree_df_path <- function(df, delim = "/") {
 
+  # validate the structure of the df
+  validate_tree_df_path(df, delim = delim)
+
   tree <- as.Node(df, pathName = "path", pathDelimiter = delim)
 
   # Initialize the dynamic attributes for all nodes.
@@ -297,7 +506,17 @@ load_tree_csv_path <- function(file_path, delim = "/") {
   }
 
   # Read the data from the CSV file
-  df <- utils::read.csv(file_path, stringsAsFactors = FALSE)
+  # df <- utils::read.csv(file_path, stringsAsFactors = FALSE)
+  df <- tryCatch({
+    # This is the code we are "trying" to execute
+    utils::read.csv(file_path, stringsAsFactors = FALSE)
+
+  }, error = function(e) {
+    # This block runs only if an error occurs in the read.csv call
+    stop(paste0("Failed to read or parse the CSV file. Please ensure it is a valid, uncorrupted CSV file with the correct permissions.\n",
+                "  Original R error: ", e$message),
+         call. = FALSE)
+  })
 
   # Call your existing function to build the tree from the data frame
   tree <- load_tree_df_path(df, delim = delim)

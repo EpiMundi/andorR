@@ -3,7 +3,7 @@ title: "Confidence Boosting and Sensitivity Analysis"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Confidence Boosting and Sensitivity Analysis}
-  %\VignetteEngine{knitr::rmmarkdown}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 

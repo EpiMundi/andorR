@@ -7,43 +7,17 @@
 get_highest_influence(tree, top_n = 5)
 }
 \arguments{
-\item{tree}{The main \code{data.tree} object for the analysis. It is expected that
-the \code{calculate_influence} function has already been run on the tree, usually
-by calling \code{update_tree()}}
+\item{tree}{The main \code{data.tree} object for the analysis.}
 
-\item{top_n}{The number of highest ranking leaves to return.}
+\item{top_n}{The number of top-ranked questions to return.}
 }
 \value{
-A \code{data.frame} (technically a tibble) containing the \code{name}, \code{influence_index}, and
-\code{question} for the highest-influence leaf/leaves. Returns \code{NULL} invisibly if
-no eligible (unanswered) questions remain.
+A \code{data.frame} (tibble) containing the \code{name}, \code{question}, the
+components of the influence index (\code{influence_if_true}, \code{influence_if_false}),
+and the total \code{influence_index} for the highest-influence leaf/leaves,
+sorted by influence.
 }
 \description{
-Scans all leaf nodes in the tree to find the one or more questions that
-currently have the highest \code{influence_index}. This is the core function for
-guiding the user to the next most impactful question to answer during the
-interactive analysis loop.
-}
-\details{
-The function works by:
-\enumerate{
-\item Gathering all leaf nodes from the tree.
-\item Filtering out any leaves that have already been answered or are part of an
-already-resolved logical branch (where \code{influence_index} is \code{NA}).
-\item Finding the maximum \code{influence_index} among the remaining eligible leaves.
-\item Returning a data frame of all leaves that share this maximum score.
-}
-}
-\examples{
-# Load a tree
-ethical_tree <- load_tree_df(ethical)
-
-# Calculate the influence indices
-ethical_tree <- update_tree(ethical_tree)
-
-# Show the most prioritised questions
-priority_questions <- get_highest_influence(ethical_tree)
-
-print(priority_questions)
-
+Scans all leaf nodes in the tree to find the questions that
+currently have the highest \code{influence_index}.
 }
