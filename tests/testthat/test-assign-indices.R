@@ -34,7 +34,7 @@ test_that("assign_indices is dynamic and counts only unanswered children", {
   tree <- data.tree::Node$new("Root", rule = "AND")
   tree$AddChild("L1", answer = NA)
   tree$AddChild("L2", answer = NA)
-  tree$AddChild("L3", answer = TRUE) # This one is answered
+  tree$AddChild("L3", answer = TRUE)
 
   # The unanswered_count should be 2, not 3.
 
@@ -51,8 +51,6 @@ test_that("assign_indices handles cases where all children are answered", {
   tree <- data.tree::Node$new("Root", rule = "OR")
   tree$AddChild("L1", answer = TRUE)
   tree$AddChild("L2", answer = FALSE)
-
-  # The unanswered_count should be 0, which the function treats as 1.
 
   # Act
   tree$Do(assign_indices)

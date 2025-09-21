@@ -5,6 +5,14 @@
 #'
 #' @param tree The main `data.tree` object for the analysis.
 #' @param top_n The number of top-ranked questions to return.
+#' @param sort_by A character string indicating how the prioritised questions
+#' should be sorted. Options are:
+#' - "TRUE" : Sort by the product of the node true_index for all ancestors, which
+#'    measures the influence of the question if it is answered TRUE
+#' - "FALSE" : Sort by the product of the node false_index for all ancestors, which
+#'    measures the influence of the question if it is answered FALSE
+#' - "BOTH" : (Default) Sort by the sum of 'TRUE' and 'FALSE' values which measures
+#'    the aggregate influence of the question before the answer is known
 #'
 #' @return A `data.frame` (tibble) containing the `name`, `question`, the
 #'   components of the influence index (`influence_if_true`, `influence_if_false`),
@@ -16,7 +24,7 @@
 #' @importFrom utils head
 #' @export
 #'
-get_highest_influence <- function(tree, top_n = 5) {
+get_highest_influence <- function(tree, top_n = 5, sort_by = "BOTH") {
 
   # Get a stable list of all leaf nodes
   leaves <- Traverse(tree, filterFun = isLeaf)
@@ -48,8 +56,13 @@ get_highest_influence <- function(tree, top_n = 5) {
   if (nrow(eligible_leaves) == 0) return(invisible(NULL))
 
   # Arrange by influence, take the top n, and select the final columns
+  if (sort_by == "TRUE") sort_index <- 'influence_if_true'
+  else if (sort_by == "FALSE") sort_index <- 'influence_if_false'
+  else sort_index <- 'influence_index'
+
   highest_influence_leaves <- eligible_leaves %>%
-    arrange(desc(influence_index)) %>%
+    arrange(desc(.data[[sort_index]])) %>%
+    #arrange(desc(sort_index)) %>%
     head(top_n) %>%
     select(name, question, influence_if_true, influence_if_false, influence_index)
 
@@ -176,7 +189,7 @@ get_confidence_boosters <- function(tree, top_n = 5, verbose = TRUE) {
         current_conf_0_5 <- (leaf$confidence - 0.5) * 10
         suggestions[[leaf$name]] <- list(action = "Increase Confidence",
                                          name = leaf$name,
-                                         question = leaf$question, # THE FIX IS HERE
+                                         question = leaf$question,
                                          details = paste0("Current conf: ", round(current_conf_0_5, 1), "/5"),
                                          potential_gain = gain)
       }
@@ -310,6 +323,14 @@ set_answer <- function(tree, node_name, response, confidence_level, verbose = TR
 #' - **1, 2, ...** : Specify a node to edit from the numbered list
 #'
 #' @param tree The `data.tree` object to be analysed.
+#' @param sort_by A character string indicating how the prioritised questions
+#' should be sorted. Options are:
+#' - "TRUE" : Sort by the product of the node true_index for all ancestors, which
+#'    measures the influence of the question if it is answered TRUE
+#' - "FALSE" : Sort by the product of the node false_index for all ancestors, which
+#'    measures the influence of the question if it is answered FALSE
+#' - "BOTH" : (Default) Sort by the sum of 'TRUE' and 'FALSE' values which measures
+#'    the aggregate influence of the question before the answer is known
 #'
 #' @return The final, updated `data.tree` object.
 #' @importFrom data.tree FindNode isLeaf ToDataFrameTypeCol
@@ -327,13 +348,12 @@ set_answer <- function(tree, node_name, response, confidence_level, verbose = TR
 #' andorR_interactive(ethical_tree)
 #' }
 #'
-andorR_interactive <- function(tree) {
+andorR_interactive <- function(tree, sort_by = "BOTH") {
 
   # --- Local Helper Function to display the introduction to interactive mode ---
   # ------------------------------------------------------
   print_intro <- function() {
 
-    # Try to get the package version dynamically
     version_string <- tryCatch({
       as.character(utils::packageVersion("andorR"))
     }, error = function(e) {
@@ -342,7 +362,7 @@ andorR_interactive <- function(tree) {
 
     cli::cli_h1("andorR")
     cli::cli_text("{.emph An analysis and optimisation tool for AND-OR decision trees.}")
-    cli::cli_text("") # Spacer line
+    cli::cli_text("")
 
     cli::cli_text("Created by: EpiMundi ({.url https://epimundi.com})")
     cli::cli_text("Author:     {.strong Angus Cameron}")
@@ -350,20 +370,6 @@ andorR_interactive <- function(tree) {
     cli::cli_text("Version:    {version_string}")
     cli::cli_text("")
 
-    # # Use a rule for the license section
-    # cli::cli_rule(left = "{.strong License: CC BY-ND 4.0}")
-    #
-    # cli::cli_text("This tool is free to use and share under these conditions:")
-    #
-    # # Use an unordered list for the conditions
-    # items <- c(
-    #   "You must give appropriate credit ({.strong Attribution}).",
-    #   "You may not distribute modified versions ({.strong No Derivatives})."
-    # )
-    # cli::cli_ul(items)
-    #
-    # cli::cli_text("Full license details: {.url https://creativecommons.org/licenses/by-nd/4.0/}")
-    # cli::cli_text("")
   }
 
 
@@ -414,7 +420,7 @@ andorR_interactive <- function(tree) {
       cli_alert_danger("Invalid input. Please enter a number between 0 and 5.")
     }
 
-    # Use the package's API to set the answer
+    # Set the answer
     tree_obj <- set_answer(tree_obj, node_name_to_edit, new_answer, new_conf)
     return(tree_obj)
   }
@@ -445,7 +451,6 @@ andorR_interactive <- function(tree) {
       cli_text("You can now answer more questions or revise existing answers to boost confidence.")
     }
 
-    # The internal confidence is 0.5-1.0; 100% means it's 1.0.
     tree_finished <- tree_solved && isTRUE(root_node$confidence == 1.0)
     if (tree_finished) {
       cli_alert_success("Tree solved with 100% confidence! Quitting.")
@@ -458,7 +463,7 @@ andorR_interactive <- function(tree) {
 
     if (!tree_solved) {
       cli_h2("Highest Impact Questions")
-      questions_to_ask <- get_highest_influence(tree, top_n=10)
+      questions_to_ask <- get_highest_influence(tree, top_n=10, sort_by = sort_by)
     } else {
       questions_to_ask <- get_confidence_boosters(tree, top_n=10)
       cli_h2("Questions to Boost Confidence")

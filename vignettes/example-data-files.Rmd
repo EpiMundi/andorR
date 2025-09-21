@@ -16,8 +16,6 @@ The `andorR` package includes several raw data files in different formats to dem
 ## Included Files
 
 ```{r, echo=FALSE, results='asis'}
-# This code chunk finds and lists the files for you
-# NOTE: We use try() in case the package isn't fully loaded during a check
 files <- try(list.files(system.file("extdata", package = "andorR")), silent = TRUE)
 
 if (length(files) > 0 && !inherits(files, "try-error")) {

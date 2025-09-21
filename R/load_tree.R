@@ -80,11 +80,10 @@ validate_tree_list <- function(data_list) {
       stop(paste0("Validation error at '", path, "': Tree item is not a valid list."))
     }
     if (is.null(item$name) || !is.character(item$name) || item$name == "") {
-      # Error message uses parent path because we don't know the current node's name
       stop(paste0("Validation error: A node directly under '", path, "' is missing a valid 'name'."))
     }
 
-    # 2. Now that we have a name, construct the full path for this node
+    # 2. Construct the full path for this node
     current_path <- if (path == "") item$name else paste(path, item$name, sep = "/")
 
     # 3. Define if the node is a leaf based on the rule and perform checks
@@ -141,7 +140,6 @@ validate_tree_df_path <- function(df, delim = "/") {
 
   # 3. Check rule values
   valid_rules <- c("AND", "OR", NA, "") # Allow blank strings as well as NA
-  # Using toupper to make the check case-insensitive for the rule
   if (!all(toupper(df$rule) %in% valid_rules)) {
     stop("Column 'rule' contains invalid values. It must only contain 'AND', 'OR', or be blank/NA.", call. = FALSE)
   }
@@ -172,7 +170,6 @@ validate_tree_df_path <- function(df, delim = "/") {
     stop("Nodes without a 'rule' (leaves) must have a 'question'.", call. = FALSE)
   }
 
-  # If all checks pass, return TRUE
   return(TRUE)
 }
 
@@ -243,7 +240,7 @@ load_tree_df <- function(df) {
     }
   }
 
-  # Find the root ID dynamically instead of assuming it is '0'
+  # Find the root ID dynamically
   root_id <- min(df$id, na.rm = TRUE)
   tree <- node_list[[as.character(root_id)]]
 
@@ -365,17 +362,14 @@ load_tree_csv <- function(file_path) {
 
   # Read the data from the CSV file
   df <- tryCatch({
-    # This is the code we are "trying" to execute
     utils::read.csv(file_path, stringsAsFactors = FALSE, na.strings = "")
 
   }, error = function(e) {
-    # This block runs only if an error occurs in the read.csv call
     stop(paste0("Failed to read or parse the CSV file. Please ensure it is a valid, uncorrupted CSV file with the correct permissions.\n",
                 "  Original R error: ", e$message),
          call. = FALSE)
   })
 
-  # Call your existing function to build the tree from the data frame
   tree <- load_tree_df(df)
 
   return(tree)
@@ -409,17 +403,14 @@ load_tree_yaml <- function(file_path) {
   # Read the data from the YAML file into a list
   # data_list <- yaml::read_yaml(file_path)
   data_list <- tryCatch({
-    # This is the code we are "trying" to execute
     yaml::read_yaml(file_path)
 
   }, error = function(e) {
-    # This block runs only if an error occurs in the read.csv call
     stop(paste0("Failed to read or parse the YAML file. Please ensure it is a valid, uncorrupted YAML file with the correct permissions.\n",
                 "  Original R error: ", e$message),
          call. = FALSE)
   })
 
-  # Call your existing function to build the tree from the list
   tree <- load_tree_node_list(data_list)
 
   return(tree)
@@ -505,17 +496,14 @@ load_tree_csv_path <- function(file_path, delim = "/") {
   # Read the data from the CSV file
   # df <- utils::read.csv(file_path, stringsAsFactors = FALSE)
   df <- tryCatch({
-    # This is the code we are "trying" to execute
     utils::read.csv(file_path, stringsAsFactors = FALSE, na.strings = "")
 
   }, error = function(e) {
-    # This block runs only if an error occurs in the read.csv call
     stop(paste0("Failed to read or parse the CSV file. Please ensure it is a valid, uncorrupted CSV file with the correct permissions.\n",
                 "  Original R error: ", e$message),
          call. = FALSE)
   })
 
-  # Call your existing function to build the tree from the data frame
   tree <- load_tree_df_path(df, delim = delim)
 
   return(tree)

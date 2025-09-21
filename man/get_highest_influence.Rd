@@ -4,12 +4,23 @@
 \alias{get_highest_influence}
 \title{Identify the Most Influential Question(s)}
 \usage{
-get_highest_influence(tree, top_n = 5)
+get_highest_influence(tree, top_n = 5, sort_by = "BOTH")
 }
 \arguments{
 \item{tree}{The main \code{data.tree} object for the analysis.}
 
 \item{top_n}{The number of top-ranked questions to return.}
+
+\item{sort_by}{A character string indicating how the prioritised questions
+should be sorted. Options are:
+\itemize{
+\item "TRUE" : Sort by the product of the node true_index for all ancestors, which
+measures the influence of the question if it is answered TRUE
+\item "FALSE" : Sort by the product of the node false_index for all ancestors, which
+measures the influence of the question if it is answered FALSE
+\item "BOTH" : (Default) Sort by the sum of 'TRUE' and 'FALSE' values which measures
+the aggregate influence of the question before the answer is known
+}}
 }
 \value{
 A \code{data.frame} (tibble) containing the \code{name}, \code{question}, the

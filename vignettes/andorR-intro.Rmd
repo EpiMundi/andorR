@@ -15,10 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r load-and-setup, echo=FALSE, message=FALSE, warning=FALSE}
-# This chunk loads the package and data for the vignette examples
 library(andorR)
-# The ethical dataset needs to be added to your package with usethis::use_data(ethical)
-# for this vignette to build correctly.
 data(ethical) 
 ```
 

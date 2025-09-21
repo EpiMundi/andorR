@@ -24,11 +24,7 @@ test_that("validate_tree_df_path catches inconsistent roots", {
 })
 
 test_that("validate_tree_df_path catches multiple roots", {
-  # CORRECTED: Use add_row() to correctly add a new row
-  # All other columns for this new row will be NA by default, which is fine.
   invalid_df <- tibble::add_row(valid_path_df, path = "SecondRoot")
-
-  # Now the data frame is correctly formed with 5 rows, and the validation should fail.
   expect_error(validate_tree_df_path(invalid_df))
 })
 

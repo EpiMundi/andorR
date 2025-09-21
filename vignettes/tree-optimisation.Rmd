@@ -15,12 +15,9 @@ knitr::opts_chunk$set(
 ```
 
 ```{r load-and-setup, echo=FALSE, message=FALSE, warning=FALSE}
-# This chunk loads the package and data for the vignette examples
 library(andorR)
 library(dplyr)
 data(ethical) 
-# The ethical dataset needs to be added to your package with usethis::use_data(ethical)
-# for this vignette to build correctly.
 ```
 
 ## The Need for Optimisation
@@ -52,7 +49,24 @@ A leaf's total influence is its potential to affect the final outcome. This is c
 The formula is:
 $$Influence = (\prod \text{ancestor true_indices}) + (\prod \text{ancestor false_indices})$$
 
-This score represents the combined probability of the leaf's answer propagating up to the root and helping to resolve the final conclusion. The leaf with the highest score is the most strategic question to investigate next.
+This score represents the combined probability of the leaf's answer propagating up to the root and helping to resolve the final conclusion. The leaf with the highest score is the most strategic question to investigate next, if the outcome of the tree is considered neutral. 
+
+### 3. Prioritisation strategies in practice
+
+The list of prioritised questions is calculated using the `get_highest_influence()` function. This takes an optional parameter `sort_by` which can have the following values:
+
+- "TRUE" : 
+  - Sort by the influence the question has if a **TRUE** response is provided. This can be thought of as a **rule-in** strategy, minimising the number of questions required if the objective is to acheive a TRUE answer for the entire tree. 
+  - If the `influence_if_true` of a question is equal to 1, then answering that single 
+question with TRUE will resolve the entire tree with TRUE
+- "FALSE" :  
+  - Sort by the influence the question has if a **FALSE** response is provided. This can be thought of as a **rule-out** strategy, minimising the number of questions required if the objective is to acheive a FALSE answer for the entire tree. 
+  - If the `influence_if_false` of a question is equal to 1, then answering that single 
+question with FALSE will resolve the entire tree with FALSE. 
+- "BOTH" : 
+  - The default. Sort by the sum of the two previous values, giving a summary measure of influence if we are **neutral** about the tree outcome.
+
+The strategy used in the interactive analysis can also be set using the `sort_by` parameter.
 
 ## A Worked Example
 

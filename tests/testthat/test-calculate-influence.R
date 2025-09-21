@@ -34,7 +34,6 @@ test_that("calculate_influence sets index to NA for a leaf under a resolved ance
   # Arrange
   tree <- data.tree::Node$new("Root", rule = "OR", answer = NA, confidence = NA)
 
-  # THE FIX: Ensure ALL nodes are created with the attributes the functions expect.
   leaf_answered <- tree$AddChild("LeafAnswered", answer = NA, confidence = NA)
   leaf_moot <- tree$AddChild("LeafMoot", answer = NA, confidence = NA, influence_index = 1.5)
 

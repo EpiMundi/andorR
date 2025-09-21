@@ -4,10 +4,21 @@
 \alias{andorR_interactive}
 \title{Enter Interactive Analysis Mode}
 \usage{
-andorR_interactive(tree)
+andorR_interactive(tree, sort_by = "BOTH")
 }
 \arguments{
 \item{tree}{The \code{data.tree} object to be analysed.}
+
+\item{sort_by}{A character string indicating how the prioritised questions
+should be sorted. Options are:
+\itemize{
+\item "TRUE" : Sort by the product of the node true_index for all ancestors, which
+measures the influence of the question if it is answered TRUE
+\item "FALSE" : Sort by the product of the node false_index for all ancestors, which
+measures the influence of the question if it is answered FALSE
+\item "BOTH" : (Default) Sort by the sum of 'TRUE' and 'FALSE' values which measures
+the aggregate influence of the question before the answer is known
+}}
 }
 \value{
 The final, updated \code{data.tree} object.

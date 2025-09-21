@@ -74,7 +74,7 @@ print_tree <- function(tree) {
   col_starts <- c(Tree = 0, Rule = 50, Answer = 60, Confidence = 72)
   tree_col_width <- col_starts["Rule"] - 2
 
-  # A single helper to print one formatted line
+  # A helper to print one formatted line
   print_formatted_line <- function(node, prefix = "") {
     style_func <- switch(node$branch_color, green = cli::col_green, red = cli::col_red, function(x) x)
     styled_name <- style_func(node$name)
@@ -89,9 +89,7 @@ print_tree <- function(tree) {
       tree_part <- paste0(prefix, styled_name)
     }
     rule_str <- if (!is.null(node$rule) && !is.na(node$rule)) cli::col_cyan(node$rule) else ""
-    # rule_str <- if (!is.na(node$rule)) cli::col_cyan(node$rule) else ""
     answer_str <- if (!is.null(node$answer) && !is.na(node$answer)) style_func(toupper(as.character(node$answer))) else ""
-    # answer_str <- if (!is.na(node$answer)) style_func(toupper(as.character(node$answer))) else ""
     conf_str <- ""
     if (!is.na(node$confidence)) {
       if (node$isLeaf) conf_str <- cli::col_cyan(as.character(round((node$confidence - 0.5) * 10, 1)))
@@ -135,8 +133,6 @@ print_tree <- function(tree) {
       connector <- if (is_last) "`-- " else "|-- "
       styled_connector <- child_style(connector)
 
-      # This is the line-printing logic that also needed to be changed
-      # It now calls the single, corrected print_formatted_line helper
       print_formatted_line(child, paste0(prefix, styled_connector))
 
       print_children_recursive(child, c(ancestors_is_last, is_last))
