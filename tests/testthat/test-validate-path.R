@@ -38,12 +38,6 @@ test_that("validate_tree_df_path catches invalid rule values", {
   expect_error(validate_tree_df_path(invalid_df))
 })
 
-test_that("validate_tree_df_path catches when parents have questions", {
-  invalid_df <- valid_path_df
-  invalid_df$question[3] <- "This parent should not have a question"
-  expect_error(validate_tree_df_path(invalid_df))
-})
-
 test_that("validate_tree_df_path catches when leaves are missing questions", {
   invalid_df <- valid_path_df
   invalid_df$question[2] <- NA_character_

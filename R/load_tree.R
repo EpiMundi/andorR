@@ -167,10 +167,6 @@ validate_tree_df_path <- function(df, delim = "/") {
   }
 
   # 5. Check rule/question logic
-  parent_rows <- !is.na(df$rule) & df$rule != ""
-  if (any(!is.na(df$question[parent_rows]))) {
-    stop("Nodes with a 'rule' (parents) cannot also have a 'question'.", call. = FALSE)
-  }
   leaf_rows <- is.na(df$rule) | df$rule == ""
   if (any(is.na(df$question[leaf_rows]))) {
     stop("Nodes without a 'rule' (leaves) must have a 'question'.", call. = FALSE)
@@ -370,7 +366,7 @@ load_tree_csv <- function(file_path) {
   # Read the data from the CSV file
   df <- tryCatch({
     # This is the code we are "trying" to execute
-    utils::read.csv(file_path, stringsAsFactors = FALSE)
+    utils::read.csv(file_path, stringsAsFactors = FALSE, na.strings = "")
 
   }, error = function(e) {
     # This block runs only if an error occurs in the read.csv call
@@ -510,7 +506,7 @@ load_tree_csv_path <- function(file_path, delim = "/") {
   # df <- utils::read.csv(file_path, stringsAsFactors = FALSE)
   df <- tryCatch({
     # This is the code we are "trying" to execute
-    utils::read.csv(file_path, stringsAsFactors = FALSE)
+    utils::read.csv(file_path, stringsAsFactors = FALSE, na.strings = "")
 
   }, error = function(e) {
     # This block runs only if an error occurs in the read.csv call
