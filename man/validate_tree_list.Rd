@@ -14,7 +14,7 @@ Returns \code{TRUE} if the list is valid, otherwise it stops with
 a descriptive error message.
 }
 \description{
-Recursively checks if a nested list has the correct structure
-and attributes to be converted into a valid decision tree.
+Recursively checks if a nested list has the correct structure and
+attributes to be converted into a valid decision tree.
 }
 \keyword{internal}

@@ -65,56 +65,57 @@ validate_tree_df <- function(df) {
 }
 
 #' @title Validate the structure of a hierarchical tree list
-#' @description Recursively checks if a nested list has the correct structure
-#'   and attributes to be converted into a valid decision tree.
+#' @description Recursively checks if a nested list has the correct structure and
+#'   attributes to be converted into a valid decision tree.
 #' @param data_list The nested list to validate.
 #' @return Returns `TRUE` if the list is valid, otherwise it stops with
 #'   a descriptive error message.
 #' @keywords internal
 validate_tree_list <- function(data_list) {
 
-  # Recursive helper function to check each node
+  # Define a recursive helper function to validate each node
   validate_node_item <- function(item, path) {
-
-    # Rule: Must be a list
+    # 1. Basic structural checks
     if (!is.list(item)) {
-      stop(paste0("Error at '", path, "': Each node in the structure must be a list."), call. = FALSE)
+      stop(paste0("Validation error at '", path, "': Tree item is not a valid list."))
+    }
+    if (is.null(item$name) || !is.character(item$name) || item$name == "") {
+      # Error message uses parent path because we don't know the current node's name
+      stop(paste0("Validation error: A node directly under '", path, "' is missing a valid 'name'."))
     }
 
-    # Rule: Every element must have a name
-    if (is.null(item$name) || is.na(item$name) || item$name == "") {
-      stop(paste0("Error at '", path, "': A node is missing its 'name' attribute."), call. = FALSE)
-    }
-
-    # Update path for more specific error messages
+    # 2. Now that we have a name, construct the full path for this node
     current_path <- if (path == "") item$name else paste(path, item$name, sep = "/")
 
-    # Rule: If a node has a 'question', it's a leaf
-    if (!is.null(item$question) && !is.na(item$question)) {
-      if (!is.null(item$rule)) {
-        stop(paste0("Validation error at '", current_path, "': A leaf node with a 'question' cannot also have a 'rule'."), call. = FALSE)
-      }
+    # 3. Define if the node is a leaf based on the rule and perform checks
+    is_leaf <- is.null(item$rule) || is.na(item$rule) || item$rule == ""
+
+    if (is_leaf) {
       if (!is.null(item$nodes)) {
-        stop(paste0("Validation error at '", current_path, "': A leaf node with a 'question' cannot also have children in a 'nodes' list."), call. = FALSE)
+        stop(paste0("Validation error at '", current_path, "': A leaf node (no rule) cannot have children."))
+      }
+      if (is.null(item$question) || is.na(item$question) || item$question == "") {
+        stop(paste0("Validation error at '", current_path, "': A leaf node (no rule) must have a 'question'."))
+      }
+    } else { # This is a parent node
+      if (is.null(item$nodes) || !is.list(item$nodes) || length(item$nodes) == 0) {
+        stop(paste0("Validation error at '", current_path, "': A parent node (with a rule) must have children in a 'nodes' list."))
       }
     }
 
-    # Recurse for children
-    if (!is.null(item$nodes)) {
-      if (!is.list(item$nodes)) {
-        stop(paste0("Error at '", current_path, "': The 'nodes' attribute must contain a list of children."), call. = FALSE)
-      }
+    # 4. Recurse for children, passing down the correct new path
+    if (!is.null(item$nodes) && is.list(item$nodes)) {
       for (child_item in item$nodes) {
         validate_node_item(child_item, current_path)
       }
     }
   }
 
-  # Start the validation process
+  # Start the recursive validation from the root
   validate_node_item(data_list, path = "")
-
   return(TRUE)
 }
+
 
 #' @title Validate the structure of a path-string tree data frame
 #' @description Checks if a data frame in path-string format has the correct

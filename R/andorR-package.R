@@ -23,7 +23,7 @@
 #'   \item \code{\link{get_highest_influence}},
 #'     \code{\link{get_confidence_boosters}}: Prioritisation of questions to
 #'     optimise the completion of the tree.
-#'   \item \code{\link{print_tree}} and \code{\link{print_answers}}: Visualise
+#'   \item \code{\link{print_tree}} and \code{\link{print_questions}}: Visualise
 #'     the state of the tree
 #'   \item \code{\link{andorR_interactive}}: The main, user-facing function that
 #'     automates the entire analysis in a step-by-step interactive session.
