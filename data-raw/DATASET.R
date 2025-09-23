@@ -7,6 +7,8 @@ library(yaml)
 ethical_nl <- yaml::read_yaml("data-raw/ethical.yml")
 usethis::use_data(ethical_nl)
 
-
-
 usethis::use_data(DATASET, overwrite = TRUE)
+
+
+# Draw the data format diagram
+
