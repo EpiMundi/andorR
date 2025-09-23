@@ -442,7 +442,7 @@ load_tree_json <- function(file_path) {
 
   # Read the data from the JSON file into a list
   data_list <- tryCatch({
-    jsonlite::fromJSON(file_path)
+    jsonlite::fromJSON(file_path, simplifyDataFrame = FALSE)
 
   }, error = function(e) {
     stop(paste0("Failed to read or parse the JSON file. Please ensure it is a valid, uncorrupted JSON file with the correct permissions.\n",

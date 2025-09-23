@@ -33,6 +33,7 @@ Imports:
     data.tree,
     dplyr,
     yaml,
+    jsonlite,
     cli,
     crayon,
     glue,
