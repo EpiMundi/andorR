@@ -168,10 +168,12 @@ print(tree_from_path)
 
 ### Summary of Formats
 
+<img src="formats.svg" alt="Diagram showing relationships between different formats" width="100%">
+
+
 | Format Name | Best For | Key Structure | Core Loading Function |
 | :--- | :--- | :--- | :--- |
-| **Hierarchical** | Manual creation, readability, version control (git) | Indented YAML file with a `nodes` key | `load_tree_yaml()` |
+| **Hierarchical** | Manual creation, readability, version control (git) | Indented YAML or JSON file with a `nodes` key | `load_tree_yaml()` or `load_tree_json()` |
 | **Relational** | Exporting from databases, spreadsheets (Excel) | A flat table with `id` and `parent` columns | `load_tree_csv()` |
 | **Path String** | Programmatic generation, ensuring structural integrity | A flat table with a single `path` column | `load_tree_csv_path()` |
 
-```
