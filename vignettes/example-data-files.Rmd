@@ -49,7 +49,8 @@ of `andorR`
 This data is available in the following formats:
 
 - Comma Separated Value (.csv) format, with data arranged in relational structure.
-- YAML (.yml) format, with data arranged in a hierarchcial structure
+- YAML (.yml) format, with data arranged in a hierarchical structure
+- JSON (.json) format, arranged in a hierarchical structure
 - CSV (ethical_nl.csv) with data arranged in a node path structure.
 
 #### Source

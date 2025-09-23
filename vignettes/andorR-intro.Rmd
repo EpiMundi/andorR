@@ -132,12 +132,6 @@ dtree <- update_tree(dtree)
 andorR_interactive(dtree)
 ```
 
-### Next Steps: The Confidence Boosting Phase
-
-Now that a conclusion has been reached, the goal is no longer to find the answer, but to increase our confidence in it. `andorR` provides functions to guide this next stage of the investigation.
-
-For a detailed guide on this process, see the vignette on confidence boosting:
-`vignette("confidence-boosting", package = "andorR")`
 
 ### Included Datasets
 

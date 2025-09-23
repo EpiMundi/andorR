@@ -401,12 +401,51 @@ load_tree_yaml <- function(file_path) {
   }
 
   # Read the data from the YAML file into a list
-  # data_list <- yaml::read_yaml(file_path)
   data_list <- tryCatch({
     yaml::read_yaml(file_path)
 
   }, error = function(e) {
     stop(paste0("Failed to read or parse the YAML file. Please ensure it is a valid, uncorrupted YAML file with the correct permissions.\n",
+                "  Original R error: ", e$message),
+         call. = FALSE)
+  })
+
+  tree <- load_tree_node_list(data_list)
+
+  return(tree)
+}
+
+#' @title Load a decision tree from a JSON file (Hierarchical Format)
+#' @description Reads a JSON  file from a given path and constructs a tree. This
+#'   function expects the JSON to define the tree in a hierarchical (nested)
+#'   format. It uses `load_tree_node_list` to construct the tree object.
+#'
+#' @param file_path The path to the .jsn or .json file.
+#' @return A `data.tree` object, fully constructed and initialized with `answer`
+#'   and `confidence` attributes set to `NA`.
+#' @seealso [load_tree_node_list()] for the underlying constructor function.
+#' @importFrom jsonlite fromJSON
+#' @export
+#' @examples
+#'
+#' #' # Load data from the `ethical.json` file included with this package
+#' path <- system.file("extdata", "ethical.json", package = "andorR")
+#' ethical_tree <- load_tree_json(path)
+#'
+#' # View the tree
+#' print_tree(ethical_tree)
+#'
+load_tree_json <- function(file_path) {
+  if (!file.exists(file_path)) {
+    stop(paste("File not found at path:", file_path), call. = FALSE)
+  }
+
+  # Read the data from the JSON file into a list
+  data_list <- tryCatch({
+    jsonlite::fromJSON(file_path)
+
+  }, error = function(e) {
+    stop(paste0("Failed to read or parse the JSON file. Please ensure it is a valid, uncorrupted JSON file with the correct permissions.\n",
                 "  Original R error: ", e$message),
          call. = FALSE)
   })
