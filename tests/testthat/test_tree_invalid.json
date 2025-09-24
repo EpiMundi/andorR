@@ -1,0 +1,14 @@
+{
+  "name": "Root",
+  "rule": "OR",
+  "nodes": [
+    {
+      "name": "L1",
+      "question": "Is A true?"
+    },
+    {
+      "name": "L2",
+      "question": "Is B true?"
+    }
+  ]
+
