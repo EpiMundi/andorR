@@ -26,6 +26,14 @@
 #'
 get_highest_influence <- function(tree, top_n = 5, sort_by = "BOTH") {
 
+  # Check if influence_index exists on at least one leaf.
+  # This confirms that update_tree() has been run.
+  leaf_indices <- unlist(tree$Get("influence_index", filterFun = isLeaf))
+  if (all(is.na(leaf_indices))) {
+    stop("Influence indices have not been calculated. Please run `update_tree()` on your tree first.", call. = FALSE)
+  }
+
+
   # Get a stable list of all leaf nodes
   leaves <- Traverse(tree, filterFun = isLeaf)
 
@@ -36,22 +44,15 @@ get_highest_influence <- function(tree, top_n = 5, sort_by = "BOTH") {
   leaf_data <- data.frame(
     name = sapply(leaves, function(n) n$name),
     question = sapply(leaves, function(n) n$question),
-    influence_if_true = sapply(leaves, function(n) {
-      if (!is.na(n$answer)) return(NA_real_)
-      vec <- n$Get('true_index', traversal = "ancestor")
-      return(prod(vec[-1], na.rm = TRUE))
-    }),
-    influence_if_false = sapply(leaves, function(n) {
-      if (!is.na(n$answer)) return(NA_real_)
-      vec <- n$Get('false_index', traversal = "ancestor")
-      return(prod(vec[-1], na.rm = TRUE))
-    }),
+    answer = sapply(leaves, function(n) n$answer),
+    influence_if_true = sapply(leaves, function(n) n$influence_if_true),
+    influence_if_false = sapply(leaves, function(n) n$influence_if_false),
     influence_index = sapply(leaves, function(n) n$influence_index)
   )
 
   # Filter for eligible leaves (those that have a calculated influence)
   eligible_leaves <- leaf_data %>%
-    filter(!is.na(influence_index))
+    filter(is.na(answer))
 
   if (nrow(eligible_leaves) == 0) return(invisible(NULL))
 
