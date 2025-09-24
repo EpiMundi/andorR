@@ -1,6 +1,7 @@
 # andorR 0.2.1
 
-# andorR
+* **MINOR CHANGES**
+    * Added tests for file loading (.yml, .json, .csv)
 
 # andorR 0.2.0
 
