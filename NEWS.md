@@ -1,3 +1,8 @@
+# andorR 0.2.2
+
+* **MINOR CHANGES**
+    * Added tests for set_answer()
+
 # andorR 0.2.1
 
 * **MINOR CHANGES**
@@ -18,4 +23,4 @@
 * First pre-release version of the package.
 * Includes core functions for loading, calculating, and optimising the analysis
   of AND-OR decision trees.
-* Includes `ethical`, `notifiable`, and `bse` example datasets.
+* Includes `ethical` example dataset and various example data files
