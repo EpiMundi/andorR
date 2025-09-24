@@ -493,8 +493,8 @@ andorR_interactive <- function(tree, sort_by = "BOTH") {
         q_list <- setNames(
           glue::glue(
             "[{col_yellow(questions_to_ask$name)}] ",
-            "col_cyan({questions_to_ask$action}) ",
-            "col_green({questions_to_ask$details}) ",
+            "{col_cyan(questions_to_ask$action)} ",
+            "{col_green(questions_to_ask$details)} ",
             "{col_red(questions_to_ask$potential_gain)}"),
           1:nrow(questions_to_ask)
         )

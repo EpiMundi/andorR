@@ -47,7 +47,7 @@ validate_tree_df <- function(df) {
     stop("Columns 'name' and 'question' must be character.")
   }
   if (!all(df$rule %in% c("AND", "OR", NA))) {
-    stop("Column 'rule' contains invalid values.")
+    stop("Column 'rule' contains invalid values (such as empty strings instead of NA). If read using read.csv() be sure to use read.csv(path, stringsAsFactors = FALSE, na.strings = '')")
   }
   if (any(is.na(df$name) | df$name == "")) {
     stop("Column 'name' cannot contain missing or empty values.")
@@ -244,6 +244,9 @@ load_tree_df <- function(df) {
   root_id <- min(df$id, na.rm = TRUE)
   tree <- node_list[[as.character(root_id)]]
 
+  # Update the tree's internal indices ready for calculation
+  tree <- update_tree(tree)
+
   return(tree)
 }
 
@@ -329,6 +332,9 @@ load_tree_node_list <- function(data_list) {
     node$answer <- NA
     node$confidence <- NA
   })
+
+  # Update the tree's internal indices ready for calculation
+  tree <- update_tree(tree)
 
   return(tree)
 }
@@ -500,6 +506,9 @@ load_tree_df_path <- function(df, delim = "/") {
     node$answer <- NA
     node$confidence <- NA
   })
+
+  # Update the tree's internal indices ready for calculation
+  tree <- update_tree(tree)
 
   # Return the fully constructed and initialized tree.
   return(tree)
