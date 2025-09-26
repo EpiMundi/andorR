@@ -184,6 +184,16 @@ assign_indices <- function(node) {
 #' @keywords internal
 #'
 calculate_influence <- function(node) {
+
+  # if any ancestor is already resolved, set values to NA (no longer have any influence)
+  ancestor_answers <- unlist(node$Get("answer", traversal = "ancestor"))
+  if (!is.na(node$answer) || any(!is.na(ancestor_answers))) {
+    node$influence_index <- NA
+    node$influence_if_true <- NA
+    node$influence_if_false <- NA
+    return()
+  }
+
   if (!is.na(node$answer)) {
     node$influence_index <- NA
     node$influence_if_true <- NA
