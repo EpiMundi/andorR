@@ -51,9 +51,9 @@ While the R ecosystem has excellent packages for machine-learning-derived decisi
 2. Manage uncertainty: It propagates semi-quantitative confidence scores through the tree's logic.
 3. Guide confidence-building: It identifies which low-confidence answers are the most critical to strengthen through further investigation.
 
-# Examples
+# Usage
 
-## Installation
+## Installation and loading
 
 This package can be installed from GitHub.
 
@@ -65,8 +65,6 @@ if(!require("devtools")) {
 }
 devtools::install_github("epimundi/andorR")
 ```
-
-## Loading
 
 Load the package by typing
 
@@ -84,13 +82,11 @@ and [examples](https://...example-data-files.html) are provided.
 
 ### Loading and analysing a decision tree
 
-A family of ``load_tree_`` functions load data from file or memory in different
-formats. The ``update_tree()`` function performs optimisation calculations
-based on responses provided.
+A family of ``load_tree_`` functions load data from file or memory. The ``update_tree()`` function propagates results up the tree, and performs optimisation calculations based on responses provided.
 
 ### Determining the most influential questions
 
-The ``get_highest_influence()`` function returns an ordered list of leaves that
+The ``get_highest_influence()`` function returns an ordered list of questions (leaves) that
 have the greatest impact on resolving the tree. The algorithm is described in the
 vignette on the [Optimisation of AND-OR Decision Trees](https://...tree-optimisation.html)
 
@@ -98,7 +94,7 @@ vignette on the [Optimisation of AND-OR Decision Trees](https://...tree-optimisa
 
 The ``get_confidence_boosters()`` function performs a sensitivity analysis to determine
 which questions would have the greatest impact on the overall tree confidence if
-more evidence was generated to improve the confidence in the individual respons.
+more evidence was generated to improve the confidence in the individual response.
 the approach is described in the [Confidence Boosting and Sensitivity Analysis](https://...confidence-boosting.html)
 vignette.
 
