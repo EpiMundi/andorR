@@ -1,0 +1,4 @@
+id,name,question,rule,parent
+1,"Root",,OR,
+2,"L1","Is A true?",,1
+3,"L2","Is B true?",,1

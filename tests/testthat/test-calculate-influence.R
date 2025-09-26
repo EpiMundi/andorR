@@ -30,25 +30,14 @@ test_that("calculate_influence sets index to NA for an already-answered leaf", {
   expect_true(is.na(leaf1$influence_index))
 })
 
-test_that("calculate_influence sets index to NA for a leaf under a resolved ancestor", {
-  # Arrange
-  tree <- data.tree::Node$new("Root", rule = "OR", answer = NA, confidence = NA)
+test_that("calculate_influence sets index to NA for an already-answered leaf", {
+  # Arrange: Create a leaf that has an answer
+  tree <- data.tree::Node$new("Root")
+  leaf1 <- tree$AddChild("Leaf1", answer = TRUE, confidence = 0.9, influence_index = 1.5)
 
-  leaf_answered <- tree$AddChild("LeafAnswered", answer = NA, confidence = NA)
-  leaf_moot <- tree$AddChild("LeafMoot", answer = NA, confidence = NA, influence_index = 1.5)
+  # Act: Run the function on the answered leaf
+  calculate_influence(leaf1)
 
-  # Provide an answer AND a confidence to the first leaf
-  leaf_answered$answer <- TRUE
-  leaf_answered$confidence <- 0.9
-
-  # Act
-  # Run calculate_tree to propagate this answer up to the Root
-  calculate_tree(tree)
-
-  # Now that the Root is resolved, run calculate_influence on the moot leaf
-  calculate_influence(leaf_moot)
-
-  # Assert
-  # The moot leaf's influence index should now be NA
-  expect_true(is.na(leaf_moot$influence_index))
+  # Assert: The influence index should now be NA
+  expect_true(is.na(leaf1$influence_index))
 })

@@ -19,7 +19,7 @@ The `andorR` package is designed to be flexible, allowing you to define your dec
 
 The examples below use the `ethical` investment decision tree, which is included as a dataset within this package.
 
-## 1. The Hierarchical (YAML) Format
+## 1. The Hierarchical Format (YAML or JSON)
 
 This is often the most intuitive and human-readable format, as its indented structure visually represents the tree's hierarchy. It is highly recommended for creating and managing trees in a text editor.
 
@@ -27,9 +27,12 @@ This is often the most intuitive and human-readable format, as its indented stru
 
 * `name`: The name of the node.
 * `nodes`: A list of child nodes (this key is used instead of the reserved word `children`).
-* Optional attributes like `rule` and `question` can be added to any node.
+* `rule` : Required for parent nodes, can be **AND** or **OR**
+* `question` : Required for leaf nodes
 
-An excerpt from a YAML file (`ethical_tree.yml`) looks like this:
+### YAML format
+
+An excerpt from a YAML file (`ethical.yml`) looks like this:
 
 ```yaml
 name: Invest in Company X
@@ -51,11 +54,47 @@ To load a tree from a YAML file, use the `load_tree_yaml()` function.
 
 ```{r, eval=FALSE}
 # This code shows how to load a YAML file from the package's example data
-yaml_path <- system.file("extdata", "ethical_tree.yml", package = "andorR")
+yaml_path <- system.file("extdata", "ethical.yml", package = "andorR")
 tree_from_yaml <- load_tree_yaml(yaml_path)
 
 # View the loaded tree
 print(tree_from_yaml)
+```
+
+### JSON format
+
+An excerpt from a JSON file (`ethical.json`) looks like this:
+
+```json
+{
+  "name": "Invest in Company X",
+  "rule": "AND",
+  "nodes": [
+    {
+      "name": "Financial Viability",
+      "rule": "AND",
+      "nodes": [
+        {
+          "name": "Profitability and Growth Signals",
+          "rule": "OR",
+          "question": "Is the company showing strong signs of profitability?",
+          "nodes": [
+            {
+              "name": "FIN1",
+              "question": "Company demonstrates consistent, high revenue growth."
+            },
+# ... and so on
+```
+
+To load a tree from a JSON file, use the `load_tree_json()` function.
+
+```{r, eval=FALSE}
+# This code shows how to load a JSON file from the package's example data
+json_path <- system.file("extdata", "ethical.json", package = "andorR")
+tree_from_json <- load_tree_json(json_path)
+
+# View the loaded tree
+print(tree_from_json)
 ```
 
 ## 2. The Relational (ID/Parent) Format
@@ -67,7 +106,8 @@ This is a flat, tabular format common in spreadsheets and databases. The tree st
 * `id`: A unique numeric ID for every node. The root must have `id = 0`.
 * `name`: The name/code for the node.
 * `parent`: The `id` of the parent node. The root's parent should be `NA`.
-* Optional attributes: `question`, `rule`.
+* `rule` : Required for parent nodes, can be **AND** or **OR**
+* `question` : Required for leaf nodes
 
 The first few rows of the `ethical` dataset look like this:
 
@@ -97,8 +137,8 @@ This is another flat-file format that is very robust. The hierarchy is defined b
 **Required Fields:**
 
 * `path`: A string with a character (like `/`) separating the names of the nodes in the hierarchy.
-* `question`: NA for nodes. 
-* `rule`: NA for leaves.
+* `question`: Required for leaves, NA for parent nodes. 
+* `rule`: Required for parent nodes, NA for leaves.
 
 An excerpt from a CSV file in this format would look like this:
 
@@ -128,10 +168,12 @@ print(tree_from_path)
 
 ### Summary of Formats
 
+<img src="formats.svg" alt="Diagram showing relationships between different formats" width="100%">
+
+
 | Format Name | Best For | Key Structure | Core Loading Function |
 | :--- | :--- | :--- | :--- |
-| **Hierarchical** | Manual creation, readability, version control (git) | Indented YAML file with a `nodes` key | `load_tree_yaml()` |
+| **Hierarchical** | Manual creation, readability, version control (git) | Indented YAML or JSON file with a `nodes` key | `load_tree_yaml()` or `load_tree_json()` |
 | **Relational** | Exporting from databases, spreadsheets (Excel) | A flat table with `id` and `parent` columns | `load_tree_csv()` |
 | **Path String** | Programmatic generation, ensuring structural integrity | A flat table with a single `path` column | `load_tree_csv_path()` |
 
-```

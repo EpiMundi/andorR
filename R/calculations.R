@@ -186,19 +186,21 @@ assign_indices <- function(node) {
 calculate_influence <- function(node) {
   if (!is.na(node$answer)) {
     node$influence_index <- NA
+    node$influence_if_true <- NA
+    node$influence_if_false <- NA
     return()
   }
-  ancestor_answers <- unlist(node$Get("answer", traversal = "ancestor"))
-  if (any(!is.na(ancestor_answers))) {
-    node$influence_index <- NA
-    return()
-  }
+  # Get ancestor index vectors
   true_indices_vec <- node$Get('true_index', traversal = "ancestor")
   false_indices_vec <- node$Get('false_index', traversal = "ancestor")
-  ancestor_true_indices <- true_indices_vec[-1]
-  ancestor_false_indices <- false_indices_vec[-1]
-  prod_true <- prod(ancestor_true_indices, na.rm = TRUE)
-  prod_false <- prod(ancestor_false_indices, na.rm = TRUE)
+
+  # Calculate the two components of the influence
+  prod_true <- prod(true_indices_vec[-1], na.rm = TRUE)
+  prod_false <- prod(false_indices_vec[-1], na.rm = TRUE)
+
+  # Assign all three values to the node
+  node$influence_if_true <- prod_true
+  node$influence_if_false <- prod_false
   node$influence_index <- prod_true + prod_false
 }
 

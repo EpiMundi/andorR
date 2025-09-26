@@ -31,25 +31,14 @@
 #'
 #' @section Full Tutorials (Vignettes):
 #' To learn how to use the package in detail, please see the vignettes:
-#' #' To learn how to use the package in detail, please see the vignettes:
-#' \describe{
-#'   \item{Introduction:}{
-#'     \code{vignette("introduction-to-andorR", package = "andorR")}
-#'   }
-#'   \item{Explanation of data formats:}{
-#'     \code{vignette("data-formats", package = "andorR")}
-#'   }
-#'   \item{Tree optimisation algorithm:}{
-#'     \code{vignette("tree-optimisation", package = "andorR")}
-#'   }
-#'   \item{Sensitivity analysis algorithm:}{
-#'     \code{vignette("confidence-boosting", package = "andorR")}
-#'   }
-#'   \item{Example files:}{
-#'     \code{vignette("example-data-files", package = "andorR")}
-#'   }
-#' }
-#'#' @keywords internal
+#' - \link[=introduction-to-andorR]{Introduction to andorR.}
+#' - \link[=data-formats]{Data Formats for andorR.}
+#' - \link[=tree-optimisation]{Optimisation of AND-OR Decision Trees.}
+#' - \link[=confidence-boosting]{Confidence Boosting and Sensitivity Analysis.}
+#' - \link[=example-data-files]{Example Data Files.}
+#'
+
+#' @keywords internal
 "_PACKAGE"
 
 ## usethis namespace: start
