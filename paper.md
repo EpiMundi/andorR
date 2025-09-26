@@ -14,26 +14,50 @@ affiliations:
  - name: EpiMundi, France
    index: 1
 date: 30 September 2025
-# bibliography: paper.bib
+bibliography: paper.bib
 ---
 
 # Summary
 
-A summary describing the high-level functionality and purpose of the software 
-for a diverse, non-specialist audience.
+`andorR`  (pronounced ‘Andorra’) is an R package to optimize the use of resources in the completion of an expert system AND-OR decision tree, in the face of uncertainty. Expert system AND-OR decision trees consist of a list of questions (leaves) connected by a hierarchical set of decision nodes, each using AND or OR logic to reach a conclusion (the outcome of the root node). 
+
+`andorR` provides a function to help select most strategic sequence of questions to reach a conclusion with the minimum number of questions. By capturing the level of confidence in each response, it can  provide guidance on the prioritisation of new evidence generation to best increase confidence in the conclusion. The package also includes an iterative interface to automate the process completing the decision tree. 
 
 # Statement of need
 
-A Statement of need section that clearly illustrates the research purpose of the 
-and places it in the context of related work.
+AND-OR decision trees (also known as logic trees or Boolean decision trees) provide a structured way to implement expert systems in domains where repeatable, transparent, and standardized decision processes are critical, and where multiple pathways may lead to the same conclusion [@usnrc1981fault; @iec61025]. Such trees are particularly valuable when decisions are based on a set of binary (TRUE/FALSE) criteria that can be combined using AND and OR logic.  
+
+Examples include **clinical diagnosis of complex or ambiguous diseases**, where diagnostic rules break down symptoms, signs, and lab findings into yes/no criteria that guide treatment decisions. Well-known examples are the *Ottawa Ankle Rules* for imaging in acute ankle injuries [@stiell1992ottawa; @stiell1994implementation], the *Centor criteria* for streptococcal pharyngitis [@centor1981diagnosis], and the *Alvarado score* for suspected appendicitis [@alvarado1986score]. In these cases, individual binary criteria are combined sequentially to arrive at a single diagnostic or management decision.  
+
+Similarly, AND-OR decision trees are used to support **transparent policy decisions**, such as determining whether to add an item to a regulated list. The World Organisation for Animal Health (WOAH) uses a set of criteria, each evaluated as TRUE/FALSE, which are combined via logical operations to produce a decision on listing notifiable animal diseases [@woah2024code; @woahCriteria]. The United Nations Educational, Scientific and Cultural Organization uses a similar approach to selecting world heritage sites [@unesco2023operational; @unescoCriteria] 
+
+In **finance and investment management**, stage-gate systems and exclusionary screening provide additional examples of AND-OR decision trees. Companies make Go/No-Go investment decisions by evaluating multiple criteria, often combined via AND/OR logic, and sometimes incorporating confidence or scoring thresholds at each decision gate [@cooper1990stagegate; @cooper2002optimizing; @trinks2017opportunity]. For instance, socially responsible investment screening often applies a set of binary inclusion/exclusion criteria to determine portfolio eligibility [@dimson2020exclusion].  
+
+In each case, the decision process can be represented as a tree, where nodes apply AND/OR logic to the results of individual criteria, leading to a single binary outcome at the root. This representation provides transparency, reproducibility, and the ability to explicitly track confidence or uncertainty at each decision point [@mcgee2002simplifying; @grimes2005refining]. An example of a hypothetical decision tree to guide ethical investments is shown below:
+
+![Ethical investment decision-tree example](ethical.png)
+
+While the size of such trees is usually relatively small (less than 40 or 50 individual questions or leaves), determining an accurate answer to each question may require considerable resources. For example, a diagnostic expert system may include a variety of tests and investigations, some of which may be expensive or invasive. When making a policy decision, such as adding a disease an officially notifiable list, detailed information about the distribution, transmissibility and potential impact of the disease is required. Detailed surveillance or research studies may be required to gather this information. 
+
+Except in the trivial case of a single AND node (in which case the decision tree is simply a check list), reaching a conclusion usually does not require all questions to be answered, and the number of questions required depends both on the response to specific questions and the order in which they are completed. Minimising the number of questions that need to be answered can result in significant savings, but the users of such expert systems may find it difficult, in the face of complex branching logic, to choose the optimal sequence. 
+
+At the same time, absolute certainty is not always necessary. By assigning a confidence level to each response, it is possible to calculate the overall confidence in the conclusion. A few low confidence inputs may still result in adequately high confidence response. 
+
+In practice, those using this type of expert system may often do a ‘first draft’ providing low confidence responses to generate an initial conclusion. This is followed by research to generate evidence to increase the confidence of the more influential questions, thereby increasing confidence in the conclusion until a target threshold is reached. 
+
+While the R ecosystem has excellent packages for machine-learning-derived decision trees (e.g., `rpart`), there is a lack of tools specifically designed for the interactive, evidence-gathering workflow of expert-defined logic trees. `andorR` addresses this need by providing functions to:
+
+1. Optimize the path to a conclusion: It calculates the influence of each unanswered question, guiding the user to the most efficient sequence.
+2. Manage uncertainty: It propagates semi-quantitative confidence scores through the tree's logic.
+3. Guide confidence-building: It identifies which low-confidence answers are the most critical to strengthen through further investigation.
 
 # Examples
 
 ## Installation
 
-This package can be installed from GitHub (developmental version) or CRAN (stable version).
+This package can be installed from GitHub.
 
-In order to install ``andorR`` use the following command:
+In order to install `andorR` use the following command:
 
 ```r
 if(!require("devtools")) {
@@ -90,29 +114,6 @@ The package also contains helper functions to read and display the current
 state of decision trees during analysis.
 
 
-# Acknowledgements
-
-No financial support was received for this project. The work was inspired by 
-the Canadian One Coast research project, under which EpiMundi was contracted
-to develop a decision tree to standardise the process of listing notifiable
-aquatic animal diseases.
-
 # References
 
-A list of key references, including to other software addressing related needs. 
-Note that the references should include full names of venues, e.g., journals and 
-conferences, not abbreviations only understood in the context of a specific discipline.
-
-In separate paper.bib file in the following format:
-@article{Pearson:2017,
-  	url = {http://adsabs.harvard.edu/abs/2017arXiv170304627P},
-  	Archiveprefix = {arXiv},
-  	Author = {{Pearson}, S. and {Price-Whelan}, A.~M. and {Johnston}, K.~V.},
-  	Eprint = {1703.04627},
-  	Journal = {ArXiv e-prints},
-  	Keywords = {Astrophysics - Astrophysics of Galaxies},
-  	Month = mar,
-  	Title = {{Gaps in Globular Cluster Streams: Pal 5 and the Galactic Bar}},
-  	Year = 2017
-}
 
