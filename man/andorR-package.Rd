@@ -39,28 +39,17 @@ automates the entire analysis in a step-by-step interactive session.
 \section{Full Tutorials (Vignettes)}{
 
 To learn how to use the package in detail, please see the vignettes:
-#' To learn how to use the package in detail, please see the vignettes:
-\describe{
-\item{Introduction:}{
-\code{vignette("introduction-to-andorR", package = "andorR")}
+\itemize{
+\item \link[=introduction-to-andorR]{Introduction to andorR.}
+\item \link[=data-formats]{Data Formats for andorR.}
+\item \link[=tree-optimisation]{Optimisation of AND-OR Decision Trees.}
+\item \link[=confidence-boosting]{Confidence Boosting and Sensitivity Analysis.}
+\item \link[=example-data-files]{Example Data Files.}
 }
-\item{Explanation of data formats:}{
-\code{vignette("data-formats", package = "andorR")}
-}
-\item{Tree optimisation algorithm:}{
-\code{vignette("tree-optimisation", package = "andorR")}
-}
-\item{Sensitivity analysis algorithm:}{
-\code{vignette("confidence-boosting", package = "andorR")}
-}
-\item{Example files:}{
-\code{vignette("example-data-files", package = "andorR")}
-}
-}
-#' @keywords internal
 }
 
 \author{
 \strong{Maintainer}: Angus R Cameron \email{angus.cameron@epimundi.com} (\href{https://orcid.org/0000-0001-8801-0366}{ORCID})
 
 }
+\keyword{internal}
