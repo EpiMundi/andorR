@@ -1,3 +1,9 @@
+# andorR 0.2.3
+
+* **Bug fixes**
+    * Leaves with resolved ancestors were not having indices set to NA
+    * get_highest_impact() list was filtering for NA indices
+
 # andorR 0.2.2
 
 * **MINOR CHANGES**

@@ -30,10 +30,10 @@ test_that("calculate_influence sets index to NA for an already-answered leaf", {
   expect_true(is.na(leaf1$influence_index))
 })
 
-test_that("calculate_influence sets index to NA for an already-answered leaf", {
+test_that("calculate_influence sets index to NA for chldren of an already-answered branch", {
   # Arrange: Create a leaf that has an answer
-  tree <- data.tree::Node$new("Root")
-  leaf1 <- tree$AddChild("Leaf1", answer = TRUE, confidence = 0.9, influence_index = 1.5)
+  tree <- data.tree::Node$new("Root", answer = TRUE)
+  leaf1 <- tree$AddChild("Leaf1", answer = TRUE, confidence = 0.9)
 
   # Act: Run the function on the answered leaf
   calculate_influence(leaf1)

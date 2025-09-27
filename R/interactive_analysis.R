@@ -50,20 +50,19 @@ get_highest_influence <- function(tree, top_n = 5, sort_by = "BOTH") {
     influence_index = sapply(leaves, function(n) n$influence_index)
   )
 
-  # Filter for eligible leaves (those that have a calculated influence)
-  eligible_leaves <- leaf_data %>%
-    filter(is.na(answer))
-
-  if (nrow(eligible_leaves) == 0) return(invisible(NULL))
-
   # Arrange by influence, take the top n, and select the final columns
   if (sort_by == "TRUE") sort_index <- 'influence_if_true'
   else if (sort_by == "FALSE") sort_index <- 'influence_if_false'
   else sort_index <- 'influence_index'
 
+  eligible_leaves <- leaf_data %>%
+    filter(is.na(answer)) %>% # Filter out answered questions
+    filter(!is.na(.data[[sort_index]])) # Filter out questions with NA influence (due to moot branch)
+
+  if (nrow(eligible_leaves) == 0) return(invisible(NULL))
+
   highest_influence_leaves <- eligible_leaves %>%
     arrange(desc(.data[[sort_index]])) %>%
-    #arrange(desc(sort_index)) %>%
     head(top_n) %>%
     select(name, question, influence_if_true, influence_if_false, influence_index)
 
