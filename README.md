@@ -7,8 +7,6 @@
 
 <!-- badges: end -->
 
-# andorR
-
 [![R-CMD-check](https://github.com/EpiMundi/andorR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/EpiMundi/andorR/actions/workflows/R-CMD-check.yaml)
 `andorR` (pronounced ‘Andorra’) is an R package for the analysis and
 optimization of expert system AND-OR decision trees. It helps manage the
