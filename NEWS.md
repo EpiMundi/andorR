@@ -1,3 +1,11 @@
+# andorR 0.2.4
+
+* **Bug fixes**
+    * Remove incorrect recalculation of influence indices from print_questions()
+    
+* **MINOR CHANGES**
+    * Cleaned code to remove colour from lines in print_tree()
+
 # andorR 0.2.3
 
 * **Bug fixes**
