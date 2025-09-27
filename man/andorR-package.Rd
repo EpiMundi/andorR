@@ -40,11 +40,11 @@ automates the entire analysis in a step-by-step interactive session.
 
 To learn how to use the package in detail, please see the vignettes:
 \itemize{
-\item \link[=introduction-to-andorR]{Introduction to andorR.}
-\item \link[=data-formats]{Data Formats for andorR.}
-\item \link[=tree-optimisation]{Optimisation of AND-OR Decision Trees.}
-\item \link[=confidence-boosting]{Confidence Boosting and Sensitivity Analysis.}
-\item \link[=example-data-files]{Example Data Files.}
+\item \href{../doc/andorR-intro.html}{Introduction to andorR}
+\item \href{../doc/data-formats.html}{Data Formats for andorR}
+\item \href{../doc/tree-optimisation.html}{Optimisation of AND-OR Decision Trees}
+\item \href{../doc/confidence-boosting.html}{Confidence Boosting and Sensitivity Analysis}
+\item \href{../doc/example-data-files.html}{Example Data Files}
 }
 }
 

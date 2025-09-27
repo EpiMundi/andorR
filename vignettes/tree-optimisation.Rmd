@@ -1,7 +1,7 @@
 ---
 title: "Optimisation of AND-OR Decision Trees"
 output: rmarkdown::html_vignette
-vignette: >
+vignette: > 
   %\VignetteIndexEntry{Optimisation of AND-OR Decision Trees}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}

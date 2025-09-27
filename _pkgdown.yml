@@ -1,0 +1,27 @@
+url: https://EpiMundi.github.io/andorR/
+template:
+  bootstrap: 5
+navbar:
+  components:
+    home: {icon: fa-home fa-lg}
+    reference:
+      text: Reference
+      menu:
+        - text: Index
+          href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+        - text: Introduction
+          href: articles/andorR-intro.html
+        - text: Data formats
+          href: articles/data-formats.html
+        - text: Tree optimisation
+          href: articles/tree-optimisation.html
+        - text: Confidence boosting
+          href: articles/confidence-boosting.html
+        - text: Example data
+          href: articles/example-data-files.html
+    news:
+      text: News
+      href: news/index.html

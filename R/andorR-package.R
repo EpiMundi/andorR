@@ -31,12 +31,11 @@
 #'
 #' @section Full Tutorials (Vignettes):
 #' To learn how to use the package in detail, please see the vignettes:
-#' - \link[=introduction-to-andorR]{Introduction to andorR.}
-#' - \link[=data-formats]{Data Formats for andorR.}
-#' - \link[=tree-optimisation]{Optimisation of AND-OR Decision Trees.}
-#' - \link[=confidence-boosting]{Confidence Boosting and Sensitivity Analysis.}
-#' - \link[=example-data-files]{Example Data Files.}
-#'
+#' - \href{../doc/andorR-intro.html}{Introduction to andorR}
+#' - \href{../doc/data-formats.html}{Data Formats for andorR}
+#' - \href{../doc/tree-optimisation.html}{Optimisation of AND-OR Decision Trees}
+#' - \href{../doc/confidence-boosting.html}{Confidence Boosting and Sensitivity Analysis}
+#' - \href{../doc/example-data-files.html}{Example Data Files}
 
 #' @keywords internal
 "_PACKAGE"
