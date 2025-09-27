@@ -77,8 +77,8 @@ library(andorR)
 ### Decision tree definition formats
 
 Three formats can be used to define a decision tree: relational, hierarchical, 
-and path-string. These are explained in the vignette [Data Formats for andorR](https://...data-formats.html) 
-and [examples](https://...example-data-files.html) are provided.
+and path-string. These are explained in the vignette [Data Formats for andorR](https://EpiMundi.github.io/andorR/articles/data-formats.html) 
+and [examples](https://EpiMundi.github.io/andorR/articles/example-data-files.html) are provided.
 
 ### Loading and analysing a decision tree
 
@@ -88,14 +88,14 @@ A family of ``load_tree_`` functions load data from file or memory. The ``update
 
 The ``get_highest_influence()`` function returns an ordered list of questions (leaves) that
 have the greatest impact on resolving the tree. The algorithm is described in the
-vignette on the [Optimisation of AND-OR Decision Trees](https://...tree-optimisation.html)
+vignette on the [Optimisation of AND-OR Decision Trees](https://EpiMundi.github.io/andorR/articles/tree-optimisation.html)
 
 ### Improving confidence in the conclusion
 
 The ``get_confidence_boosters()`` function performs a sensitivity analysis to determine
 which questions would have the greatest impact on the overall tree confidence if
 more evidence was generated to improve the confidence in the individual response.
-the approach is described in the [Confidence Boosting and Sensitivity Analysis](https://...confidence-boosting.html)
+the approach is described in the [Confidence Boosting and Sensitivity Analysis](https://EpiMundi.github.io/andorR/articles/confidence-boosting.html)
 vignette.
 
 ### Interactive use
@@ -104,7 +104,7 @@ The ``andorR_interactive()`` function launches a command-line interactive tool t
 iteratively priotise questions, capture the response, recalculate the tree and
 propose an updated list of priority questions. After the tree has been resolved
 it switches to confidence boosting mode. The overall process is described in the
-[Introduction to andorR](https://...andorR-intro.html) vignette.
+[Introduction to andorR](https://EpiMundi.github.io/andorR/articles/andorR-intro.html) vignette.
 
 The package also contains helper functions to read and display the current
 state of decision trees during analysis.
