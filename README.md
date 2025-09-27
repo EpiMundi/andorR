@@ -67,13 +67,14 @@ Let’s illustrate `andorR`’s core functionality by loading a predefined
 ethical investment decision tree, making some initial decisions, and
 then identifying the most influential remaining questions.
 
-First, load the package and an example tree (assuming `load_tree_df` and
-`ethical` data exist in your package).
+First, load the package and an example tree, and view the tree
+structure.
 
 ``` r
 library(andorR)
+library(knitr)
 
-# Load the example 'ethical' dataset (assuming it's exported in your package)
+# Load the example 'ethical' dataset
 data(ethical)
 tree <- load_tree_df(ethical)
 
@@ -116,90 +117,55 @@ print_tree(tree)
 #>     `-- GOV5
 ```
 
-If you run the above code, you’d see the tree with no answers. Let’s
-make some decisions and update the tree. First, get a list of the
-questions:
+Get a list of the questions:
 
 ``` r
-print_questions(tree)
-#>    name
-#> 1  FIN1
-#> 2  FIN2
-#> 3  FIN3
-#> 4  FIN4
-#> 5  FIN5
-#> 6  ENV1
-#> 7  ENV2
-#> 8  ENV3
-#> 9  ENV4
-#> 10 ENV5
-#> 11 ENV6
-#> 12 SOC1
-#> 13 SOC2
-#> 14 SOC3
-#> 15 SOC4
-#> 16 SOC5
-#> 17 SOC6
-#> 18 SOC7
-#> 19 GOV1
-#> 20 GOV2
-#> 21 GOV3
-#> 22 GOV4
-#> 23 GOV5
-#>                                                                                           question
-#> 1                                            Company demonstrates consistent, high revenue growth.
-#> 2                                     Company maintains a high net profit margin for its industry.
-#> 3                                        Company holds a dominant or rapidly growing market share.
-#> 4                                              Debt-to-Equity ratio is below the industry average.
-#> 5                                            Company generates strong and positive free cash flow.
-#> 6                       Carbon emissions (Scopes 1 & 2) are verifiably below the industry average.
-#> 7                                              Waste and water usage are minimal and well-managed.
-#> 8                                        Supply chain has strong, audited environmental standards.
-#> 9                          Company commits a high percentage of R&D to validated green technology.
-#> 10                 Has ambitious, science-based emission reduction targets (e.g., SBTi certified).
-#> 11 Executive compensation is directly and significantly linked to achieving environmental targets.
-#> 12                                            Pays a verified living wage to all global employees.
-#> 13                                   Employee turnover rate is exceptionally low for the industry.
-#> 14                               Has strong, independently verified diversity & inclusion metrics.
-#> 15    Supply chain is robustly and transparently audited for labor rights (no forced/child labor).
-#> 16                                Products and services provide a clear, net positive social good.
-#> 17                           Company has a clean record on product safety and consumer protection.
-#> 18              No major, unresolved human rights controversies in its operations or supply chain.
-#> 19                                     The board of directors is majority independent and diverse.
-#> 20                   Executive pay ratio is reasonable and linked to long-term, sustainable value.
-#> 21          Political lobbying and donations are transparent and align with stated company values.
-#> 22                          Has strong shareholder protection rights (e.g., no dual-class shares).
-#> 23                        Tax practices are transparent and fair (no excessive use of tax havens).
-#>    answer confidence influence_if_true influence_if_false influence_index
-#> 1      NA         NA        0.12500000          0.3333333       0.4583333
-#> 2      NA         NA        0.12500000          0.3333333       0.4583333
-#> 3      NA         NA        0.12500000          0.3333333       0.4583333
-#> 4      NA         NA        0.06250000          1.0000000       1.0625000
-#> 5      NA         NA        0.06250000          1.0000000       1.0625000
-#> 6      NA         NA        0.08333333          0.5000000       0.5833333
-#> 7      NA         NA        0.08333333          0.5000000       0.5833333
-#> 8      NA         NA        0.08333333          0.5000000       0.5833333
-#> 9      NA         NA        0.25000000          0.1666667       0.4166667
-#> 10     NA         NA        0.25000000          0.1666667       0.4166667
-#> 11     NA         NA        0.25000000          0.1666667       0.4166667
-#> 12     NA         NA        0.25000000          0.1250000       0.3750000
-#> 13     NA         NA        0.25000000          0.1250000       0.3750000
-#> 14     NA         NA        0.25000000          0.1250000       0.3750000
-#> 15     NA         NA        0.25000000          0.1250000       0.3750000
-#> 16     NA         NA        0.08333333          0.5000000       0.5833333
-#> 17     NA         NA        0.08333333          0.5000000       0.5833333
-#> 18     NA         NA        0.08333333          0.5000000       0.5833333
-#> 19     NA         NA        0.05000000          1.0000000       1.0500000
-#> 20     NA         NA        0.05000000          1.0000000       1.0500000
-#> 21     NA         NA        0.05000000          1.0000000       1.0500000
-#> 22     NA         NA        0.05000000          1.0000000       1.0500000
-#> 23     NA         NA        0.05000000          1.0000000       1.0500000
+questions_df <- print_questions(tree)
+
+display_df <- questions_df[, c("name", "question")]
+colnames(display_df) <- c("ID", "Question")
+
+kable(
+  display_df,
+  caption = "Ethical investment decision tree questions", 
+  align = 'l',
+  escape = TRUE,
+  booktabs = TRUE
+) 
 ```
 
-Now let’s unser some questions
+| ID | Question |
+|:---|:---|
+| FIN1 | Company demonstrates consistent, high revenue growth. |
+| FIN2 | Company maintains a high net profit margin for its industry. |
+| FIN3 | Company holds a dominant or rapidly growing market share. |
+| FIN4 | Debt-to-Equity ratio is below the industry average. |
+| FIN5 | Company generates strong and positive free cash flow. |
+| ENV1 | Carbon emissions (Scopes 1 & 2) are verifiably below the industry average. |
+| ENV2 | Waste and water usage are minimal and well-managed. |
+| ENV3 | Supply chain has strong, audited environmental standards. |
+| ENV4 | Company commits a high percentage of R&D to validated green technology. |
+| ENV5 | Has ambitious, science-based emission reduction targets (e.g., SBTi certified). |
+| ENV6 | Executive compensation is directly and significantly linked to achieving environmental targets. |
+| SOC1 | Pays a verified living wage to all global employees. |
+| SOC2 | Employee turnover rate is exceptionally low for the industry. |
+| SOC3 | Has strong, independently verified diversity & inclusion metrics. |
+| SOC4 | Supply chain is robustly and transparently audited for labor rights (no forced/child labor). |
+| SOC5 | Products and services provide a clear, net positive social good. |
+| SOC6 | Company has a clean record on product safety and consumer protection. |
+| SOC7 | No major, unresolved human rights controversies in its operations or supply chain. |
+| GOV1 | The board of directors is majority independent and diverse. |
+| GOV2 | Executive pay ratio is reasonable and linked to long-term, sustainable value. |
+| GOV3 | Political lobbying and donations are transparent and align with stated company values. |
+| GOV4 | Has strong shareholder protection rights (e.g., no dual-class shares). |
+| GOV5 | Tax practices are transparent and fair (no excessive use of tax havens). |
+
+Ethical investment decision tree questions
+
+Answer some questions
 
 ``` r
-# Set some answers and confidences
+
 tree <- set_answer(tree, "FIN1", TRUE, 4) # Company shows consistent, high revenue growth (high confidence)
 #> Answer for leaf 'FIN1' set to: TRUE with confidence 4/5
 tree <- set_answer(tree, "ENV2", FALSE, 3) # Waste and water usage are NOT minimal (medium confidence)
@@ -249,25 +215,40 @@ print_tree(tree)
 
 Now that some questions are answered and the tree is updated, we can
 find the most influential remaining questions to answer to efficiently
-reach a conclusion:
+reach a conclusion. In this case we are sorting by “TRUE”, a ‘rule-in’
+approach which ranks influence assuming we respond TRUE. The other
+options are “FALSE” (‘rule-out’) and “BOTH” (unopinionated).
 
 ``` r
-# Get the top 3 most influential unanswered questions
-highest_influence_questions <- get_highest_influence(tree, sort_by = "TRUE", top_n = 3)
-print(highest_influence_questions)
-#>   name
-#> 1 ENV4
-#> 2 ENV5
-#> 3 ENV6
-#>                                                                                          question
-#> 1                         Company commits a high percentage of R&D to validated green technology.
-#> 2                 Has ambitious, science-based emission reduction targets (e.g., SBTi certified).
-#> 3 Executive compensation is directly and significantly linked to achieving environmental targets.
-#>   influence_if_true influence_if_false influence_index
-#> 1              0.25          0.3333333       0.5833333
-#> 2              0.25          0.3333333       0.5833333
-#> 3              0.25          0.3333333       0.5833333
+# Get the top 10 most influential unanswered questions
+highest_influence_questions <- get_highest_influence(tree, sort_by = "TRUE", top_n = 10)
+
+display_df <- highest_influence_questions[, c("name", "influence_if_true", "influence_if_false", "question")]
+colnames(display_df) <- c("ID", "Inf True", "Inf False", "Question")
+
+kable(
+  display_df,
+  caption = "Priority questions based on 'rule-in' strategy", 
+  align = 'l',
+  escape = TRUE,
+  booktabs = TRUE
+) 
 ```
+
+| ID | Inf True | Inf False | Question |
+|:---|:---|:---|:---|
+| ENV4 | 0.2500000 | 0.3333333 | Company commits a high percentage of R&D to validated green technology. |
+| ENV5 | 0.2500000 | 0.3333333 | Has ambitious, science-based emission reduction targets (e.g., SBTi certified). |
+| ENV6 | 0.2500000 | 0.3333333 | Executive compensation is directly and significantly linked to achieving environmental targets. |
+| SOC1 | 0.2500000 | 0.1250000 | Pays a verified living wage to all global employees. |
+| SOC2 | 0.2500000 | 0.1250000 | Employee turnover rate is exceptionally low for the industry. |
+| SOC3 | 0.2500000 | 0.1250000 | Has strong, independently verified diversity & inclusion metrics. |
+| SOC4 | 0.2500000 | 0.1250000 | Supply chain is robustly and transparently audited for labor rights (no forced/child labor). |
+| FIN4 | 0.1250000 | 1.0000000 | Debt-to-Equity ratio is below the industry average. |
+| FIN5 | 0.1250000 | 1.0000000 | Company generates strong and positive free cash flow. |
+| SOC5 | 0.0833333 | 0.5000000 | Products and services provide a clear, net positive social good. |
+
+Priority questions based on ‘rule-in’ strategy
 
 This output helps users prioritize their next steps in gathering
 evidence.
@@ -294,8 +275,8 @@ follow these guidelines:
   repository, make your changes, and submit a pull request.
 - **Reporting Issues:** If you encounter any bugs or have suggestions
   for improvements, please open an issue on the [GitHub Issues
-  page](https://github.com/your-github-username/andorR/issues). Please
-  provide a minimal reproducible example if reporting a bug.
+  page](https://github.com/EpiMundi/andorR/issues). Please provide a
+  minimal reproducible example if reporting a bug.
 - **Seeking Support:** For questions about using `andorR` or for general
   support, you can also open an issue on the [GitHub Issues
-  page](https://github.com/your-github-username/andorR/issues).
+  page](https://github.com/EpiMundi/andorR/issues).

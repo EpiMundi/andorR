@@ -48,12 +48,13 @@ remotes::install_github("epimundi/andorR")
 
 Let's illustrate `andorR`'s core functionality by loading a predefined ethical investment decision tree, making some initial decisions, and then identifying the most influential remaining questions.
 
-First, load the package and an example tree (assuming `load_tree_df` and `ethical` data exist in your package).
+First, load the package and an example tree, and view the tree structure.
 
 ```{r basic-example, eval = TRUE}
 library(andorR)
+library(knitr)
 
-# Load the example 'ethical' dataset (assuming it's exported in your package)
+# Load the example 'ethical' dataset
 data(ethical)
 tree <- load_tree_df(ethical)
 
@@ -61,16 +62,27 @@ tree <- load_tree_df(ethical)
 print_tree(tree)
 ```
 
-If you run the above code, you'd see the tree with no answers. Let's make some decisions and update the tree. First, get a list of the questions:
+Get a list of the questions:
 
 ```{r basic-example-print-questions, eval = TRUE}
-print_questions(tree)
+questions_df <- print_questions(tree)
+
+display_df <- questions_df[, c("name", "question")]
+colnames(display_df) <- c("ID", "Question")
+
+kable(
+  display_df,
+  caption = "Ethical investment decision tree questions", 
+  align = 'l',
+  escape = TRUE,
+  booktabs = TRUE
+) 
 ```
 
-Now let's unser some questions
+Answer some questions
 
 ```{r basic-example-set-answer, eval = TRUE}
-# Set some answers and confidences
+
 tree <- set_answer(tree, "FIN1", TRUE, 4) # Company shows consistent, high revenue growth (high confidence)
 tree <- set_answer(tree, "ENV2", FALSE, 3) # Waste and water usage are NOT minimal (medium confidence)
 
@@ -81,12 +93,22 @@ tree <- update_tree(tree)
 print_tree(tree)
 ```
 
-Now that some questions are answered and the tree is updated, we can find the most influential remaining questions to answer to efficiently reach a conclusion:
+Now that some questions are answered and the tree is updated, we can find the most influential remaining questions to answer to efficiently reach a conclusion. In this case we are sorting by "TRUE", a 'rule-in' approach which ranks influence assuming we respond TRUE. The other options are "FALSE" ('rule-out') and "BOTH" (unopinionated). 
 
 ```{r basic-example-get-influence, eval = TRUE}
-# Get the top 3 most influential unanswered questions
-highest_influence_questions <- get_highest_influence(tree, sort_by = "TRUE", top_n = 3)
-print(highest_influence_questions)
+# Get the top 10 most influential unanswered questions
+highest_influence_questions <- get_highest_influence(tree, sort_by = "TRUE", top_n = 10)
+
+display_df <- highest_influence_questions[, c("name", "influence_if_true", "influence_if_false", "question")]
+colnames(display_df) <- c("ID", "Inf True", "Inf False", "Question")
+
+kable(
+  display_df,
+  caption = "Priority questions based on 'rule-in' strategy", 
+  align = 'l',
+  escape = TRUE,
+  booktabs = TRUE
+) 
 
 ```
 
@@ -105,5 +127,5 @@ Detailed documentation for all functions and their arguments can be found in the
 We welcome contributions, bug reports, and feature requests. Please follow these guidelines:
 
   * **Contributing:** If you'd like to contribute code, please open an issue first to discuss your proposed changes. Then, fork the repository, make your changes, and submit a pull request.
-  * **Reporting Issues:** If you encounter any bugs or have suggestions for improvements, please open an issue on the [GitHub Issues page](https://github.com/your-github-username/andorR/issues). Please provide a minimal reproducible example if reporting a bug.
-  * **Seeking Support:** For questions about using `andorR` or for general support, you can also open an issue on the [GitHub Issues page](https://github.com/your-github-username/andorR/issues).
+  * **Reporting Issues:** If you encounter any bugs or have suggestions for improvements, please open an issue on the [GitHub Issues page](https://github.com/EpiMundi/andorR/issues). Please provide a minimal reproducible example if reporting a bug.
+  * **Seeking Support:** For questions about using `andorR` or for general support, you can also open an issue on the [GitHub Issues page](https://github.com/EpiMundi/andorR/issues).
