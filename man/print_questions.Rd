@@ -33,5 +33,4 @@ questions_df <- print_questions(ethical_tree)
 
 # Display the first few rows
 head(questions_df)
-
 }
