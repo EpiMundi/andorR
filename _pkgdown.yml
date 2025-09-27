@@ -1,0 +1,14 @@
+url: https://EpiMundi.github.io/andorR/
+template:
+  bootstrap: 5
+navbar:
+  components:
+    home: {icon: fa-home fa-lg}
+    reference: ~
+    articles:
+      text: Articles
+      menu:
+        - text: Get started
+          href: articles/get-started.html
+    news: ~
+    community: ~

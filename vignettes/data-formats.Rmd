@@ -2,7 +2,7 @@
 title: "Data Formats for andorR"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data Formats for andorR}
+  %\VignetteIndexEntry{data-formats}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
