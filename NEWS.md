@@ -1,3 +1,12 @@
+# andorR 0.2.5
+
+* **Bug fixes**
+    * Correct error in display of root node in `print_tree()`
+    
+* **MINOR CHANGES**
+    * Improve display of output from `andorR_interactive()`
+
+
 # andorR 0.2.4
 
 * **Bug fixes**
