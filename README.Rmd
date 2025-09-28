@@ -65,7 +65,7 @@ print_tree(tree)
 Get a list of the questions:
 
 ```{r basic-example-print-questions, eval = TRUE}
-questions_df <- print_questions(tree)
+questions_df <- get_questions(tree)
 
 display_df <- questions_df[, c("name", "question")]
 colnames(display_df) <- c("ID", "Question")
@@ -242,10 +242,3 @@ Enter a number, 'n', or command (h, p, s, q):
 
 Detailed documentation for all functions and their arguments can be found in the package's reference manual. You can access it in R using `?function_name` (e.g., `?update_tree`) or by visiting the `andorR` pkgdown website: [https://epimundi.github.io/andorR/](https://epimundi.github.io/andorR/)
 
-## Community Guidelines
-
-We welcome contributions, bug reports, and feature requests. Please follow these guidelines:
-
-  * **Contributing:** If you'd like to contribute code, please open an issue first to discuss your proposed changes. Then, fork the repository, make your changes, and submit a pull request.
-  * **Reporting Issues:** If you encounter any bugs or have suggestions for improvements, please open an issue on the [GitHub Issues page](https://github.com/EpiMundi/andorR/issues). Please provide a minimal reproducible example if reporting a bug.
-  * **Seeking Support:** For questions about using `andorR` or for general support, you can also open an issue on the [GitHub Issues page](https://github.com/EpiMundi/andorR/issues).

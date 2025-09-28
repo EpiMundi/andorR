@@ -161,12 +161,12 @@ print_tree <- function(tree) {
 #' ethical_tree <- update_tree(ethical_tree)
 #'
 #' # Get the summary data frame of all questions
-#' questions_df <- print_questions(ethical_tree)
+#' questions_df <- get_questions(ethical_tree)
 #'
 #' # Display the first few rows
 #' head(questions_df)
 
-print_questions <- function(tree) {
+get_questions <- function(tree) {
 
   # Get a  list of all leaf nodes.
   leaves <- Traverse(tree, filterFun = isLeaf)

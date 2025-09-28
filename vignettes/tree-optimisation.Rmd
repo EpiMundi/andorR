@@ -114,7 +114,7 @@ Let's focus on some of the Financial questions:
 
 ```{r get-initial-influence}
 # Get a full list of all question statuses
-all_questions <- print_questions(dtree)
+all_questions <- get_questions(dtree)
 
 # Let's look at the initial influence of FIN1, FIN2, and FIN4
 all_questions %>% 
@@ -134,7 +134,7 @@ Now that the tree has been recalculated, let's check the influence scores for th
 
 ```{r get-new-influence}
 # Get the new list of all question statuses
-all_questions_new <- print_questions(dtree)
+all_questions_new <- get_questions(dtree)
 
 # Look at the new influence of FIN2 and FIN4
 all_questions_new %>% 

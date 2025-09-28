@@ -1,7 +1,7 @@
 Package: andorR
 Type: Package
 Title: Optimisation of the Analysis of AND-OR Decision Trees
-Version: 0.2.5
+Version: 0.3.0
 Date: 2025-10-01
 Authors@R: c(
     person(

@@ -120,7 +120,7 @@ print_tree(tree)
 Get a list of the questions:
 
 ``` r
-questions_df <- print_questions(tree)
+questions_df <- get_questions(tree)
 
 display_df <- questions_df[, c("name", "question")]
 colnames(display_df) <- c("ID", "Question")
