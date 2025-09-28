@@ -1,5 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://epimundi.github.io/andorR/404.html</loc></url>
+<url><loc>https://epimundi.github.io/andorR/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://epimundi.github.io/andorR/CONTRIBUTING.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/LICENSE-text.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/LICENSE.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/articles/andorR-intro.html</loc></url>
@@ -20,6 +22,7 @@
 <url><loc>https://epimundi.github.io/andorR/reference/ethical_nl.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/reference/get_confidence_boosters.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/reference/get_highest_influence.html</loc></url>
+<url><loc>https://epimundi.github.io/andorR/reference/get_questions.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/reference/index.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/reference/load_tree_csv.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/reference/load_tree_csv_path.html</loc></url>
@@ -28,7 +31,6 @@
 <url><loc>https://epimundi.github.io/andorR/reference/load_tree_json.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/reference/load_tree_node_list.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/reference/load_tree_yaml.html</loc></url>
-<url><loc>https://epimundi.github.io/andorR/reference/print_questions.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/reference/print_tree.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/reference/set_answer.html</loc></url>
 <url><loc>https://epimundi.github.io/andorR/reference/update_tree.html</loc></url>

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">andorR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -233,52 +233,54 @@ parent nodes have a <code>true_index</code> and
 <code>false_index</code>, while only the unanswered leaves have an
 <code>influence_index</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">120</span><span class="op">)</span></span>
-<span><span class="co"># We rename the column header for better display</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dtree</span>, <span class="st">"rule"</span>, <span class="st">"true_index"</span>, <span class="st">"false_index"</span>, influence <span class="op">=</span> <span class="st">"influence_index"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                    levelName rule true_index false_index influence</span></span>
-<span><span class="co">#&gt; 1  Invest in Company X                        AND  0.2500000   1.0000000        NA</span></span>
-<span><span class="co">#&gt; 2   ¦--Financial Viability                    AND  0.5000000   1.0000000        NA</span></span>
-<span><span class="co">#&gt; 3   ¦   ¦--Profitability and Growth Signals    OR  1.0000000   0.3333333        NA</span></span>
-<span><span class="co">#&gt; 4   ¦   ¦   ¦--FIN1                                       NA          NA 0.4583333</span></span>
-<span><span class="co">#&gt; 5   ¦   ¦   ¦--FIN2                                       NA          NA 0.4583333</span></span>
-<span><span class="co">#&gt; 6   ¦   ¦   °--FIN3                                       NA          NA 0.4583333</span></span>
-<span><span class="co">#&gt; 7   ¦   °--Solvency and Stability             AND  0.5000000   1.0000000        NA</span></span>
-<span><span class="co">#&gt; 8   ¦       ¦--FIN4                                       NA          NA 1.0625000</span></span>
-<span><span class="co">#&gt; 9   ¦       °--FIN5                                       NA          NA 1.0625000</span></span>
-<span><span class="co">#&gt; 10  ¦--Acceptable Environmental Stewardship    OR  1.0000000   0.5000000        NA</span></span>
-<span><span class="co">#&gt; 11  ¦   ¦--Has a Clean Current Record         AND  0.3333333   1.0000000        NA</span></span>
-<span><span class="co">#&gt; 12  ¦   ¦   ¦--ENV1                                       NA          NA 0.5833333</span></span>
-<span><span class="co">#&gt; 13  ¦   ¦   ¦--ENV2                                       NA          NA 0.5833333</span></span>
-<span><span class="co">#&gt; 14  ¦   ¦   °--ENV3                                       NA          NA 0.5833333</span></span>
-<span><span class="co">#&gt; 15  ¦   °--Has a Credible Transition Pathway   OR  1.0000000   0.3333333        NA</span></span>
-<span><span class="co">#&gt; 16  ¦       ¦--ENV4                                       NA          NA 0.4166667</span></span>
-<span><span class="co">#&gt; 17  ¦       ¦--ENV5                                       NA          NA 0.4166667</span></span>
-<span><span class="co">#&gt; 18  ¦       °--ENV6                                       NA          NA 0.4166667</span></span>
-<span><span class="co">#&gt; 19  ¦--Demonstrable Social Responsibility      OR  1.0000000   0.5000000        NA</span></span>
-<span><span class="co">#&gt; 20  ¦   ¦--Shows Excellent Internal Culture    OR  1.0000000   0.2500000        NA</span></span>
-<span><span class="co">#&gt; 21  ¦   ¦   ¦--SOC1                                       NA          NA 0.3750000</span></span>
-<span><span class="co">#&gt; 22  ¦   ¦   ¦--SOC2                                       NA          NA 0.3750000</span></span>
-<span><span class="co">#&gt; 23  ¦   ¦   ¦--SOC3                                       NA          NA 0.3750000</span></span>
-<span><span class="co">#&gt; 24  ¦   ¦   °--SOC4                                       NA          NA 0.3750000</span></span>
-<span><span class="co">#&gt; 25  ¦   °--Has a Positive External Impact     AND  0.3333333   1.0000000        NA</span></span>
-<span><span class="co">#&gt; 26  ¦       ¦--SOC5                                       NA          NA 0.5833333</span></span>
-<span><span class="co">#&gt; 27  ¦       ¦--SOC6                                       NA          NA 0.5833333</span></span>
-<span><span class="co">#&gt; 28  ¦       °--SOC7                                       NA          NA 0.5833333</span></span>
-<span><span class="co">#&gt; 29  °--Strong Corporate Governance            AND  0.2000000   1.0000000        NA</span></span>
-<span><span class="co">#&gt; 30      ¦--GOV1                                           NA          NA 1.0500000</span></span>
-<span><span class="co">#&gt; 31      ¦--GOV2                                           NA          NA 1.0500000</span></span>
-<span><span class="co">#&gt; 32      ¦--GOV3                                           NA          NA 1.0500000</span></span>
-<span><span class="co">#&gt; 33      ¦--GOV4                                           NA          NA 1.0500000</span></span>
-<span><span class="co">#&gt; 34      °--GOV5                                           NA          NA 1.0500000</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dtree</span>, <span class="st">"rule"</span>, true <span class="op">=</span> <span class="st">"true_index"</span>, false <span class="op">=</span> <span class="st">"false_index"</span>, influence <span class="op">=</span> <span class="st">"influence_index"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                    levelName rule      true     false influence</span></span>
+<span><span class="co">#&gt; 1  Invest in Company X                        AND 0.2500000 1.0000000        NA</span></span>
+<span><span class="co">#&gt; 2   ¦--Financial Viability                    AND 0.5000000 1.0000000        NA</span></span>
+<span><span class="co">#&gt; 3   ¦   ¦--Profitability and Growth Signals    OR 1.0000000 0.3333333        NA</span></span>
+<span><span class="co">#&gt; 4   ¦   ¦   ¦--FIN1                                      NA        NA 0.4583333</span></span>
+<span><span class="co">#&gt; 5   ¦   ¦   ¦--FIN2                                      NA        NA 0.4583333</span></span>
+<span><span class="co">#&gt; 6   ¦   ¦   °--FIN3                                      NA        NA 0.4583333</span></span>
+<span><span class="co">#&gt; 7   ¦   °--Solvency and Stability             AND 0.5000000 1.0000000        NA</span></span>
+<span><span class="co">#&gt; 8   ¦       ¦--FIN4                                      NA        NA 1.0625000</span></span>
+<span><span class="co">#&gt; 9   ¦       °--FIN5                                      NA        NA 1.0625000</span></span>
+<span><span class="co">#&gt; 10  ¦--Acceptable Environmental Stewardship    OR 1.0000000 0.5000000        NA</span></span>
+<span><span class="co">#&gt; 11  ¦   ¦--Has a Clean Current Record         AND 0.3333333 1.0000000        NA</span></span>
+<span><span class="co">#&gt; 12  ¦   ¦   ¦--ENV1                                      NA        NA 0.5833333</span></span>
+<span><span class="co">#&gt; 13  ¦   ¦   ¦--ENV2                                      NA        NA 0.5833333</span></span>
+<span><span class="co">#&gt; 14  ¦   ¦   °--ENV3                                      NA        NA 0.5833333</span></span>
+<span><span class="co">#&gt; 15  ¦   °--Has a Credible Transition Pathway   OR 1.0000000 0.3333333        NA</span></span>
+<span><span class="co">#&gt; 16  ¦       ¦--ENV4                                      NA        NA 0.4166667</span></span>
+<span><span class="co">#&gt; 17  ¦       ¦--ENV5                                      NA        NA 0.4166667</span></span>
+<span><span class="co">#&gt; 18  ¦       °--ENV6                                      NA        NA 0.4166667</span></span>
+<span><span class="co">#&gt; 19  ¦--Demonstrable Social Responsibility      OR 1.0000000 0.5000000        NA</span></span>
+<span><span class="co">#&gt; 20  ¦   ¦--Shows Excellent Internal Culture    OR 1.0000000 0.2500000        NA</span></span>
+<span><span class="co">#&gt; 21  ¦   ¦   ¦--SOC1                                      NA        NA 0.3750000</span></span>
+<span><span class="co">#&gt; 22  ¦   ¦   ¦--SOC2                                      NA        NA 0.3750000</span></span>
+<span><span class="co">#&gt; 23  ¦   ¦   ¦--SOC3                                      NA        NA 0.3750000</span></span>
+<span><span class="co">#&gt; 24  ¦   ¦   °--SOC4                                      NA        NA 0.3750000</span></span>
+<span><span class="co">#&gt; 25  ¦   °--Has a Positive External Impact     AND 0.3333333 1.0000000        NA</span></span>
+<span><span class="co">#&gt; 26  ¦       ¦--SOC5                                      NA        NA 0.5833333</span></span>
+<span><span class="co">#&gt; 27  ¦       ¦--SOC6                                      NA        NA 0.5833333</span></span>
+<span><span class="co">#&gt; 28  ¦       °--SOC7                                      NA        NA 0.5833333</span></span>
+<span><span class="co">#&gt; 29  °--Strong Corporate Governance            AND 0.2000000 1.0000000        NA</span></span>
+<span><span class="co">#&gt; 30      ¦--GOV1                                          NA        NA 1.0500000</span></span>
+<span><span class="co">#&gt; 31      ¦--GOV2                                          NA        NA 1.0500000</span></span>
+<span><span class="co">#&gt; 32      ¦--GOV3                                          NA        NA 1.0500000</span></span>
+<span><span class="co">#&gt; 33      ¦--GOV4                                          NA        NA 1.0500000</span></span>
+<span><span class="co">#&gt; 34      °--GOV5                                          NA        NA 1.0500000</span></span></code></pre></div>
 <p>To find the best question to ask first, we use
 <code><a href="../reference/get_highest_influence.html">get_highest_influence()</a></code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_highest_influence.html">get_highest_influence</a></span><span class="op">(</span><span class="va">dtree</span>, top_n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   name                                                    question influence_if_true influence_if_false influence_index</span></span>
-<span><span class="co">#&gt; 1 FIN4         Debt-to-Equity ratio is below the industry average.            0.0625                  1          1.0625</span></span>
-<span><span class="co">#&gt; 2 FIN5       Company generates strong and positive free cash flow.            0.0625                  1          1.0625</span></span>
-<span><span class="co">#&gt; 3 GOV1 The board of directors is majority independent and diverse.            0.0500                  1          1.0500</span></span></code></pre></div>
+<span><span class="co">#&gt;   name                                                    question</span></span>
+<span><span class="co">#&gt; 1 FIN4         Debt-to-Equity ratio is below the industry average.</span></span>
+<span><span class="co">#&gt; 2 FIN5       Company generates strong and positive free cash flow.</span></span>
+<span><span class="co">#&gt; 3 GOV1 The board of directors is majority independent and diverse.</span></span>
+<span><span class="co">#&gt;   influence_if_true influence_if_false influence_index</span></span>
+<span><span class="co">#&gt; 1            0.0625                  1          1.0625</span></span>
+<span><span class="co">#&gt; 2            0.0625                  1          1.0625</span></span>
+<span><span class="co">#&gt; 3            0.0500                  1          1.0500</span></span></code></pre></div>
 <p>In this initial state, <strong>FIN4</strong>, <strong>FIN5</strong>,
 and <strong>GOV1</strong> (and other leaves under <code>AND</code>
 nodes) have the highest influence. This is because they belong to
@@ -294,7 +296,7 @@ as the most efficient questions to investigate first.</p>
 <p>Let’s focus on some of the Financial questions:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get a full list of all question statuses</span></span>
-<span><span class="va">all_questions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/print_questions.html">print_questions</a></span><span class="op">(</span><span class="va">dtree</span><span class="op">)</span></span>
+<span><span class="va">all_questions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_questions.html">get_questions</a></span><span class="op">(</span><span class="va">dtree</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Let's look at the initial influence of FIN1, FIN2, and FIN4</span></span>
 <span><span class="va">all_questions</span> <span class="op">%&gt;%</span> </span>
@@ -365,7 +367,7 @@ as <code>TRUE</code>. This should resolve its parent node,
 scores for the same leaves again.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get the new list of all question statuses</span></span>
-<span><span class="va">all_questions_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/print_questions.html">print_questions</a></span><span class="op">(</span><span class="va">dtree</span><span class="op">)</span></span>
+<span><span class="va">all_questions_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_questions.html">get_questions</a></span><span class="op">(</span><span class="va">dtree</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Look at the new influence of FIN2 and FIN4</span></span>
 <span><span class="va">all_questions_new</span> <span class="op">%&gt;%</span> </span>
