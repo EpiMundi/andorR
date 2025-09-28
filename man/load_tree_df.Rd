@@ -10,7 +10,7 @@ load_tree_df(df)
 \item{df}{A data frame with columns: id, name, question, rule, parent.}
 }
 \value{
-A \code{data.tree} object, fully constructed and initialized with \code{answer}
+A \code{data.tree} object, fully constructed and initialised with \code{answer}
 and \code{confidence} attributes set to \code{NA}.
 }
 \description{

@@ -12,12 +12,12 @@ element should have a \code{name} and can have other attributes like \code{quest
 \code{rule}, and a sub-list named \code{nodes} containing its children.}
 }
 \value{
-A \code{data.tree} object, fully constructed and initialized with \code{answer}
+A \code{data.tree} object, fully constructed and initialised with \code{answer}
 and \code{confidence} attributes set to \code{NA}.
 }
 \description{
 Constructs a tree from a nested R list, where the hierarchy is
-defined by the list's structure. It also initializes the \code{answer} and
+defined by the list's structure. It also initialises the \code{answer} and
 \code{confidence} attributes required for the analysis.
 }
 \details{

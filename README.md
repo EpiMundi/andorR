@@ -3,21 +3,25 @@
 
 # andorR
 
+> Optimisation of the Analysis of AND-OR Decision Trees
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/EpiMundi/andorR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/EpiMundi/andorR/actions/workflows/R-CMD-check.yaml)
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
 `andorR` (pronounced ‘Andorra’) is an R package for the analysis and
-optimization of expert system AND-OR decision trees. It helps manage the
+optimisation of expert system AND-OR decision trees. It helps manage the
 process of gathering evidence and reaching conclusions under
-uncertainty, aiming to minimize resource use and maximize confidence.
+uncertainty, aiming to minimize resource use and maximise confidence.
 
 ## About
 
 AND-OR decision trees (also known as logic trees or Boolean decision
 trees) provide a structured way to implement expert systems in domains
-where repeatable, transparent, and standardized decision processes are
+where repeatable, transparent, and standardised decision processes are
 critical, and where multiple pathways may lead to the same conclusion.
 Such trees are particularly valuable when decisions are based on a set
 of binary (TRUE/FALSE) criteria that can be combined using AND and OR
@@ -514,19 +518,3 @@ Detailed documentation for all functions and their arguments can be
 found in the package’s reference manual. You can access it in R using
 `?function_name` (e.g., `?update_tree`) or by visiting the `andorR`
 pkgdown website: <https://epimundi.github.io/andorR/>
-
-## Community Guidelines
-
-We welcome contributions, bug reports, and feature requests. Please
-follow these guidelines:
-
-- **Contributing:** If you’d like to contribute code, please open an
-  issue first to discuss your proposed changes. Then, fork the
-  repository, make your changes, and submit a pull request.
-- **Reporting Issues:** If you encounter any bugs or have suggestions
-  for improvements, please open an issue on the [GitHub Issues
-  page](https://github.com/EpiMundi/andorR/issues). Please provide a
-  minimal reproducible example if reporting a bug.
-- **Seeking Support:** For questions about using `andorR` or for general
-  support, you can also open an issue on the [GitHub Issues
-  page](https://github.com/EpiMundi/andorR/issues).

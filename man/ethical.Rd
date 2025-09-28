@@ -8,7 +8,7 @@
 A data frame with 5 variables and 34 rows
 
 \describe{
-Each rows represents a node or leaf in the tree and the columns represent
+Each row represents a node or leaf in the tree and the columns represent
 attributes of those nodes. The columns are:
 \item{id}{A unique sequential numeric identifier for each node}
 \item{name}{A short, unique alphanumeric code or name for nodes. For

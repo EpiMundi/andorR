@@ -18,7 +18,7 @@
 #'     your decision tree from different formats.
 #'   \item \code{\link{set_answer}}: Answer a question and provide a confidence
 #'     score.
-#'   \item \code{\link{update_tree}}: The core calculation engine that initializes
+#'   \item \code{\link{update_tree}}: The core calculation engine that initialises
 #'     and recalculates all logical states and influence indices.
 #'   \item \code{\link{get_highest_influence}},
 #'     \code{\link{get_confidence_boosters}}: Prioritisation of questions to

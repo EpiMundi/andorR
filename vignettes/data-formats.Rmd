@@ -160,7 +160,7 @@ To load this format from a CSV file, use the `load_tree_csv_path()` function.
 
 ```{r, eval=FALSE}
 # This code shows how to load a path string CSV from the package's example data
-path_csv_path <- system.file("extdata", "ethical_tree_path.csv", package = "andorR")
+path_csv_path <- system.file("extdata", "ethical_path.csv", package = "andorR")
 tree_from_path <- load_tree_csv_path(path_csv_path)
 
 print(tree_from_path)

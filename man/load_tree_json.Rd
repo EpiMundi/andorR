@@ -10,7 +10,7 @@ load_tree_json(file_path)
 \item{file_path}{The path to the .jsn or .json file.}
 }
 \value{
-A \code{data.tree} object, fully constructed and initialized with \code{answer}
+A \code{data.tree} object, fully constructed and initialised with \code{answer}
 and \code{confidence} attributes set to \code{NA}.
 }
 \description{

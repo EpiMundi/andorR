@@ -8,8 +8,7 @@ navbar:
     reference:
       text: Reference
       menu:
-      - text: Index
-        href: reference/index.html
+      href: reference/index.html
     articles:
       text: Articles
       menu:
