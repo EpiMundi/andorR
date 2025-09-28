@@ -21,7 +21,7 @@ data(ethical)
 
 ## Introduction to andorR
 
-`andorR` (pronounced like the country, *Andorra*) is a decision support tool that strategically prioritizes evidence gathering to most efficiently resolve uncertainty in complex logical trees.
+`andorR` (pronounced like the country, *Andorra*) is a decision support tool that strategically prioritises evidence gathering to most efficiently resolve uncertainty in complex logical trees.
 
 It is designed for problems that are more than simple checklists. It excels in situations where there are multiple pathways to a conclusion (**`OR`** nodes) and where initial information is incomplete or uncertain. The core workflow is based on the progressive gathering of new evidence, with the tool guiding the user on where to focus their efforts to have the greatest impact on the final outcome.
 

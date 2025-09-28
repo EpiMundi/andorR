@@ -7,7 +7,7 @@
 get_questions(tree)
 }
 \arguments{
-\item{tree}{The \code{data.tree} object to be summarized.}
+\item{tree}{The \code{data.tree} object to be summarised.}
 }
 \value{
 A \code{data.frame} with one row for each leaf node and the following
@@ -24,7 +24,7 @@ creating custom reports.
 # Load the example 'ethical' dataset
 data(ethical)
 
-# Build and initialize the tree object
+# Build and initialise the tree object
 ethical_tree <- load_tree_df(ethical)
 ethical_tree <- update_tree(ethical_tree)
 

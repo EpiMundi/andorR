@@ -11,13 +11,13 @@
 `andorR` (pronounced ‘Andorra’) is an R package for the analysis and
 optimization of expert system AND-OR decision trees. It helps manage the
 process of gathering evidence and reaching conclusions under
-uncertainty, aiming to minimize resource use and maximize confidence.
+uncertainty, aiming to minimize resource use and maximise confidence.
 
 ## About
 
 AND-OR decision trees (also known as logic trees or Boolean decision
 trees) provide a structured way to implement expert systems in domains
-where repeatable, transparent, and standardized decision processes are
+where repeatable, transparent, and standardised decision processes are
 critical, and where multiple pathways may lead to the same conclusion.
 Such trees are particularly valuable when decisions are based on a set
 of binary (TRUE/FALSE) criteria that can be combined using AND and OR

@@ -144,7 +144,7 @@ print_tree <- function(tree) {
 #'   useful for getting a complete overview of the analysis state or for
 #'   creating custom reports.
 #'
-#' @param tree The `data.tree` object to be summarized.
+#' @param tree The `data.tree` object to be summarised.
 #'
 #' @return A `data.frame` with one row for each leaf node and the following
 #'   columns: `name`, `question`, `answer`, `confidence` (on a 0-5 scale),
@@ -156,7 +156,7 @@ print_tree <- function(tree) {
 #' # Load the example 'ethical' dataset
 #' data(ethical)
 #'
-#' # Build and initialize the tree object
+#' # Build and initialise the tree object
 #' ethical_tree <- load_tree_df(ethical)
 #' ethical_tree <- update_tree(ethical_tree)
 #'

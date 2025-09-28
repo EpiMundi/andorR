@@ -187,7 +187,7 @@ validate_tree_df_path <- function(df, delim = "/") {
 #'   `load_tree_csv()` wrapper, which handles reading the data from a file.
 #'
 #' @param df A data frame with columns: id, name, question, rule, parent.
-#' @return A `data.tree` object, fully constructed and initialized with `answer`
+#' @return A `data.tree` object, fully constructed and initialised with `answer`
 #'   and `confidence` attributes set to `NA`.
 #' @seealso [load_tree_csv()] to read this format from a file.
 #' @importFrom data.tree Node
@@ -218,7 +218,7 @@ load_tree_df <- function(df) {
     node$rule <- row$rule
     node$parent_id <- row$parent # Store parent id for the linking step
 
-    # Initialize the dynamic attributes for the analysis
+    # Initialise the dynamic attributes for the analysis
     node$answer <- NA
     node$confidence <- NA
 
@@ -252,7 +252,7 @@ load_tree_df <- function(df) {
 
 #' @title Build a decision tree from a hierarchical list
 #' @description Constructs a tree from a nested R list, where the hierarchy is
-#'   defined by the list's structure. It also initializes the `answer` and
+#'   defined by the list's structure. It also initialises the `answer` and
 #'   `confidence` attributes required for the analysis.
 #'
 #' @details This is a core constructor function, typically called by the
@@ -261,7 +261,7 @@ load_tree_df <- function(df) {
 #'   element should have a `name` and can have other attributes like `question`,
 #'   `rule`, and a sub-list named `nodes` containing its children.
 #'
-#' @return A `data.tree` object, fully constructed and initialized with `answer`
+#' @return A `data.tree` object, fully constructed and initialised with `answer`
 #'   and `confidence` attributes set to `NA`.
 #' @seealso [load_tree_yaml()] to read this format from a file.
 #' @importFrom data.tree Node
@@ -327,7 +327,7 @@ load_tree_node_list <- function(data_list) {
   # Start the recursive building process with the top-level list
   tree <- recursive_builder(data_list)
 
-  # Initialize the dynamic attributes for all nodes.
+  # Initialise the dynamic attributes for all nodes.
   tree$Do(function(node) {
     node$answer <- NA
     node$confidence <- NA
@@ -348,7 +348,7 @@ load_tree_node_list <- function(data_list) {
 #'   tree attributes.
 #'
 #' @param file_path The path to the .csv file.
-#' @return A `data.tree` object, fully constructed and initialized with `answer`
+#' @return A `data.tree` object, fully constructed and initialised with `answer`
 #'   and `confidence` attributes set to `NA`.
 #' @seealso [load_tree_df()] for the underlying constructor function.
 #' @importFrom utils read.csv
@@ -387,7 +387,7 @@ load_tree_csv <- function(file_path) {
 #'   format. It uses `load_tree_node_list` to construct the tree object.
 #'
 #' @param file_path The path to the .yml or .yaml file.
-#' @return A `data.tree` object, fully constructed and initialized with `answer`
+#' @return A `data.tree` object, fully constructed and initialised with `answer`
 #'   and `confidence` attributes set to `NA`.
 #' @seealso [load_tree_node_list()] for the underlying constructor function.
 #' @importFrom yaml read_yaml
@@ -427,7 +427,7 @@ load_tree_yaml <- function(file_path) {
 #'   format. It uses `load_tree_node_list` to construct the tree object.
 #'
 #' @param file_path The path to the .jsn or .json file.
-#' @return A `data.tree` object, fully constructed and initialized with `answer`
+#' @return A `data.tree` object, fully constructed and initialised with `answer`
 #'   and `confidence` attributes set to `NA`.
 #' @seealso [load_tree_node_list()] for the underlying constructor function.
 #' @importFrom jsonlite fromJSON
@@ -501,7 +501,7 @@ load_tree_df_path <- function(df, delim = "/") {
 
   tree <- as.Node(df, pathName = "path", pathDelimiter = delim)
 
-  # Initialize the dynamic attributes for all nodes.
+  # Initialise the dynamic attributes for all nodes.
   tree$Do(function(node) {
     node$answer <- NA
     node$confidence <- NA
@@ -510,7 +510,7 @@ load_tree_df_path <- function(df, delim = "/") {
   # Update the tree's internal indices ready for calculation
   tree <- update_tree(tree)
 
-  # Return the fully constructed and initialized tree.
+  # Return the fully constructed and initialised tree.
   return(tree)
 }
 

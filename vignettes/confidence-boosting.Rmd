@@ -108,7 +108,7 @@ Let's print the tree again. As predicted by the guidance, our final confidence i
 print_tree(dtree)
 ```
 
-Iteratively recalcualting the tree, and regenerating the list of the best questions to boost confidence will progressively guide the most efficient way to increase confidence. 
+Iteratively recalculating the tree, and regenerating the list of the best questions to boost confidence will progressively guide the most efficient way to increase confidence. 
 
 This two-stage iterative workflow is implemented in the `andorR_interactive()` function.
 
