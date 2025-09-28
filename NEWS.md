@@ -1,5 +1,12 @@
 # andorR 0.3.0
 
+* **MAJOR CHANGES**
+    * Changed the name of `print_questions()` to `get_questions()` to better reflect its function
+
+* **MINOR CHANGES**
+    * Added CONTRIBUTING.md
+    * Added CODE_OF_CONDUCT.md
+    
 # andorR 0.2.5
 
 * **Bug fixes**
