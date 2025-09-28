@@ -447,7 +447,7 @@ andorR_interactive <- function(tree, sort_by = "BOTH") {
       cli_h2("Conclusion Reached!")
       answer_style <- if (isTRUE(root_node$answer)) cli::col_green else cli::col_red
       styled_answer <- answer_style(toupper(as.character(root_node$answer)))
-      cli_text("The current result is: ", styled_answer, " at a confidence of ", root_node$confidence)
+      cli_text("The current result is: ", styled_answer, " at a confidence of ", 100 * root_node$confidence, "%")
       cli_text("You can now answer more questions or revise existing answers to boost confidence.")
     }
 

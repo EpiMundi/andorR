@@ -114,13 +114,13 @@ print_tree <- function(tree) {
         }
       }
 
-      # Determine child's style based on its own answer
-      child_style <- identity
-      if (isTRUE(child$answer)) {
-        child_style <- cli::col_green
-      } else if (isFALSE(child$answer)) {
-        child_style <- cli::col_red
-      }
+      # # Determine child's style based on its own answer
+      # child_style <- identity
+      # if (isTRUE(child$answer)) {
+      #   child_style <- cli::col_green
+      # } else if (isFALSE(child$answer)) {
+      #   child_style <- cli::col_red
+      # }
       connector <- if (is_last) "`-- " else "|-- "
 
       print_formatted_line(child, paste0(prefix, connector))
