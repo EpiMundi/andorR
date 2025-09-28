@@ -98,9 +98,7 @@ dtree <- update_tree(dtree)
 We can now print the tree to see the calculated indices. Notice that parent nodes have a `true_index` and `false_index`, while only the unanswered leaves have an `influence_index`.
 
 ```{r print-indices}
-options(width = 120)
-# We rename the column header for better display
-print(dtree, "rule", "true_index", "false_index", influence = "influence_index")
+print(dtree, "rule", true = "true_index", false = "false_index", influence = "influence_index")
 ```
 
 To find the best question to ask first, we use `get_highest_influence()`.
