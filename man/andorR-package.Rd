@@ -48,6 +48,13 @@ To learn how to use the package in detail, please see the vignettes:
 }
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://EpiMundi.github.io/andorR}
+}
+
+}
 \author{
 \strong{Maintainer}: Angus R Cameron \email{angus.cameron@epimundi.com} (\href{https://orcid.org/0000-0001-8801-0366}{ORCID})
 

@@ -250,20 +250,270 @@ kable(
 
 Priority questions based on ‘rule-in’ strategy
 
-This output helps users prioritize their next steps in gathering
-evidence.
+Answer more questions to complete the tree
+
+``` r
+tree <- set_answer(tree, "ENV5", TRUE, 3, verbose=FALSE)
+tree <- set_answer(tree, "SOC3", TRUE, 3, verbose=FALSE)
+tree <- set_answer(tree, "FIN4", TRUE, 2, verbose=FALSE)
+tree <- set_answer(tree, "FIN5", TRUE, 1, verbose=FALSE)
+tree <- set_answer(tree, "GOV1", TRUE, 0, verbose=FALSE)
+tree <- set_answer(tree, "GOV2", TRUE, 0, verbose=FALSE)
+tree <- set_answer(tree, "GOV3", TRUE, 0, verbose=FALSE)
+tree <- set_answer(tree, "GOV4", TRUE, 0, verbose=FALSE)
+tree <- set_answer(tree, "GOV5", TRUE, 0, verbose=FALSE)
+
+tree <- update_tree(tree)
+print_tree(tree)
+#> Tree                                             Rule      Answer      Confidence   
+#> Invest in Company X                               AND       TRUE        0.8% 
+#> |-- Financial Viability                           AND       TRUE        37.8% 
+#> |   |-- Profitability and Growth Signals          OR        TRUE        90% 
+#> |   |   |-- FIN1                                            TRUE        4 
+#> |   |   |-- FIN2                                                         
+#> |   |   `-- FIN3                                                         
+#> |   `-- Solvency and Stability                    AND       TRUE        42% 
+#> |       |-- FIN4                                            TRUE        2 
+#> |       `-- FIN5                                            TRUE        1 
+#> |-- Acceptable Environmental Stewardship          OR        TRUE        80% 
+#> |   |-- Has a Clean Current Record                AND       FALSE       80% 
+#> |   |   |-- ENV1                                                         
+#> |   |   |-- ENV2                                            FALSE       3 
+#> |   |   `-- ENV3                                                         
+#> |   `-- Has a Credible Transition Pathway         OR        TRUE        80% 
+#> |       |-- ENV4                                                         
+#> |       |-- ENV5                                            TRUE        3 
+#> |       `-- ENV6                                                         
+#> |-- Demonstrable Social Responsibility            OR        TRUE        80% 
+#> |   |-- Shows Excellent Internal Culture          OR        TRUE        80% 
+#> |   |   |-- SOC1                                                         
+#> |   |   |-- SOC2                                                         
+#> |   |   |-- SOC3                                            TRUE        3 
+#> |   |   `-- SOC4                                                         
+#> |   `-- Has a Positive External Impact            AND                    
+#> |       |-- SOC5                                                         
+#> |       |-- SOC6                                                         
+#> |       `-- SOC7                                                         
+#> `-- Strong Corporate Governance                   AND       TRUE        3.1% 
+#>     |-- GOV1                                                TRUE        0 
+#>     |-- GOV2                                                TRUE        0 
+#>     |-- GOV3                                                TRUE        0 
+#>     |-- GOV4                                                TRUE        0 
+#>     `-- GOV5                                                TRUE        0
+```
+
+The conclusion for the investment decision is TRUE, but the confidence
+is very low.
+
+Identify the most efficient questions to focus on to increase
+confidence.
+
+``` r
+display_df <- get_confidence_boosters(tree)[, c("name", "action", "details", "potential_gain")]
+#> ℹ Analysing 12 unanswered questions...✔ Analysed 12 unanswered questions ✔  
+#> ℹ Analysing 11 existing answers...✔ Analysed 11 existing answers ✔  
+colnames(display_df) <- c("ID", "Action", "Details", "Potential gain")
+
+kable(
+  display_df,
+  caption = "Priority questions to increase confidence", 
+  align = 'l',
+  escape = TRUE,
+  booktabs = TRUE
+) 
+```
+
+|      | ID   | Action              | Details           | Potential gain |
+|:-----|:-----|:--------------------|:------------------|:---------------|
+| GOV1 | GOV1 | Increase Confidence | Current conf: 0/5 | +0.76%         |
+| GOV2 | GOV2 | Increase Confidence | Current conf: 0/5 | +0.76%         |
+| GOV3 | GOV3 | Increase Confidence | Current conf: 0/5 | +0.76%         |
+| GOV4 | GOV4 | Increase Confidence | Current conf: 0/5 | +0.76%         |
+| GOV5 | GOV5 | Increase Confidence | Current conf: 0/5 | +0.76%         |
+
+Priority questions to increase confidence
+
+All elements of Strong Corporate Governance are important in the tree,
+so more research into the company is required in this area. Let’s update
+the results after having done a thorough assessment.
+
+``` r
+tree <- set_answer(tree, "GOV1", TRUE, 5, verbose=FALSE)
+tree <- set_answer(tree, "GOV2", TRUE, 5, verbose=FALSE)
+tree <- set_answer(tree, "GOV3", TRUE, 5, verbose=FALSE)
+tree <- set_answer(tree, "GOV4", TRUE, 5, verbose=FALSE)
+tree <- set_answer(tree, "GOV5", TRUE, 5, verbose=FALSE)
+
+tree <- update_tree(tree)
+print_tree(tree)
+#> Tree                                             Rule      Answer      Confidence   
+#> Invest in Company X                               AND       TRUE        24.2% 
+#> |-- Financial Viability                           AND       TRUE        37.8% 
+#> |   |-- Profitability and Growth Signals          OR        TRUE        90% 
+#> |   |   |-- FIN1                                            TRUE        4 
+#> |   |   |-- FIN2                                                         
+#> |   |   `-- FIN3                                                         
+#> |   `-- Solvency and Stability                    AND       TRUE        42% 
+#> |       |-- FIN4                                            TRUE        2 
+#> |       `-- FIN5                                            TRUE        1 
+#> |-- Acceptable Environmental Stewardship          OR        TRUE        80% 
+#> |   |-- Has a Clean Current Record                AND       FALSE       80% 
+#> |   |   |-- ENV1                                                         
+#> |   |   |-- ENV2                                            FALSE       3 
+#> |   |   `-- ENV3                                                         
+#> |   `-- Has a Credible Transition Pathway         OR        TRUE        80% 
+#> |       |-- ENV4                                                         
+#> |       |-- ENV5                                            TRUE        3 
+#> |       `-- ENV6                                                         
+#> |-- Demonstrable Social Responsibility            OR        TRUE        80% 
+#> |   |-- Shows Excellent Internal Culture          OR        TRUE        80% 
+#> |   |   |-- SOC1                                                         
+#> |   |   |-- SOC2                                                         
+#> |   |   |-- SOC3                                            TRUE        3 
+#> |   |   `-- SOC4                                                         
+#> |   `-- Has a Positive External Impact            AND                    
+#> |       |-- SOC5                                                         
+#> |       |-- SOC6                                                         
+#> |       `-- SOC7                                                         
+#> `-- Strong Corporate Governance                   AND       TRUE        100% 
+#>     |-- GOV1                                                TRUE        5 
+#>     |-- GOV2                                                TRUE        5 
+#>     |-- GOV3                                                TRUE        5 
+#>     |-- GOV4                                                TRUE        5 
+#>     `-- GOV5                                                TRUE        5
+```
+
+Individually the impact was small but cumulatively the five questions
+gave a major boost in confidence. Let’s see what we should look at next.
+
+``` r
+display_df <- get_confidence_boosters(tree)[, c("name", "action", "details", "potential_gain")]
+#> ℹ Analysing 12 unanswered questions...✔ Analysed 12 unanswered questions ✔  
+#> ℹ Analysing 6 existing answers...✔ Analysed 6 existing answers ✔  
+colnames(display_df) <- c("ID", "Action", "Details", "Potential gain")
+
+kable(
+  display_df,
+  caption = "Priority questions to increase confidence", 
+  align = 'l',
+  escape = TRUE,
+  booktabs = TRUE
+) 
+```
+
+|      | ID   | Action              | Details                | Potential gain |
+|:-----|:-----|:--------------------|:-----------------------|:---------------|
+| FIN5 | FIN5 | Increase Confidence | Current conf: 1/5      | +16.13%        |
+| FIN4 | FIN4 | Increase Confidence | Current conf: 2/5      | +10.37%        |
+| ENV4 | ENV4 | Answer New Question | Suggest answering TRUE | +6.05%         |
+| ENV6 | ENV6 | Answer New Question | Suggest answering TRUE | +6.05%         |
+| SOC1 | SOC1 | Answer New Question | Suggest answering TRUE | +6.05%         |
+
+Priority questions to increase confidence
+
+Let’s do more research on Solvency and Stability, as suggested.
+
+``` r
+tree <- set_answer(tree, "FIN4", TRUE, 5, verbose=FALSE)
+tree <- set_answer(tree, "FIN5", TRUE, 5, verbose=FALSE)
+
+tree <- update_tree(tree)
+print_tree(tree)
+#> Tree                                             Rule      Answer      Confidence   
+#> Invest in Company X                               AND       TRUE        57.6% 
+#> |-- Financial Viability                           AND       TRUE        90% 
+#> |   |-- Profitability and Growth Signals          OR        TRUE        90% 
+#> |   |   |-- FIN1                                            TRUE        4 
+#> |   |   |-- FIN2                                                         
+#> |   |   `-- FIN3                                                         
+#> |   `-- Solvency and Stability                    AND       TRUE        100% 
+#> |       |-- FIN4                                            TRUE        5 
+#> |       `-- FIN5                                            TRUE        5 
+#> |-- Acceptable Environmental Stewardship          OR        TRUE        80% 
+#> |   |-- Has a Clean Current Record                AND       FALSE       80% 
+#> |   |   |-- ENV1                                                         
+#> |   |   |-- ENV2                                            FALSE       3 
+#> |   |   `-- ENV3                                                         
+#> |   `-- Has a Credible Transition Pathway         OR        TRUE        80% 
+#> |       |-- ENV4                                                         
+#> |       |-- ENV5                                            TRUE        3 
+#> |       `-- ENV6                                                         
+#> |-- Demonstrable Social Responsibility            OR        TRUE        80% 
+#> |   |-- Shows Excellent Internal Culture          OR        TRUE        80% 
+#> |   |   |-- SOC1                                                         
+#> |   |   |-- SOC2                                                         
+#> |   |   |-- SOC3                                            TRUE        3 
+#> |   |   `-- SOC4                                                         
+#> |   `-- Has a Positive External Impact            AND                    
+#> |       |-- SOC5                                                         
+#> |       |-- SOC6                                                         
+#> |       `-- SOC7                                                         
+#> `-- Strong Corporate Governance                   AND       TRUE        100% 
+#>     |-- GOV1                                                TRUE        5 
+#>     |-- GOV2                                                TRUE        5 
+#>     |-- GOV3                                                TRUE        5 
+#>     |-- GOV4                                                TRUE        5 
+#>     `-- GOV5                                                TRUE        5
+```
+
+This approach to strategic targeted research helps apply resources to
+the areas where they will have the most impact on the overall
+conclusion. The process can be repeated until the target level of
+confidence is reached.
 
 ### Interactive tool
 
-The `andorR_interactive()` function chains these actions together in a
-CLI interactive loop to automate the process.
+This manual iterative approach can get a little tedious. The
+`andorR_interactive()` function chains these actions together in a CLI
+interactive loop to automate the process.
+
+    ── andorR ──────────────────────────────────────────────────────────────────────────────
+    An analysis and optimisation tool for AND-OR decision trees.
+
+    Created by: EpiMundi (<https://epimundi.com>)
+    Author: Angus Cameron
+    Email: angus@epimundi.com
+    Version: 0.2.4
+
+    ── Help Menu ───────────────────────────────────────────────────────────────────────────
+    h: Show this help message.
+    q: Quit the interactive session.
+    p: Print the current state of the tree.
+    s: Save the current tree state to an .rds file.
+    n: Specify a node to edit by typing its name.
+    1, 2, ...: Select a numbered question from the list to answer.
+    ────────────────────────────────────────────────────────────────────────────────────────
+    ────────────────────────────────────────────────────────────────────────────────────────
+
+    ── Conclusion Reached! ──
+
+    The current result is: TRUE at a confidence of 57.6%
+    You can now answer more questions or revise existing answers to boost confidence.
+    ────────────────────────────────────────────────────────────────────────────────────────
+    ✔ Analysed 12 unanswered questions ✔  
+    ✔ Analysed 4 existing answers ✔  
+
+    ── Questions to Boost Confidence ──
+
+    1. [ENV4] Answer New Question Suggest answering TRUE +14.4%
+    2. [ENV6] Answer New Question Suggest answering TRUE +14.4%
+    3. [SOC1] Answer New Question Suggest answering TRUE +14.4%
+    4. [SOC2] Answer New Question Suggest answering TRUE +14.4%
+    5. [SOC4] Answer New Question Suggest answering TRUE +14.4%
+    6. [ENV5] Increase Confidence Current conf: 3/5 +14.4%
+    7. [SOC3] Increase Confidence Current conf: 3/5 +14.4%
+    8. [FIN2] Answer New Question Suggest answering TRUE +6.4%
+    9. [FIN3] Answer New Question Suggest answering TRUE +6.4%
+    10. [FIN1] Increase Confidence Current conf: 4/5 +6.4%
+    ────────────────────────────────────────────────────────────────────────────────────────
+    Enter a number, 'n', or command (h, p, s, q): 
 
 ## API Documentation
 
 Detailed documentation for all functions and their arguments can be
 found in the package’s reference manual. You can access it in R using
 `?function_name` (e.g., `?update_tree`) or by visiting the `andorR`
-pkgdown website (xxx pending xxx).
+pkgdown website: <https://epimundi.github.io/andorR/>
 
 ## Community Guidelines
 

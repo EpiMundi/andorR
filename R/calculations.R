@@ -194,12 +194,6 @@ calculate_influence <- function(node) {
     return()
   }
 
-  if (!is.na(node$answer)) {
-    node$influence_index <- NA
-    node$influence_if_true <- NA
-    node$influence_if_false <- NA
-    return()
-  }
   # Get ancestor index vectors
   true_indices_vec <- node$Get('true_index', traversal = "ancestor")
   false_indices_vec <- node$Get('false_index', traversal = "ancestor")

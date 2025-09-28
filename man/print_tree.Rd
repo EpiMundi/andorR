@@ -14,7 +14,7 @@ The original \code{tree} object (returned invisibly).
 }
 \description{
 Displays a clean, perfectly aligned, color-coded summary of the tree's
-current state, with color propagation up the branches.
+current state, based on pre-calculated \code{answer} attributes.
 }
 \details{
 An alternative approach to inspect internal attributes is to use the
@@ -28,20 +28,30 @@ Available attributes include:
 \item answer : The response provided for leaves or the calculated status of nodes
 \item confidence : The confidence score provided for leaves (0 - 5) or the
 probability that the answer is correct (50\% to 100\%) for nodes
-\item true_index : Influence the node has on the overall conclusion, if the response is TRUE
-\item false_index : Influence the node has on the overall conclusion, if the response is TRUE
-\item influence_index : The sum of the product of ancestor influence indices for each unanswered leaf
+\item true_index : Influence the node has on the overall conclusion,
+if the response is TRUE
+\item false_index : Influence the node has on the overall conclusion,
+if the response is FALSE
+\item influence_if_true: Influence the leaf has on the overall conclusion,
+if the response is TRUE. This is the product of the ancestor values of
+true_index
+\item influence_if_false: Influence the leaf has on the overall conclusion,
+if the response is FALSE. This is the product of the ancestor values of
+false_index
+\item influence_index : The sum of influence_if_true and influence_if_false
+for each unanswered leaf
 }
 }
 \examples{
 # Load a tree
 ethical_tree <- load_tree_df(ethical)
 
-# View the tree
+# View the tree - initially all 'plain' as no answers
 print_tree(ethical_tree)
 
-# Set an answer for leaf 'A1'
+# Set an answer for leaf 'FIN2' and update the tree
 ethical_tree <- set_answer(ethical_tree, "FIN2", TRUE, 3)
+ethical_tree <- update_tree(ethical_tree) # Crucial: update the tree to propagate answers
 print_tree(ethical_tree)
 
 # Alternative approach to inspect internal attributes using `data.tree::print()
