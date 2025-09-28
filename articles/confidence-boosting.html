@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">andorR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -174,39 +174,39 @@ and some with low confidence, to simulate an initial assessment.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/print_tree.html">print_tree</a></span><span class="op">(</span><span class="va">dtree</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Tree                                             Rule      Answer      Confidence  </span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">Invest in Company X</span>                               <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">28.6%</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">|-- Financial Viability</span>                           <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">49%</span> </span></span>
-<span><span class="co">#&gt; |   <span style="color: #00BB00;">|-- Profitability and Growth Signals</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">100%</span> </span></span>
-<span><span class="co">#&gt; |   |   <span style="color: #00BB00;">|-- FIN1</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt; |-- <span style="color: #00BB00;">Financial Viability</span>                           <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">49%</span> </span></span>
+<span><span class="co">#&gt; |   |-- <span style="color: #00BB00;">Profitability and Growth Signals</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">100%</span> </span></span>
+<span><span class="co">#&gt; |   |   |-- <span style="color: #00BB00;">FIN1</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
 <span><span class="co">#&gt; |   |   |-- FIN2                                                         </span></span>
 <span><span class="co">#&gt; |   |   `-- FIN3                                                         </span></span>
-<span><span class="co">#&gt; |   <span style="color: #00BB00;">`-- Solvency and Stability</span>                    <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">49%</span> </span></span>
-<span><span class="co">#&gt; |       <span style="color: #00BB00;">|-- FIN4</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">2</span> </span></span>
-<span><span class="co">#&gt; |       <span style="color: #00BB00;">`-- FIN5</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">2</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">|-- Acceptable Environmental Stewardship</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">64.8%</span> </span></span>
-<span><span class="co">#&gt; |   <span style="color: #00BB00;">|-- Has a Clean Current Record</span>                <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">64.8%</span> </span></span>
-<span><span class="co">#&gt; |   |   <span style="color: #00BB00;">|-- ENV1</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
-<span><span class="co">#&gt; |   |   <span style="color: #00BB00;">|-- ENV2</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">3</span> </span></span>
-<span><span class="co">#&gt; |   |   <span style="color: #00BB00;">`-- ENV3</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
+<span><span class="co">#&gt; |   `-- <span style="color: #00BB00;">Solvency and Stability</span>                    <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">49%</span> </span></span>
+<span><span class="co">#&gt; |       |-- <span style="color: #00BB00;">FIN4</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">2</span> </span></span>
+<span><span class="co">#&gt; |       `-- <span style="color: #00BB00;">FIN5</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">2</span> </span></span>
+<span><span class="co">#&gt; |-- <span style="color: #00BB00;">Acceptable Environmental Stewardship</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">64.8%</span> </span></span>
+<span><span class="co">#&gt; |   |-- <span style="color: #00BB00;">Has a Clean Current Record</span>                <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">64.8%</span> </span></span>
+<span><span class="co">#&gt; |   |   |-- <span style="color: #00BB00;">ENV1</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
+<span><span class="co">#&gt; |   |   |-- <span style="color: #00BB00;">ENV2</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">3</span> </span></span>
+<span><span class="co">#&gt; |   |   `-- <span style="color: #00BB00;">ENV3</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
 <span><span class="co">#&gt; |   `-- Has a Credible Transition Pathway         <span style="color: #00BBBB;">OR</span>                     </span></span>
 <span><span class="co">#&gt; |       |-- ENV4                                                         </span></span>
 <span><span class="co">#&gt; |       |-- ENV5                                                         </span></span>
 <span><span class="co">#&gt; |       `-- ENV6                                                         </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">|-- Demonstrable Social Responsibility</span>            <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">90%</span> </span></span>
-<span><span class="co">#&gt; |   <span style="color: #00BB00;">|-- Shows Excellent Internal Culture</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">90%</span> </span></span>
+<span><span class="co">#&gt; |-- <span style="color: #00BB00;">Demonstrable Social Responsibility</span>            <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">90%</span> </span></span>
+<span><span class="co">#&gt; |   |-- <span style="color: #00BB00;">Shows Excellent Internal Culture</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">90%</span> </span></span>
 <span><span class="co">#&gt; |   |   |-- SOC1                                                         </span></span>
-<span><span class="co">#&gt; |   |   <span style="color: #00BB00;">|-- SOC2</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
+<span><span class="co">#&gt; |   |   |-- <span style="color: #00BB00;">SOC2</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
 <span><span class="co">#&gt; |   |   |-- SOC3                                                         </span></span>
 <span><span class="co">#&gt; |   |   `-- SOC4                                                         </span></span>
 <span><span class="co">#&gt; |   `-- Has a Positive External Impact            <span style="color: #00BBBB;">AND</span>                    </span></span>
 <span><span class="co">#&gt; |       |-- SOC5                                                         </span></span>
 <span><span class="co">#&gt; |       |-- SOC6                                                         </span></span>
 <span><span class="co">#&gt; |       `-- SOC7                                                         </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">`-- Strong Corporate Governance</span>                   <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">100%</span> </span></span>
-<span><span class="co">#&gt;     <span style="color: #00BB00;">|-- GOV1</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
-<span><span class="co">#&gt;     <span style="color: #00BB00;">|-- GOV2</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
-<span><span class="co">#&gt;     <span style="color: #00BB00;">|-- GOV3</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
-<span><span class="co">#&gt;     <span style="color: #00BB00;">|-- GOV4</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
-<span><span class="co">#&gt;     <span style="color: #00BB00;">`-- GOV5</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span></span></span></code></pre></div>
+<span><span class="co">#&gt; `-- <span style="color: #00BB00;">Strong Corporate Governance</span>                   <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">100%</span> </span></span>
+<span><span class="co">#&gt;     |-- <span style="color: #00BB00;">GOV1</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt;     |-- <span style="color: #00BB00;">GOV2</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt;     |-- <span style="color: #00BB00;">GOV3</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt;     |-- <span style="color: #00BB00;">GOV4</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt;     `-- <span style="color: #00BB00;">GOV5</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-3-get-guidance-on-boosting-confidence">Step 3: Get Guidance on Boosting Confidence<a class="anchor" aria-label="anchor" href="#step-3-get-guidance-on-boosting-confidence"></a>
@@ -318,39 +318,39 @@ confidence in the <code>TRUE</code> result has jumped from 28.6% to
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/print_tree.html">print_tree</a></span><span class="op">(</span><span class="va">dtree</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Tree                                             Rule      Answer      Confidence  </span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">Invest in Company X</span>                               <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">40.8%</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">|-- Financial Viability</span>                           <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">70%</span> </span></span>
-<span><span class="co">#&gt; |   <span style="color: #00BB00;">|-- Profitability and Growth Signals</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">100%</span> </span></span>
-<span><span class="co">#&gt; |   |   <span style="color: #00BB00;">|-- FIN1</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt; |-- <span style="color: #00BB00;">Financial Viability</span>                           <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">70%</span> </span></span>
+<span><span class="co">#&gt; |   |-- <span style="color: #00BB00;">Profitability and Growth Signals</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">100%</span> </span></span>
+<span><span class="co">#&gt; |   |   |-- <span style="color: #00BB00;">FIN1</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
 <span><span class="co">#&gt; |   |   |-- FIN2                                                         </span></span>
 <span><span class="co">#&gt; |   |   `-- FIN3                                                         </span></span>
-<span><span class="co">#&gt; |   <span style="color: #00BB00;">`-- Solvency and Stability</span>                    <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">70%</span> </span></span>
-<span><span class="co">#&gt; |       <span style="color: #00BB00;">|-- FIN4</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">2</span> </span></span>
-<span><span class="co">#&gt; |       <span style="color: #00BB00;">`-- FIN5</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">|-- Acceptable Environmental Stewardship</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">64.8%</span> </span></span>
-<span><span class="co">#&gt; |   <span style="color: #00BB00;">|-- Has a Clean Current Record</span>                <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">64.8%</span> </span></span>
-<span><span class="co">#&gt; |   |   <span style="color: #00BB00;">|-- ENV1</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
-<span><span class="co">#&gt; |   |   <span style="color: #00BB00;">|-- ENV2</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">3</span> </span></span>
-<span><span class="co">#&gt; |   |   <span style="color: #00BB00;">`-- ENV3</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
+<span><span class="co">#&gt; |   `-- <span style="color: #00BB00;">Solvency and Stability</span>                    <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">70%</span> </span></span>
+<span><span class="co">#&gt; |       |-- <span style="color: #00BB00;">FIN4</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">2</span> </span></span>
+<span><span class="co">#&gt; |       `-- <span style="color: #00BB00;">FIN5</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt; |-- <span style="color: #00BB00;">Acceptable Environmental Stewardship</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">64.8%</span> </span></span>
+<span><span class="co">#&gt; |   |-- <span style="color: #00BB00;">Has a Clean Current Record</span>                <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">64.8%</span> </span></span>
+<span><span class="co">#&gt; |   |   |-- <span style="color: #00BB00;">ENV1</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
+<span><span class="co">#&gt; |   |   |-- <span style="color: #00BB00;">ENV2</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">3</span> </span></span>
+<span><span class="co">#&gt; |   |   `-- <span style="color: #00BB00;">ENV3</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
 <span><span class="co">#&gt; |   `-- Has a Credible Transition Pathway         <span style="color: #00BBBB;">OR</span>                     </span></span>
 <span><span class="co">#&gt; |       |-- ENV4                                                         </span></span>
 <span><span class="co">#&gt; |       |-- ENV5                                                         </span></span>
 <span><span class="co">#&gt; |       `-- ENV6                                                         </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">|-- Demonstrable Social Responsibility</span>            <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">90%</span> </span></span>
-<span><span class="co">#&gt; |   <span style="color: #00BB00;">|-- Shows Excellent Internal Culture</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">90%</span> </span></span>
+<span><span class="co">#&gt; |-- <span style="color: #00BB00;">Demonstrable Social Responsibility</span>            <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">90%</span> </span></span>
+<span><span class="co">#&gt; |   |-- <span style="color: #00BB00;">Shows Excellent Internal Culture</span>          <span style="color: #00BBBB;">OR</span>        <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">90%</span> </span></span>
 <span><span class="co">#&gt; |   |   |-- SOC1                                                         </span></span>
-<span><span class="co">#&gt; |   |   <span style="color: #00BB00;">|-- SOC2</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
+<span><span class="co">#&gt; |   |   |-- <span style="color: #00BB00;">SOC2</span>                                            <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">4</span> </span></span>
 <span><span class="co">#&gt; |   |   |-- SOC3                                                         </span></span>
 <span><span class="co">#&gt; |   |   `-- SOC4                                                         </span></span>
 <span><span class="co">#&gt; |   `-- Has a Positive External Impact            <span style="color: #00BBBB;">AND</span>                    </span></span>
 <span><span class="co">#&gt; |       |-- SOC5                                                         </span></span>
 <span><span class="co">#&gt; |       |-- SOC6                                                         </span></span>
 <span><span class="co">#&gt; |       `-- SOC7                                                         </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">`-- Strong Corporate Governance</span>                   <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">100%</span> </span></span>
-<span><span class="co">#&gt;     <span style="color: #00BB00;">|-- GOV1</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
-<span><span class="co">#&gt;     <span style="color: #00BB00;">|-- GOV2</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
-<span><span class="co">#&gt;     <span style="color: #00BB00;">|-- GOV3</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
-<span><span class="co">#&gt;     <span style="color: #00BB00;">|-- GOV4</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
-<span><span class="co">#&gt;     <span style="color: #00BB00;">`-- GOV5</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span></span></span></code></pre></div>
+<span><span class="co">#&gt; `-- <span style="color: #00BB00;">Strong Corporate Governance</span>                   <span style="color: #00BBBB;">AND</span>       <span style="color: #00BB00;">TRUE</span>        <span style="color: #0000BB;">100%</span> </span></span>
+<span><span class="co">#&gt;     |-- <span style="color: #00BB00;">GOV1</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt;     |-- <span style="color: #00BB00;">GOV2</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt;     |-- <span style="color: #00BB00;">GOV3</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt;     |-- <span style="color: #00BB00;">GOV4</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span> </span></span>
+<span><span class="co">#&gt;     `-- <span style="color: #00BB00;">GOV5</span>                                                <span style="color: #00BB00;">TRUE</span>        <span style="color: #00BBBB;">5</span></span></span></code></pre></div>
 <p>Iteratively recalcualting the tree, and regenerating the list of the
 best questions to boost confidence will progressively guide the most
 efficient way to increase confidence.</p>

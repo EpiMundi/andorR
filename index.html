@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">andorR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -399,17 +399,330 @@
 </tbody>
 </table>
 <p>Priority questions based on ‘rule-in’ strategy</p>
-<p>This output helps users prioritize their next steps in gathering evidence.</p>
+<p>Answer more questions to complete the tree</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"ENV5"</span>, <span class="cn">TRUE</span>, <span class="fl">3</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"SOC3"</span>, <span class="cn">TRUE</span>, <span class="fl">3</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"FIN4"</span>, <span class="cn">TRUE</span>, <span class="fl">2</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"FIN5"</span>, <span class="cn">TRUE</span>, <span class="fl">1</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"GOV1"</span>, <span class="cn">TRUE</span>, <span class="fl">0</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"GOV2"</span>, <span class="cn">TRUE</span>, <span class="fl">0</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"GOV3"</span>, <span class="cn">TRUE</span>, <span class="fl">0</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"GOV4"</span>, <span class="cn">TRUE</span>, <span class="fl">0</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"GOV5"</span>, <span class="cn">TRUE</span>, <span class="fl">0</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/update_tree.html">update_tree</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/print_tree.html">print_tree</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Tree                                             Rule      Answer      Confidence   </span></span>
+<span><span class="co">#&gt; Invest in Company X                               AND       TRUE        0.8% </span></span>
+<span><span class="co">#&gt; |-- Financial Viability                           AND       TRUE        37.8% </span></span>
+<span><span class="co">#&gt; |   |-- Profitability and Growth Signals          OR        TRUE        90% </span></span>
+<span><span class="co">#&gt; |   |   |-- FIN1                                            TRUE        4 </span></span>
+<span><span class="co">#&gt; |   |   |-- FIN2                                                         </span></span>
+<span><span class="co">#&gt; |   |   `-- FIN3                                                         </span></span>
+<span><span class="co">#&gt; |   `-- Solvency and Stability                    AND       TRUE        42% </span></span>
+<span><span class="co">#&gt; |       |-- FIN4                                            TRUE        2 </span></span>
+<span><span class="co">#&gt; |       `-- FIN5                                            TRUE        1 </span></span>
+<span><span class="co">#&gt; |-- Acceptable Environmental Stewardship          OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |   |-- Has a Clean Current Record                AND       FALSE       80% </span></span>
+<span><span class="co">#&gt; |   |   |-- ENV1                                                         </span></span>
+<span><span class="co">#&gt; |   |   |-- ENV2                                            FALSE       3 </span></span>
+<span><span class="co">#&gt; |   |   `-- ENV3                                                         </span></span>
+<span><span class="co">#&gt; |   `-- Has a Credible Transition Pathway         OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |       |-- ENV4                                                         </span></span>
+<span><span class="co">#&gt; |       |-- ENV5                                            TRUE        3 </span></span>
+<span><span class="co">#&gt; |       `-- ENV6                                                         </span></span>
+<span><span class="co">#&gt; |-- Demonstrable Social Responsibility            OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |   |-- Shows Excellent Internal Culture          OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |   |   |-- SOC1                                                         </span></span>
+<span><span class="co">#&gt; |   |   |-- SOC2                                                         </span></span>
+<span><span class="co">#&gt; |   |   |-- SOC3                                            TRUE        3 </span></span>
+<span><span class="co">#&gt; |   |   `-- SOC4                                                         </span></span>
+<span><span class="co">#&gt; |   `-- Has a Positive External Impact            AND                    </span></span>
+<span><span class="co">#&gt; |       |-- SOC5                                                         </span></span>
+<span><span class="co">#&gt; |       |-- SOC6                                                         </span></span>
+<span><span class="co">#&gt; |       `-- SOC7                                                         </span></span>
+<span><span class="co">#&gt; `-- Strong Corporate Governance                   AND       TRUE        3.1% </span></span>
+<span><span class="co">#&gt;     |-- GOV1                                                TRUE        0 </span></span>
+<span><span class="co">#&gt;     |-- GOV2                                                TRUE        0 </span></span>
+<span><span class="co">#&gt;     |-- GOV3                                                TRUE        0 </span></span>
+<span><span class="co">#&gt;     |-- GOV4                                                TRUE        0 </span></span>
+<span><span class="co">#&gt;     `-- GOV5                                                TRUE        0</span></span></code></pre></div>
+<p>The conclusion for the investment decision is TRUE, but the confidence is very low.</p>
+<p>Identify the most efficient questions to focus on to increase confidence.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">display_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_confidence_boosters.html">get_confidence_boosters</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"action"</span>, <span class="st">"details"</span>, <span class="st">"potential_gain"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; ℹ Analysing 12 unanswered questions...✔ Analysed 12 unanswered questions ✔  </span></span>
+<span><span class="co">#&gt; ℹ Analysing 11 existing answers...✔ Analysed 11 existing answers ✔  </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">display_df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"Action"</span>, <span class="st">"Details"</span>, <span class="st">"Potential gain"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="va">display_df</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Priority questions to increase confidence"</span>, </span>
+<span>  align <span class="op">=</span> <span class="st">'l'</span>,</span>
+<span>  escape <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  booktabs <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span> </span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="8%">
+<col width="8%">
+<col width="30%">
+<col width="27%">
+<col width="23%">
+</colgroup>
+<thead><tr class="header">
+<th align="left"></th>
+<th align="left">ID</th>
+<th align="left">Action</th>
+<th align="left">Details</th>
+<th align="left">Potential gain</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">GOV1</td>
+<td align="left">GOV1</td>
+<td align="left">Increase Confidence</td>
+<td align="left">Current conf: 0/5</td>
+<td align="left">+0.76%</td>
+</tr>
+<tr class="even">
+<td align="left">GOV2</td>
+<td align="left">GOV2</td>
+<td align="left">Increase Confidence</td>
+<td align="left">Current conf: 0/5</td>
+<td align="left">+0.76%</td>
+</tr>
+<tr class="odd">
+<td align="left">GOV3</td>
+<td align="left">GOV3</td>
+<td align="left">Increase Confidence</td>
+<td align="left">Current conf: 0/5</td>
+<td align="left">+0.76%</td>
+</tr>
+<tr class="even">
+<td align="left">GOV4</td>
+<td align="left">GOV4</td>
+<td align="left">Increase Confidence</td>
+<td align="left">Current conf: 0/5</td>
+<td align="left">+0.76%</td>
+</tr>
+<tr class="odd">
+<td align="left">GOV5</td>
+<td align="left">GOV5</td>
+<td align="left">Increase Confidence</td>
+<td align="left">Current conf: 0/5</td>
+<td align="left">+0.76%</td>
+</tr>
+</tbody>
+</table>
+<p>Priority questions to increase confidence</p>
+<p>All elements of Strong Corporate Governance are important in the tree, so more research into the company is required in this area. Let’s update the results after having done a thorough assessment.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"GOV1"</span>, <span class="cn">TRUE</span>, <span class="fl">5</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"GOV2"</span>, <span class="cn">TRUE</span>, <span class="fl">5</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"GOV3"</span>, <span class="cn">TRUE</span>, <span class="fl">5</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"GOV4"</span>, <span class="cn">TRUE</span>, <span class="fl">5</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"GOV5"</span>, <span class="cn">TRUE</span>, <span class="fl">5</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/update_tree.html">update_tree</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/print_tree.html">print_tree</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Tree                                             Rule      Answer      Confidence   </span></span>
+<span><span class="co">#&gt; Invest in Company X                               AND       TRUE        24.2% </span></span>
+<span><span class="co">#&gt; |-- Financial Viability                           AND       TRUE        37.8% </span></span>
+<span><span class="co">#&gt; |   |-- Profitability and Growth Signals          OR        TRUE        90% </span></span>
+<span><span class="co">#&gt; |   |   |-- FIN1                                            TRUE        4 </span></span>
+<span><span class="co">#&gt; |   |   |-- FIN2                                                         </span></span>
+<span><span class="co">#&gt; |   |   `-- FIN3                                                         </span></span>
+<span><span class="co">#&gt; |   `-- Solvency and Stability                    AND       TRUE        42% </span></span>
+<span><span class="co">#&gt; |       |-- FIN4                                            TRUE        2 </span></span>
+<span><span class="co">#&gt; |       `-- FIN5                                            TRUE        1 </span></span>
+<span><span class="co">#&gt; |-- Acceptable Environmental Stewardship          OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |   |-- Has a Clean Current Record                AND       FALSE       80% </span></span>
+<span><span class="co">#&gt; |   |   |-- ENV1                                                         </span></span>
+<span><span class="co">#&gt; |   |   |-- ENV2                                            FALSE       3 </span></span>
+<span><span class="co">#&gt; |   |   `-- ENV3                                                         </span></span>
+<span><span class="co">#&gt; |   `-- Has a Credible Transition Pathway         OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |       |-- ENV4                                                         </span></span>
+<span><span class="co">#&gt; |       |-- ENV5                                            TRUE        3 </span></span>
+<span><span class="co">#&gt; |       `-- ENV6                                                         </span></span>
+<span><span class="co">#&gt; |-- Demonstrable Social Responsibility            OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |   |-- Shows Excellent Internal Culture          OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |   |   |-- SOC1                                                         </span></span>
+<span><span class="co">#&gt; |   |   |-- SOC2                                                         </span></span>
+<span><span class="co">#&gt; |   |   |-- SOC3                                            TRUE        3 </span></span>
+<span><span class="co">#&gt; |   |   `-- SOC4                                                         </span></span>
+<span><span class="co">#&gt; |   `-- Has a Positive External Impact            AND                    </span></span>
+<span><span class="co">#&gt; |       |-- SOC5                                                         </span></span>
+<span><span class="co">#&gt; |       |-- SOC6                                                         </span></span>
+<span><span class="co">#&gt; |       `-- SOC7                                                         </span></span>
+<span><span class="co">#&gt; `-- Strong Corporate Governance                   AND       TRUE        100% </span></span>
+<span><span class="co">#&gt;     |-- GOV1                                                TRUE        5 </span></span>
+<span><span class="co">#&gt;     |-- GOV2                                                TRUE        5 </span></span>
+<span><span class="co">#&gt;     |-- GOV3                                                TRUE        5 </span></span>
+<span><span class="co">#&gt;     |-- GOV4                                                TRUE        5 </span></span>
+<span><span class="co">#&gt;     `-- GOV5                                                TRUE        5</span></span></code></pre></div>
+<p>Individually the impact was small but cumulatively the five questions gave a major boost in confidence. Let’s see what we should look at next.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">display_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_confidence_boosters.html">get_confidence_boosters</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"action"</span>, <span class="st">"details"</span>, <span class="st">"potential_gain"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; ℹ Analysing 12 unanswered questions...✔ Analysed 12 unanswered questions ✔  </span></span>
+<span><span class="co">#&gt; ℹ Analysing 6 existing answers...✔ Analysed 6 existing answers ✔  </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">display_df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"Action"</span>, <span class="st">"Details"</span>, <span class="st">"Potential gain"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="va">display_df</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Priority questions to increase confidence"</span>, </span>
+<span>  align <span class="op">=</span> <span class="st">'l'</span>,</span>
+<span>  escape <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  booktabs <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span> </span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="8%">
+<col width="8%">
+<col width="28%">
+<col width="32%">
+<col width="21%">
+</colgroup>
+<thead><tr class="header">
+<th align="left"></th>
+<th align="left">ID</th>
+<th align="left">Action</th>
+<th align="left">Details</th>
+<th align="left">Potential gain</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">FIN5</td>
+<td align="left">FIN5</td>
+<td align="left">Increase Confidence</td>
+<td align="left">Current conf: 1/5</td>
+<td align="left">+16.13%</td>
+</tr>
+<tr class="even">
+<td align="left">FIN4</td>
+<td align="left">FIN4</td>
+<td align="left">Increase Confidence</td>
+<td align="left">Current conf: 2/5</td>
+<td align="left">+10.37%</td>
+</tr>
+<tr class="odd">
+<td align="left">ENV4</td>
+<td align="left">ENV4</td>
+<td align="left">Answer New Question</td>
+<td align="left">Suggest answering TRUE</td>
+<td align="left">+6.05%</td>
+</tr>
+<tr class="even">
+<td align="left">ENV6</td>
+<td align="left">ENV6</td>
+<td align="left">Answer New Question</td>
+<td align="left">Suggest answering TRUE</td>
+<td align="left">+6.05%</td>
+</tr>
+<tr class="odd">
+<td align="left">SOC1</td>
+<td align="left">SOC1</td>
+<td align="left">Answer New Question</td>
+<td align="left">Suggest answering TRUE</td>
+<td align="left">+6.05%</td>
+</tr>
+</tbody>
+</table>
+<p>Priority questions to increase confidence</p>
+<p>Let’s do more research on Solvency and Stability, as suggested.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"FIN4"</span>, <span class="cn">TRUE</span>, <span class="fl">5</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_answer.html">set_answer</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"FIN5"</span>, <span class="cn">TRUE</span>, <span class="fl">5</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/update_tree.html">update_tree</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/print_tree.html">print_tree</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Tree                                             Rule      Answer      Confidence   </span></span>
+<span><span class="co">#&gt; Invest in Company X                               AND       TRUE        57.6% </span></span>
+<span><span class="co">#&gt; |-- Financial Viability                           AND       TRUE        90% </span></span>
+<span><span class="co">#&gt; |   |-- Profitability and Growth Signals          OR        TRUE        90% </span></span>
+<span><span class="co">#&gt; |   |   |-- FIN1                                            TRUE        4 </span></span>
+<span><span class="co">#&gt; |   |   |-- FIN2                                                         </span></span>
+<span><span class="co">#&gt; |   |   `-- FIN3                                                         </span></span>
+<span><span class="co">#&gt; |   `-- Solvency and Stability                    AND       TRUE        100% </span></span>
+<span><span class="co">#&gt; |       |-- FIN4                                            TRUE        5 </span></span>
+<span><span class="co">#&gt; |       `-- FIN5                                            TRUE        5 </span></span>
+<span><span class="co">#&gt; |-- Acceptable Environmental Stewardship          OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |   |-- Has a Clean Current Record                AND       FALSE       80% </span></span>
+<span><span class="co">#&gt; |   |   |-- ENV1                                                         </span></span>
+<span><span class="co">#&gt; |   |   |-- ENV2                                            FALSE       3 </span></span>
+<span><span class="co">#&gt; |   |   `-- ENV3                                                         </span></span>
+<span><span class="co">#&gt; |   `-- Has a Credible Transition Pathway         OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |       |-- ENV4                                                         </span></span>
+<span><span class="co">#&gt; |       |-- ENV5                                            TRUE        3 </span></span>
+<span><span class="co">#&gt; |       `-- ENV6                                                         </span></span>
+<span><span class="co">#&gt; |-- Demonstrable Social Responsibility            OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |   |-- Shows Excellent Internal Culture          OR        TRUE        80% </span></span>
+<span><span class="co">#&gt; |   |   |-- SOC1                                                         </span></span>
+<span><span class="co">#&gt; |   |   |-- SOC2                                                         </span></span>
+<span><span class="co">#&gt; |   |   |-- SOC3                                            TRUE        3 </span></span>
+<span><span class="co">#&gt; |   |   `-- SOC4                                                         </span></span>
+<span><span class="co">#&gt; |   `-- Has a Positive External Impact            AND                    </span></span>
+<span><span class="co">#&gt; |       |-- SOC5                                                         </span></span>
+<span><span class="co">#&gt; |       |-- SOC6                                                         </span></span>
+<span><span class="co">#&gt; |       `-- SOC7                                                         </span></span>
+<span><span class="co">#&gt; `-- Strong Corporate Governance                   AND       TRUE        100% </span></span>
+<span><span class="co">#&gt;     |-- GOV1                                                TRUE        5 </span></span>
+<span><span class="co">#&gt;     |-- GOV2                                                TRUE        5 </span></span>
+<span><span class="co">#&gt;     |-- GOV3                                                TRUE        5 </span></span>
+<span><span class="co">#&gt;     |-- GOV4                                                TRUE        5 </span></span>
+<span><span class="co">#&gt;     `-- GOV5                                                TRUE        5</span></span></code></pre></div>
+<p>This approach to strategic targeted research helps apply resources to the areas where they will have the most impact on the overall conclusion. The process can be repeated until the target level of confidence is reached.</p>
 <div class="section level3">
 <h3 id="interactive-tool">Interactive tool<a class="anchor" aria-label="anchor" href="#interactive-tool"></a>
 </h3>
-<p>The <code><a href="reference/andorR_interactive.html">andorR_interactive()</a></code> function chains these actions together in a CLI interactive loop to automate the process.</p>
+<p>This manual iterative approach can get a little tedious. The <code><a href="reference/andorR_interactive.html">andorR_interactive()</a></code> function chains these actions together in a CLI interactive loop to automate the process.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>── andorR ──────────────────────────────────────────────────────────────────────────────</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>An analysis and optimisation tool <span class="cf">for</span> AND<span class="sc">-</span>OR decision trees.</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>Created by<span class="sc">:</span> <span class="fu">EpiMundi</span> (<span class="sc">&lt;</span>https<span class="sc">:</span><span class="er">//</span>epimundi.com<span class="sc">&gt;</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>Author<span class="sc">:</span> Angus Cameron</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>Email<span class="sc">:</span> angus<span class="sc">@</span>epimundi.com</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>Version<span class="sc">:</span> <span class="dv">0</span>.<span class="fl">2.4</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>── Help Menu ───────────────────────────────────────────────────────────────────────────</span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>h<span class="sc">:</span> Show this help message.</span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>q<span class="sc">:</span> Quit the interactive session.</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>p<span class="sc">:</span> Print the current state of the tree.</span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>s<span class="sc">:</span> Save the current tree state to an .rds file.</span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>n<span class="sc">:</span> Specify a node to edit by typing its name.</span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="dv">1</span>, <span class="dv">2</span>, ...<span class="sc">:</span> Select a numbered question from the list to answer.</span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a>────────────────────────────────────────────────────────────────────────────────────────</span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a>────────────────────────────────────────────────────────────────────────────────────────</span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a>── Conclusion Reached<span class="sc">!</span> ──</span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a>The current result is<span class="sc">:</span> <span class="cn">TRUE</span> at a confidence of <span class="fl">57.6</span>%</span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a>You can now answer more questions or revise existing answers to boost confidence.</span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a>────────────────────────────────────────────────────────────────────────────────────────</span>
+<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a>✔ Analysed <span class="dv">12</span> unanswered questions ✔  </span>
+<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a>✔ Analysed <span class="dv">4</span> existing answers ✔  </span>
+<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a>── Questions to Boost Confidence ──</span>
+<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a></span>
+<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a><span class="fl">1.</span> [ENV4] Answer New Question Suggest answering <span class="cn">TRUE</span> <span class="sc">+</span><span class="fl">14.4</span>%</span>
+<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a><span class="fl">2.</span> [ENV6] Answer New Question Suggest answering <span class="cn">TRUE</span> <span class="sc">+</span><span class="fl">14.4</span>%</span>
+<span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a><span class="fl">3.</span> [SOC1] Answer New Question Suggest answering <span class="cn">TRUE</span> <span class="sc">+</span><span class="fl">14.4</span>%</span>
+<span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a><span class="fl">4.</span> [SOC2] Answer New Question Suggest answering <span class="cn">TRUE</span> <span class="sc">+</span><span class="fl">14.4</span>%</span>
+<span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a><span class="fl">5.</span> [SOC4] Answer New Question Suggest answering <span class="cn">TRUE</span> <span class="sc">+</span><span class="fl">14.4</span>%</span>
+<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a><span class="fl">6.</span> [ENV5] Increase Confidence Current conf<span class="sc">:</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">5</span> <span class="sc">+</span><span class="fl">14.4</span>%</span>
+<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a><span class="fl">7.</span> [SOC3] Increase Confidence Current conf<span class="sc">:</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">5</span> <span class="sc">+</span><span class="fl">14.4</span>%</span>
+<span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a><span class="fl">8.</span> [FIN2] Answer New Question Suggest answering <span class="cn">TRUE</span> <span class="sc">+</span><span class="fl">6.4</span>%</span>
+<span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a><span class="fl">9.</span> [FIN3] Answer New Question Suggest answering <span class="cn">TRUE</span> <span class="sc">+</span><span class="fl">6.4</span>%</span>
+<span id="cb11-38"><a href="#cb11-38" tabindex="-1"></a><span class="fl">10.</span> [FIN1] Increase Confidence Current conf<span class="sc">:</span> <span class="dv">4</span><span class="sc">/</span><span class="dv">5</span> <span class="sc">+</span><span class="fl">6.4</span>%</span>
+<span id="cb11-39"><a href="#cb11-39" tabindex="-1"></a>────────────────────────────────────────────────────────────────────────────────────────</span>
+<span id="cb11-40"><a href="#cb11-40" tabindex="-1"></a>Enter a number, <span class="st">'n'</span>, or <span class="fu">command</span> (h, p, s, q)<span class="sc">:</span> </span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="api-documentation">API Documentation<a class="anchor" aria-label="anchor" href="#api-documentation"></a>
 </h2>
-<p>Detailed documentation for all functions and their arguments can be found in the package’s reference manual. You can access it in R using <code>?function_name</code> (e.g., <code><a href="reference/update_tree.html">?update_tree</a></code>) or by visiting the <code>andorR</code> pkgdown website (xxx pending xxx).</p>
+<p>Detailed documentation for all functions and their arguments can be found in the package’s reference manual. You can access it in R using <code>?function_name</code> (e.g., <code><a href="reference/update_tree.html">?update_tree</a></code>) or by visiting the <code>andorR</code> pkgdown website: <a href="https://epimundi.github.io/andorR/" class="uri">https://epimundi.github.io/andorR/</a></p>
 </div>
 <div class="section level2">
 <h2 id="community-guidelines">Community Guidelines<a class="anchor" aria-label="anchor" href="#community-guidelines"></a>
