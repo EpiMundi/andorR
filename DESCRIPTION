@@ -17,7 +17,7 @@ Description: A decision support tool to strategically prioritise evidence gather
   conclusion as efficiently as possible (responding to the minimum number of 
   questions, and only spending resources on generating improved evidence when 
   it is of significant value to the final decision). The framework excels in 
-  complex analyses with multiple potential succesful pathways to aonclusion 
+  complex analyses with multiple potential successful pathways to a conclusion 
   ('OR' nodes). Key features include a dynamic influence index to guide users to 
   the most impactful question, a system for propagating answers and 
   semi-quantitative confidence scores (0-5) up the tree, and post-conclusion 
@@ -47,4 +47,4 @@ Suggests:
     tibble
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-URL: https://EpiMundi.github.io/andorR, https://epimundi.github.io/andorR/
+URL: https://epimundi.github.io/andorR/

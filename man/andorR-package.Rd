@@ -51,7 +51,6 @@ To learn how to use the package in detail, please see the vignettes:
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://EpiMundi.github.io/andorR}
   \item \url{https://epimundi.github.io/andorR/}
 }
 

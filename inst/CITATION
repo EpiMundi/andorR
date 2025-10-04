@@ -1,14 +1,9 @@
-citEntry(
-  entry = "Manual",
+bibentry(
+  bibtype = "Manual",
   title = "andorR: An Analysis and Optimisation Tool for AND-OR Decision Trees",
-  author = c(
-    person(c("Angus", "R"), "Cameron")
-  ),
-  year = 2025,
+  author = person(c("Angus", "R"), "Cameron"),
+  year = "2025",
   organization = "EpiMundi",
   url = "https://github.com/epimundi/andorR",
-  textVersion =
-  paste("Cameron, A (2025).",
-        "andorR: An Analysis and Optimisation Tool for AND-OR Decision Trees.",
-        "R package version 0.1.0, EpiMundi. https://github.com/epimundi/andorR.")
+  note = "R package version 0.3.0"
 )
