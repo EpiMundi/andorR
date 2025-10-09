@@ -1,7 +1,7 @@
 Package: andorR
 Type: Package
 Title: Optimisation of the Analysis of AND-OR Decision Trees
-Version: 0.3.0
+Version: 0.3.1
 Date: 2025-10-01
 Authors@R: c(
     person(
@@ -9,10 +9,14 @@ Authors@R: c(
       email = "angus.cameron@epimundi.com",
       role = c("aut", "cre"),
       comment = c(ORCID = "0000-0001-8801-0366")
+    ), 
+    person(
+      "EpiMundi",
+      role = c("cph", "fnd")
     )
   )
 Description: A decision support tool to strategically prioritise evidence gathering 
-  in complex, hierarchical 'AND-OR' decision trees. It is designed for situations 
+  in complex, hierarchical AND-OR decision trees. It is designed for situations 
   with incomplete or uncertain information where the goal is to reach a confident 
   conclusion as efficiently as possible (responding to the minimum number of 
   questions, and only spending resources on generating improved evidence when 

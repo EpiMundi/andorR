@@ -344,8 +344,8 @@ set_answer <- function(tree, node_name, response, confidence_level, verbose = TR
 #' ethical_tree <- load_tree_df(ethical)
 #'
 #' # Start interactive mode
-#' \dontrun{
-#' andorR_interactive(ethical_tree)
+#' if(interactive()){
+#'   andorR_interactive(ethical_tree)
 #' }
 #'
 andorR_interactive <- function(tree, sort_by = "BOTH") {

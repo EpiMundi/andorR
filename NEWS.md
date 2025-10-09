@@ -1,3 +1,8 @@
+# andorR 0.3.1
+
+* **MINOR CHANGES**
+    * Corrections to documentation and DESCRIPTION
+
 # andorR 0.3.0
 
 * **MAJOR CHANGES**

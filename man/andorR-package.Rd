@@ -58,5 +58,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Angus R Cameron \email{angus.cameron@epimundi.com} (\href{https://orcid.org/0000-0001-8801-0366}{ORCID})
 
+Other contributors:
+\itemize{
+  \item EpiMundi [copyright holder, funder]
+}
+
 }
 \keyword{internal}
