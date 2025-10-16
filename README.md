@@ -10,6 +10,8 @@
 [![R-CMD-check](https://github.com/EpiMundi/andorR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/EpiMundi/andorR/actions/workflows/R-CMD-check.yaml)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/andorR)](https://CRAN.R-project.org/package=andorR)
 <!-- badges: end -->
 
 `andorR` (pronounced ‘Andorra’) is an R package for the analysis and
